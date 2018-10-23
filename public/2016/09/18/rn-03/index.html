@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>React Native 03：换肤支持 | Rui&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="因为原生这边有个换肤功能，用户下载对应的皮肤包，用户切换皮肤之后，会触发一个全局的通知，需要支持换肤的UI视图对象会注册通知这个通知监听，然后重新渲染。某一天产品跑过来说，RN的页面也要支持换肤哦。呵呵。。。  思路1.先看看原生那边换肤是怎么玩的。 点开app下载一个皮肤包。会从服务器请求一个zip压缩包。  解压缩打开，一份色值表配置json文件，若干替换图片。看代码。大致实现是换肤库提供了">
+<meta name="keywords" content="React Native">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Native 03：换肤支持">
+<meta property="og:url" content="//ruidada.info/2016/09/18/rn-03/index.html">
+<meta property="og:site_name" content="Rui&#39;s Blog">
+<meta property="og:description" content="因为原生这边有个换肤功能，用户下载对应的皮肤包，用户切换皮肤之后，会触发一个全局的通知，需要支持换肤的UI视图对象会注册通知这个通知监听，然后重新渲染。某一天产品跑过来说，RN的页面也要支持换肤哦。呵呵。。。  思路1.先看看原生那边换肤是怎么玩的。 点开app下载一个皮肤包。会从服务器请求一个zip压缩包。  解压缩打开，一份色值表配置json文件，若干替换图片。看代码。大致实现是换肤库提供了">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-10-18T07:10:07.621Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React Native 03：换肤支持">
+<meta name="twitter:description" content="因为原生这边有个换肤功能，用户下载对应的皮肤包，用户切换皮肤之后，会触发一个全局的通知，需要支持换肤的UI视图对象会注册通知这个通知监听，然后重新渲染。某一天产品跑过来说，RN的页面也要支持换肤哦。呵呵。。。  思路1.先看看原生那边换肤是怎么玩的。 点开app下载一个皮肤包。会从服务器请求一个zip压缩包。  解压缩打开，一份色值表配置json文件，若干替换图片。看代码。大致实现是换肤库提供了">
+  
+    <link rel="alternative" href="/atom.xml" title="Rui&#39;s Blog" type="application/atom+xml">
+  
+  
+  <script src="/style.js"></script>
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/rui.JPG" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Rui</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">首页</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
+	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/galery">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">Articles</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">Tags</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">About Me</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="mail" target="_blank" href="#" title="mail">mail</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">Rui</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/rui.JPG" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Rui</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">首页</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/archives">归档</a></li>
+		        
+					<li><a href="/tags">标签</a></li>
+		        
+					<li><a href="/galery">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="#" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-rn-03" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      React Native 03：换肤支持
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+    <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
+          <span class="btn-bg"></span>
+          <span class="btn-text">文章导航</span>
+          </p>
+  <div id="toc-article" class="toc-article">
+      <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
+    <strong class="toc-title">文章目录</strong>
+           <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#思路"><span class="toc-number">1.</span> <span class="toc-text">思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-先看看原生那边换肤是怎么玩的。"><span class="toc-number">1.1.</span> <span class="toc-text">1.先看看原生那边换肤是怎么玩的。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-RN这边既然要支持换肤，不就是JS中设置图片，色值的地方改成通过桥接从原生那边获取对应的色值和图片吗？"><span class="toc-number">1.2.</span> <span class="toc-text">2.RN这边既然要支持换肤，不就是JS中设置图片，色值的地方改成通过桥接从原生那边获取对应的色值和图片吗？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-图片搞定了，还有色值呢？既然图片可以通过修改源码的形式搞定，那么色值能不能也通过修改源码的方式去搞？找到原生这边生成UIColor的方法？之前RN那部分不仅支持16进制的色值，而且还支持字符串类型的色值，例如设置’red’，RN最终会设置成真正的色值。RN是不是通过这个字符串key，去它自己的色值表去查找对应色值的呢？那么就要找到将‘red’解析成真正色值的方法。"><span class="toc-number">1.3.</span> <span class="toc-text">3.图片搞定了，还有色值呢？既然图片可以通过修改源码的形式搞定，那么色值能不能也通过修改源码的方式去搞？找到原生这边生成UIColor的方法？之前RN那部分不仅支持16进制的色值，而且还支持字符串类型的色值，例如设置’red’，RN最终会设置成真正的色值。RN是不是通过这个字符串key，去它自己的色值表去查找对应色值的呢？那么就要找到将‘red’解析成真正色值的方法。</span></a></li></ol></li></ol>
+         </div>
+   <script type="text/javascript">
+  function showToc(){
+    var toc_article = document.getElementById("toc-article");
+    var show_toc_btn = document.getElementById("show-toc-btn");
+    toc_article.setAttribute("style","display:block");
+    show_toc_btn.setAttribute("style","display:none");
+    };
+  function showBtn(){
+    var toc_article = document.getElementById("toc-article");
+    var show_toc_btn = document.getElementById("show-toc-btn");
+    toc_article.setAttribute("style","display:none");
+    show_toc_btn.setAttribute("style","display:block");
+    };
+   </script>
+      
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>因为原生这边有个换肤功能，用户下载对应的皮肤包，用户切换皮肤之后，会触发一个全局的通知，需要支持换肤的UI视图对象会注册通知这个通知监听，然后重新渲染。某一天产品跑过来说，RN的页面也要支持换肤哦。呵呵。。。</p>
+</blockquote>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><h3 id="1-先看看原生那边换肤是怎么玩的。"><a href="#1-先看看原生那边换肤是怎么玩的。" class="headerlink" title="1.先看看原生那边换肤是怎么玩的。"></a>1.先看看原生那边换肤是怎么玩的。</h3><ul>
+<li><p>点开app下载一个皮肤包。会从服务器请求一个zip压缩包。</p>
+</li>
+<li><p>解压缩打开，一份色值表配置json文件，若干替换图片。<br>看代码。大致实现是换肤库提供了很多的UIKit组件的分类，提供了相关设置色值，图片的方法。并且会去注册监听换</p>
+<p>肤通知。一般我们写业务代码的时候，都会使用那些分类所提供的支持换肤的方法。并且部分页面需要主动监听换肤通知的从而实现主动渲染。当触发换肤的时候，页面重新渲染，就会从对应的皮肤包里获取对应的图片，以及色值。从而实现的换肤。</p>
+<a id="more"></a>
+</li>
+</ul>
+<h3 id="2-RN这边既然要支持换肤，不就是JS中设置图片，色值的地方改成通过桥接从原生那边获取对应的色值和图片吗？"><a href="#2-RN这边既然要支持换肤，不就是JS中设置图片，色值的地方改成通过桥接从原生那边获取对应的色值和图片吗？" class="headerlink" title="2.RN这边既然要支持换肤，不就是JS中设置图片，色值的地方改成通过桥接从原生那边获取对应的色值和图片吗？"></a>2.RN这边既然要支持换肤，不就是JS中设置图片，色值的地方改成通过桥接从原生那边获取对应的色值和图片吗？</h3><ul>
+<li><p>色值<br>首先原生写好了一个桥接方法，传入不同的key去色值表中查找对应的16进制色值，返回给rn。rn页面在render()函数之前，调用该桥接获取色值，并且通过state保存该色值。之后在render()函数渲染的时候设置到对应的节点上就行了。好吧。是可以。后来又发现了个问题。RN中原生和JS桥接是异步执行，那么就不能保证在render()函数执行之前获取到的是真正的色值。很尴尬。这种方式好像行不通。换个思路。</p>
+</li>
+<li><p>图片<br>其实RN加载图片，是通过RCTImageLoader这个类。通过断点发现主要调用下面的那个方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-(RCTImageLoaderCancellationBlock)_loadImageOrDataWithURLRequest:(NSURLRequest *)request</span><br><span class="line">                                                             size:(CGSize)size</span><br><span class="line">                                                            scale:(CGFloat)scale</span><br><span class="line">                                                       resizeMode:(RCTResizeMode)resizeMode</span><br><span class="line">                                                    progressBlock:(RCTImageLoaderProgressBlock)progressHandler</span><br><span class="line">                                                 partialLoadBlock:(RCTImageLoaderPartialLoadBlock)partialLoadHandler</span><br><span class="line">                                                  completionBlock:(void (^)(NSError *error, id imageOrData, BOOL cacheResult, NSString *fetchDate))completionBlock &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主要的一个参数就是request。如果是网络图片就是正常的http:// 协议的链接。如果是本地图片，不管是项目image.xcassets里的图片还是mainBundle里的图片，又或者是沙盒里的图片，都会是一个file://协议的图片本地地址。好吧。替换下图片路径试试？结果可行。那么RN图片换肤就可以通过修改源码来实现。</p>
+<h3 id="3-图片搞定了，还有色值呢？既然图片可以通过修改源码的形式搞定，那么色值能不能也通过修改源码的方式去搞？找到原生这边生成UIColor的方法？之前RN那部分不仅支持16进制的色值，而且还支持字符串类型的色值，例如设置’red’，RN最终会设置成真正的色值。RN是不是通过这个字符串key，去它自己的色值表去查找对应色值的呢？那么就要找到将‘red’解析成真正色值的方法。"><a href="#3-图片搞定了，还有色值呢？既然图片可以通过修改源码的形式搞定，那么色值能不能也通过修改源码的方式去搞？找到原生这边生成UIColor的方法？之前RN那部分不仅支持16进制的色值，而且还支持字符串类型的色值，例如设置’red’，RN最终会设置成真正的色值。RN是不是通过这个字符串key，去它自己的色值表去查找对应色值的呢？那么就要找到将‘red’解析成真正色值的方法。" class="headerlink" title="3.图片搞定了，还有色值呢？既然图片可以通过修改源码的形式搞定，那么色值能不能也通过修改源码的方式去搞？找到原生这边生成UIColor的方法？之前RN那部分不仅支持16进制的色值，而且还支持字符串类型的色值，例如设置’red’，RN最终会设置成真正的色值。RN是不是通过这个字符串key，去它自己的色值表去查找对应色值的呢？那么就要找到将‘red’解析成真正色值的方法。"></a>3.图片搞定了，还有色值呢？既然图片可以通过修改源码的形式搞定，那么色值能不能也通过修改源码的方式去搞？找到原生这边生成UIColor的方法？之前RN那部分不仅支持16进制的色值，而且还支持字符串类型的色值，例如设置’red’，RN最终会设置成真正的色值。RN是不是通过这个字符串key，去它自己的色值表去查找对应色值的呢？那么就要找到将‘red’解析成真正色值的方法。</h3></li>
+<li><p>原生部分<br>找了半天，发现了RCTConvert中有个方法是用来转换颜色的。断点发现RN中的设置颜色最终都会来到该方法里转换成UIColor的对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">  + (UIColor *)UIColor:(id)json</span><br><span class="line">&#123;</span><br><span class="line">  if (!json) &#123;</span><br><span class="line">    return nil;</span><br><span class="line">  &#125;</span><br><span class="line">  if ([json isKindOfClass:[NSString class]]) &#123;</span><br><span class="line">      //去皮肤包查找色值</span><br><span class="line">      if([json isEqualToString:@&quot;ck_black&quot;]) &#123;</span><br><span class="line">          return [UIColor whiteColor];</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  if ([json isKindOfClass:[NSArray class]]) &#123;</span><br><span class="line">    NSArray *components = [self NSNumberArray:json];</span><br><span class="line">    CGFloat alpha = components.count &gt; 3 ? [self CGFloat:components[3]] : 1.0;</span><br><span class="line">    return [UIColor colorWithRed:[self CGFloat:components[0]]</span><br><span class="line">                           green:[self CGFloat:components[1]]</span><br><span class="line">                            blue:[self CGFloat:components[2]]</span><br><span class="line">                           alpha:alpha];</span><br><span class="line">  &#125; else if ([json isKindOfClass:[NSNumber class]]) &#123;</span><br><span class="line">    NSUInteger argb = [self NSUInteger:json];</span><br><span class="line">    CGFloat a = ((argb &gt;&gt; 24) &amp; 0xFF) / 255.0;</span><br><span class="line">    CGFloat r = ((argb &gt;&gt; 16) &amp; 0xFF) / 255.0;</span><br><span class="line">    CGFloat g = ((argb &gt;&gt; 8) &amp; 0xFF) / 255.0;</span><br><span class="line">    CGFloat b = (argb &amp; 0xFF) / 255.0;</span><br><span class="line">    return [UIColor colorWithRed:r green:g blue:b alpha:a];</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    RCTLogConvertError(json, @&quot;a UIColor. Did you forget to call processColor() on the JS side?&quot;);</span><br><span class="line">    return nil;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>好吧。看起来该方法里只支持从RN那边传递过来的NSArray类型和NSNumber类型的。也不支持NSString类型的啊。所以RN中通过’red’这种字符串设置颜色的解析并不是在原生这部分。所以在原生部分支持字符串类型。通过该字符串key去对应皮肤包的色值表中去查找真正的色值。</p>
+</li>
+</ul>
+<ul>
+<li><p>RN部分<br>发现node_modules/react-native/Libraries/StyleSheet/processColor.js该文件中processColor()函数是用来解析色值的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">  var Platform = require(&apos;Platform&apos;);</span><br><span class="line">  var normalizeColor = require(&apos;normalizeColor&apos;);</span><br><span class="line">/* eslint no-bitwise: 0 */</span><br><span class="line">function processColor(color) &#123;</span><br><span class="line">  if (color === undefined || color === null) &#123;</span><br><span class="line">    return color;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  var int32Color = normalizeColor(color);</span><br><span class="line">  if (int32Color === null) &#123;</span><br><span class="line">    return undefined;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  if(typeof int32Color === &apos;string&apos;) &#123;</span><br><span class="line">    return int32Color;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // Converts 0xrrggbbaa into 0xaarrggbb</span><br><span class="line">  int32Color = (int32Color &lt;&lt; 24 | int32Color &gt;&gt;&gt; 8) &gt;&gt;&gt; 0;</span><br><span class="line"></span><br><span class="line">  if (Platform.OS === &apos;android&apos;) &#123;</span><br><span class="line">    // Android use 32 bit *signed* integer to represent the color</span><br><span class="line">    // We utilize the fact that bitwise operations in JS also operates on</span><br><span class="line">    // signed 32 bit integers, so that we can use those to convert from</span><br><span class="line">    // *unsigned* to *signed* 32bit int that way.</span><br><span class="line">    int32Color = int32Color | 0x0;</span><br><span class="line">  &#125;</span><br><span class="line">  return int32Color;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在该方法中，RN会去查找类似’red’这样的色值，并且返回为一个32位int类型。如果没找到对应色值，它会强转为一个0x0的色值。所以我们在它查找完之后，强转之前，如果没找到，直接将字符串类型的变量返回出去，这样原生也就能接受到一个字符串类型的key了。</p>
+</li>
+</ul>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/09/18/rn-03/" class="archive-article-date">
+  	<time datetime="2016-09-18T02:25:29.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-09-18</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React-Native/">React Native</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/iOS/">iOS</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2017/11/22/VPS_02_03/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          VPS搭建个人博客/相册教程03_zing-gallery个人相册配置
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/09/11/rn-02/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">React Native 02：原生容器类封装</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 Rui
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/"
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/React-Native/" style="font-size: 20px;">React Native</a> <a href="/tags/VPS/" style="font-size: 10px;">VPS</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/教程/" style="font-size: 20px;">教程</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Litten，&lt;br&gt;毕业于华科，就职于鹅厂&lt;br&gt;&lt;br&gt;热爱大海与冷笑话，&lt;br/&gt;目前是一枚前端&lt;br/&gt;&lt;br/&gt;胆小认生，不易相处，&lt;br&gt;年轻无为，卖马为生。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

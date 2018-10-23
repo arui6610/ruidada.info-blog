@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>React Native 02：原生容器类封装 | Rui&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="RN中的JS部分的页面组件最终是在原生这边生成一个RCTRootView类的实例，且RN是在view层做的页面生命周期管理。好像不适合以单页面的形式接入到项目中，所以RN能不能像WebView那样的方式来使用？组件渲染有delegate回调给native？并且可以通过url来请求对应RN页面资源文件并且加载RN页面？能不能提供自动重新渲染页面的方法给原生调用？….  思路1.继承RCTRootV">
+<meta name="keywords" content="React Native">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Native 02：原生容器类封装">
+<meta property="og:url" content="//ruidada.info/2016/09/11/rn-02/index.html">
+<meta property="og:site_name" content="Rui&#39;s Blog">
+<meta property="og:description" content="RN中的JS部分的页面组件最终是在原生这边生成一个RCTRootView类的实例，且RN是在view层做的页面生命周期管理。好像不适合以单页面的形式接入到项目中，所以RN能不能像WebView那样的方式来使用？组件渲染有delegate回调给native？并且可以通过url来请求对应RN页面资源文件并且加载RN页面？能不能提供自动重新渲染页面的方法给原生调用？….  思路1.继承RCTRootV">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-10-18T07:09:10.950Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React Native 02：原生容器类封装">
+<meta name="twitter:description" content="RN中的JS部分的页面组件最终是在原生这边生成一个RCTRootView类的实例，且RN是在view层做的页面生命周期管理。好像不适合以单页面的形式接入到项目中，所以RN能不能像WebView那样的方式来使用？组件渲染有delegate回调给native？并且可以通过url来请求对应RN页面资源文件并且加载RN页面？能不能提供自动重新渲染页面的方法给原生调用？….  思路1.继承RCTRootV">
+  
+    <link rel="alternative" href="/atom.xml" title="Rui&#39;s Blog" type="application/atom+xml">
+  
+  
+  <script src="/style.js"></script>
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/rui.JPG" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Rui</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">首页</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
+	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/galery">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">Articles</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">Tags</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">About Me</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="mail" target="_blank" href="#" title="mail">mail</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">Rui</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/rui.JPG" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Rui</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">首页</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/archives">归档</a></li>
+		        
+					<li><a href="/tags">标签</a></li>
+		        
+					<li><a href="/galery">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="#" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-rn-02" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      React Native 02：原生容器类封装
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+    <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
+          <span class="btn-bg"></span>
+          <span class="btn-text">文章导航</span>
+          </p>
+  <div id="toc-article" class="toc-article">
+      <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
+    <strong class="toc-title">文章目录</strong>
+           <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#思路"><span class="toc-number">1.</span> <span class="toc-text">思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-继承RCTRootView"><span class="toc-number">1.1.</span> <span class="toc-text">1.继承RCTRootView</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-数据通信"><span class="toc-number">1.2.</span> <span class="toc-text">2.数据通信</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-容器需要监听RN组件生命周期事件"><span class="toc-number">1.3.</span> <span class="toc-text">3.容器需要监听RN组件生命周期事件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码"><span class="toc-number">2.</span> <span class="toc-text">代码</span></a></li></ol>
+         </div>
+   <script type="text/javascript">
+  function showToc(){
+    var toc_article = document.getElementById("toc-article");
+    var show_toc_btn = document.getElementById("show-toc-btn");
+    toc_article.setAttribute("style","display:block");
+    show_toc_btn.setAttribute("style","display:none");
+    };
+  function showBtn(){
+    var toc_article = document.getElementById("toc-article");
+    var show_toc_btn = document.getElementById("show-toc-btn");
+    toc_article.setAttribute("style","display:none");
+    show_toc_btn.setAttribute("style","display:block");
+    };
+   </script>
+      
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>RN中的JS部分的页面组件最终是在原生这边生成一个RCTRootView类的实例，且RN是在view层做的页面生命周期管理。好像不适合以单页面的形式接入到项目中，所以RN能不能像WebView那样的方式来使用？组件渲染有delegate回调给native？并且可以通过url来请求对应RN页面资源文件并且加载RN页面？能不能提供自动重新渲染页面的方法给原生调用？….</p>
+</blockquote>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><h3 id="1-继承RCTRootView"><a href="#1-继承RCTRootView" class="headerlink" title="1.继承RCTRootView"></a>1.继承RCTRootView</h3><h3 id="2-数据通信"><a href="#2-数据通信" class="headerlink" title="2.数据通信"></a>2.数据通信</h3><p><strong>1.容器–&gt;RN（RN页面要用的参数:如请求参数，埋点，自定义等等）</strong><br><a id="more"></a></p>
+<ul>
+<li>初始化RN页面<br>  容器内部初始化RN页面的时候允许传一个字典类型的自定义参数，它会在组件里根据key-value生成一些默认的props。RN也就可以通过this.props[key]这种形式获取。 </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// iOS</span><br><span class="line">IMYRNView *rootView = [[IMYRNView alloc] initWithModuleName:@&quot;index.ios&quot; bundleName:@&quot;TestPage&quot; initialProperties:@&#123;@&quot;arg&quot;:@&quot;参数&quot;&#125; componentDelegate:self];</span><br><span class="line">// RN</span><br><span class="line">componentDidMount()&#123;</span><br><span class="line">       alert(&apos;arg&apos;+this.props.arg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>容器刷新RN页面方法         </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">   // iOS</span><br><span class="line">- (void)reloadPage &#123;</span><br><span class="line">  [self reloadPageWithProperties:nil];</span><br><span class="line">&#125;</span><br><span class="line">    - (void)reloadPageWithProperties:(NSDictionary *)params &#123;</span><br><span class="line">  [self.bridge.eventDispatcher sendAppEventWithName:@&quot;reloadPageEvent&quot;</span><br><span class="line">                                               body:params];</span><br><span class="line">&#125;</span><br><span class="line">  //RN</span><br><span class="line">  componentDidMount()&#123;</span><br><span class="line">	    RNView.bridge_componentDidMount()&#123;</span><br><span class="line">		    /*</span><br><span class="line">			  基础组件需要实现</span><br><span class="line">			  Native手动刷新RN页面，监听事件名称，实现函数</span><br><span class="line">		    */		    		DeviceEventEmitter.addListener(&apos;bridge_reloadPage&apos;,this.reloadPage.bind(this));</span><br><span class="line">	    &#125;</span><br><span class="line">&#125;</span><br><span class="line">reloadPage(args) &#123;</span><br><span class="line">	    alert(args.arg1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>2.RN-&gt;容器（桥接）</strong></p>
+<p><strong>3.RN-&gt;RN（RN-&gt;容器-&gt;RN)</strong></p>
+<p><strong>4.容器–&gt;容器（直接传就行）</strong></p>
+<h3 id="3-容器需要监听RN组件生命周期事件"><a href="#3-容器需要监听RN组件生命周期事件" class="headerlink" title="3.容器需要监听RN组件生命周期事件"></a>3.容器需要监听RN组件生命周期事件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">// iOS</span><br><span class="line">#pragma mark - RN生命周期回调</span><br><span class="line">RCT_EXPORT_METHOD(bridge_componentWillMount)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    [NSObject imy_asyncMainBlock:^&#123;</span><br><span class="line">        IMYRNView *view = (IMYRNView *)[[UIViewController imy_currentViewControlloer] view];</span><br><span class="line">        if ([view.componentDelegate respondsToSelector:@selector(componentWillMount:)]) &#123;</span><br><span class="line">            [view.componentDelegate componentWillMount:view];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br><span class="line">RCT_EXPORT_METHOD(bridge_componentDidMount)</span><br><span class="line">&#123;</span><br><span class="line">    [NSObject imy_asyncMainBlock:^&#123;</span><br><span class="line">        IMYRNView *view = (IMYRNView *)[[UIViewController imy_currentViewControlloer] view];</span><br><span class="line">        if ([view.componentDelegate respondsToSelector:@selector(componentDidMount:)]) &#123;</span><br><span class="line">            [view.componentDelegate componentDidMount:view];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br><span class="line">// RN</span><br><span class="line">componentDidMount()&#123;</span><br><span class="line">	RNView.bridge_componentDidMount()&#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>IMYRNView.h<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;RCTRootView.h&quot;</span><br><span class="line">#import &quot;RCTBridgeModule.h&quot;</span><br><span class="line">#import &quot;RCTLog.h&quot;</span><br><span class="line"></span><br><span class="line">@protocol RNViewComponentDelegate &lt;NSObject&gt;</span><br><span class="line"></span><br><span class="line">@optional</span><br><span class="line">- (void)componentWillMount:(RCTRootView *)rootView;</span><br><span class="line">- (void)componentDidMount:(RCTRootView *)rootView;</span><br><span class="line"></span><br><span class="line">- (void)rootView:(RCTRootView *)rootView componentWillReceiveProps:(id)nextProps;</span><br><span class="line">- (BOOL)rootView:(RCTRootView *)rootView shouldComponentUpdateNextProps:(id)nextProps nextState:(id)nextState;</span><br><span class="line">- (void)rootView:(RCTRootView *)rootView componentWillUpdateNextProps:(id)nextProps nextState:(id)nextState;</span><br><span class="line">- (void)rootView:(RCTRootView *)rootView componentDidUpdateNextProps:(id)nextProps nextState:(id)nextState;</span><br><span class="line">- (void)componentWillUnmount:(RCTRootView *)rootView;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@interface IMYRNView : RCTRootView&lt;RCTBridgeModule&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- (instancetype)initWithModuleName:(NSString *)moduleName;</span><br><span class="line"></span><br><span class="line">- (instancetype)initWithModuleName:(NSString *)moduleName bundleName:(NSString *)bundleName;</span><br><span class="line"></span><br><span class="line">- (instancetype)initWithModuleName:(NSString *)moduleName bundleName:(NSString *)bundleName initialProperties:(NSDictionary *)params;</span><br><span class="line"></span><br><span class="line">- (instancetype)initWithModuleName:(NSString *)moduleName bundleName:(NSString *)bundleName initialProperties:(NSDictionary *)params componentDelegate:(id&lt;RNViewComponentDelegate&gt;)componentDelegate;</span><br><span class="line"></span><br><span class="line">@property(nonatomic,weak) id&lt;RNViewComponentDelegate&gt; componentDelegate;</span><br><span class="line"></span><br><span class="line">///刷新</span><br><span class="line">- (void)reloadPage;</span><br><span class="line">- (void)reloadPageWithProperties:(NSDictionary *)params;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure></p>
+<p>IMYRNViewController.h<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;IMYPublic.h&gt;</span><br><span class="line"></span><br><span class="line">@class IMYRNView;</span><br><span class="line">@interface IMYRNViewController : IMYPublicBaseViewController</span><br><span class="line"></span><br><span class="line">@property(nonatomic,copy)NSString *navTitle;</span><br><span class="line">@property(nonatomic,copy)NSString *bundleName;</span><br><span class="line">@property(nonatomic,copy)NSString *moduleName;</span><br><span class="line">@property(nonatomic,strong)NSDictionary *initialProperties;/**&lt; RN要用的参数:请求参数，埋点，自定义... */</span><br><span class="line">@property(nonatomic,assign)BOOL isNeedReloadPage;</span><br><span class="line">@property(nonatomic,strong,readonly)IMYRNView *rnView;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/09/11/rn-02/" class="archive-article-date">
+  	<time datetime="2016-09-11T08:15:20.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-09-11</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React-Native/">React Native</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/iOS/">iOS</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/09/18/rn-03/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          React Native 03：换肤支持
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/05/10/iOS-03/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Main函数之前的那些事儿02：App启动速度优化</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 Rui
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/"
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/React-Native/" style="font-size: 20px;">React Native</a> <a href="/tags/VPS/" style="font-size: 10px;">VPS</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/教程/" style="font-size: 20px;">教程</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Litten，&lt;br&gt;毕业于华科，就职于鹅厂&lt;br&gt;&lt;br&gt;热爱大海与冷笑话，&lt;br/&gt;目前是一枚前端&lt;br/&gt;&lt;br/&gt;胆小认生，不易相处，&lt;br&gt;年轻无为，卖马为生。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

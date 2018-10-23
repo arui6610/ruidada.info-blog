@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Rui&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Rui&apos;s blog">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Rui&#39;s Blog">
+<meta property="og:url" content="//ruidada.info/index.html">
+<meta property="og:site_name" content="Rui&#39;s Blog">
+<meta property="og:description" content="Rui&apos;s blog">
+<meta property="og:locale" content="default">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rui&#39;s Blog">
+<meta name="twitter:description" content="Rui&apos;s blog">
+  
+    <link rel="alternative" href="/atom.xml" title="Rui&#39;s Blog" type="application/atom+xml">
+  
+  
+  <script src="/style.js"></script>
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/rui.JPG" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Rui</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">首页</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
+	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/galery">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">Articles</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">Tags</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">About Me</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="mail" target="_blank" href="#" title="mail">mail</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">Rui</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/rui.JPG" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Rui</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">首页</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/archives">归档</a></li>
+		        
+					<li><a href="/tags">标签</a></li>
+		        
+					<li><a href="/galery">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="#" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        
+  
+    <article id="post-MacOS+GitLab+Jenkins构建iOS自动化打包平台教程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/03/MacOS+GitLab+Jenkins构建iOS自动化打包平台教程/">MacOS+GitLab+Jenkins构建iOS自动化打包平台教程</a>
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、Jenkins"><a href="#一、Jenkins" class="headerlink" title="一、Jenkins"></a>一、Jenkins</h2><blockquote>
+<p>Jenkins是一个Java项目，依赖于Java环境。在命令行中输入java -version，如果安装过就会出现对应的Java版本。没有则进入<a href="https://link.jianshu.com/?t=http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="noopener">JavaSDK官网</a>下载安装。</p>
+</blockquote>
+<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><blockquote>
+<p>Jenkins安装方式有好几种，建议使用homebrew方式来进行安装Jenkins。因为用dmg方式安装的Jenkins默认会生成一个Shared的jenkins用户，且安装路径为/Users/xx/Shared。</p>
+</blockquote>
+        <p class="article-more-link">
+          <a  href="/2017/12/03/MacOS+GitLab+Jenkins构建iOS自动化打包平台教程/#more">more >></a>
+        </p>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2017/12/03/MacOS+GitLab+Jenkins构建iOS自动化打包平台教程/" class="archive-article-date">
+  	<time datetime="2017-12-03T15:45:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2017-12-03</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jenkins/">Jenkins</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/教程/">教程</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/运动/">运动</a><a class="article-category-link" href="/categories/运动/球类运动/">球类运动</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="[layout]-VPS_02_03" class="article article-type-[layout]" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/22/VPS_02_03/">VPS搭建个人博客/相册教程03_zing-gallery个人相册配置</a>
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>zing-gallery是github上一个基于node.js开源的web相册，完美适配了移动设备。</p>
+</blockquote>
+<hr>
+<h2 id="1、clone-zing-gallery到本地，修改远程仓库地址为自己的服务器上gallery仓库地址，push代码"><a href="#1、clone-zing-gallery到本地，修改远程仓库地址为自己的服务器上gallery仓库地址，push代码" class="headerlink" title="1、clone zing-gallery到本地，修改远程仓库地址为自己的服务器上gallery仓库地址，push代码"></a>1、clone <a href="https://github.com/litten/zing-gallery.git" target="_blank" rel="noopener">zing-gallery</a>到本地，修改远程仓库地址为自己的服务器上gallery仓库地址，push代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. # git clone https://github.com/litten/zing-gallery.git</span><br><span class="line">2. # git remote rm origin </span><br><span class="line">3. # git remote add origin git@xx.xx.xx.xx:repo/gallery.git # 修改远程仓库地址为自己服务器上创建的git仓库</span><br><span class="line">4. # git remote -v # 查看远程仓库地址</span><br><span class="line">5. # git add .</span><br><span class="line">6. # git commit</span><br><span class="line">7. # git push</span><br></pre></td></tr></table></figure>
+        <p class="article-more-link">
+          <a  href="/2017/11/22/VPS_02_03/#more">more >></a>
+        </p>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2017/11/22/VPS_02_03/" class="archive-article-date">
+  	<time datetime="2017-11-22T10:40:51.000Z" itemprop="datePublished"><i class="icon-clock"></i>2017-11-22</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/教程/">教程</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/教程/">教程</a><a class="article-category-link" href="/categories/教程/VPS/">VPS</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-rn-03" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/18/rn-03/">React Native 03：换肤支持</a>
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>因为原生这边有个换肤功能，用户下载对应的皮肤包，用户切换皮肤之后，会触发一个全局的通知，需要支持换肤的UI视图对象会注册通知这个通知监听，然后重新渲染。某一天产品跑过来说，RN的页面也要支持换肤哦。呵呵。。。</p>
+</blockquote>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><h3 id="1-先看看原生那边换肤是怎么玩的。"><a href="#1-先看看原生那边换肤是怎么玩的。" class="headerlink" title="1.先看看原生那边换肤是怎么玩的。"></a>1.先看看原生那边换肤是怎么玩的。</h3><ul>
+<li><p>点开app下载一个皮肤包。会从服务器请求一个zip压缩包。</p>
+</li>
+<li><p>解压缩打开，一份色值表配置json文件，若干替换图片。<br>看代码。大致实现是换肤库提供了很多的UIKit组件的分类，提供了相关设置色值，图片的方法。并且会去注册监听换</p>
+<p>肤通知。一般我们写业务代码的时候，都会使用那些分类所提供的支持换肤的方法。并且部分页面需要主动监听换肤通知的从而实现主动渲染。当触发换肤的时候，页面重新渲染，就会从对应的皮肤包里获取对应的图片，以及色值。从而实现的换肤。</p>
+        <p class="article-more-link">
+          <a  href="/2016/09/18/rn-03/#more">more >></a>
+        </p>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/09/18/rn-03/" class="archive-article-date">
+  	<time datetime="2016-09-18T02:25:29.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-09-18</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React-Native/">React Native</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/iOS/">iOS</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-rn-02" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/11/rn-02/">React Native 02：原生容器类封装</a>
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>RN中的JS部分的页面组件最终是在原生这边生成一个RCTRootView类的实例，且RN是在view层做的页面生命周期管理。好像不适合以单页面的形式接入到项目中，所以RN能不能像WebView那样的方式来使用？组件渲染有delegate回调给native？并且可以通过url来请求对应RN页面资源文件并且加载RN页面？能不能提供自动重新渲染页面的方法给原生调用？….</p>
+</blockquote>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><h3 id="1-继承RCTRootView"><a href="#1-继承RCTRootView" class="headerlink" title="1.继承RCTRootView"></a>1.继承RCTRootView</h3><h3 id="2-数据通信"><a href="#2-数据通信" class="headerlink" title="2.数据通信"></a>2.数据通信</h3><p><strong>1.容器–&gt;RN（RN页面要用的参数:如请求参数，埋点，自定义等等）</strong><br>
+        <p class="article-more-link">
+          <a  href="/2016/09/11/rn-02/#more">more >></a>
+        </p>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/09/11/rn-02/" class="archive-article-date">
+  	<time datetime="2016-09-11T08:15:20.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-09-11</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React-Native/">React Native</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/iOS/">iOS</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-iOS-03" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/10/iOS-03/">Main函数之前的那些事儿02：App启动速度优化</a>
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p><strong>公式：App总启动时间 = main()函数之前的加载时间 + main()之后的加载时间</strong></p>
+<ul>
+<li>main()之前的加载时间：dylib链接动态库的时间+自身App可执行文件的加载时间</li>
+<li>main()之后的加载时间：main方法执行之后到AppDelegate的didFinishLaunchingWithOptions方法执行结束前这段时间，主要是构建第一个界面，并完成渲染展示。</li>
+</ul>
+</blockquote>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>尽量别在+load方法里搞事情，且对实现了+load()方法的类进行分析，尽量将load里的代码延后调用。</p>
+<h3 id="load优化思路"><a href="#load优化思路" class="headerlink" title="+load优化思路"></a><strong>+load优化思路</strong></h3>
+        <p class="article-more-link">
+          <a  href="/2016/05/10/iOS-03/#more">more >></a>
+        </p>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/05/10/iOS-03/" class="archive-article-date">
+  	<time datetime="2016-05-10T05:36:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-05-10</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/运动/">运动</a><a class="article-category-link" href="/categories/运动/球类运动/">球类运动</a><a class="article-category-link" href="/categories/运动/球类运动/网球/">网球</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 Rui
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: true,
+		isPost: false,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/"
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/React-Native/" style="font-size: 20px;">React Native</a> <a href="/tags/VPS/" style="font-size: 10px;">VPS</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/教程/" style="font-size: 20px;">教程</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Litten，&lt;br&gt;毕业于华科，就职于鹅厂&lt;br&gt;&lt;br&gt;热爱大海与冷笑话，&lt;br/&gt;目前是一枚前端&lt;br/&gt;&lt;br/&gt;胆小认生，不易相处，&lt;br&gt;年轻无为，卖马为生。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Main函数之前的那些事儿02：App启动速度优化 | Rui&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="公式：App总启动时间 = main()函数之前的加载时间 + main()之后的加载时间  main()之前的加载时间：dylib链接动态库的时间+自身App可执行文件的加载时间 main()之后的加载时间：main方法执行之后到AppDelegate的didFinishLaunchingWithOptions方法执行结束前这段时间，主要是构建第一个界面，并完成渲染展示。   分析尽量别在+l">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Main函数之前的那些事儿02：App启动速度优化">
+<meta property="og:url" content="//ruidada.info/2016/05/10/iOS-03/index.html">
+<meta property="og:site_name" content="Rui&#39;s Blog">
+<meta property="og:description" content="公式：App总启动时间 = main()函数之前的加载时间 + main()之后的加载时间  main()之前的加载时间：dylib链接动态库的时间+自身App可执行文件的加载时间 main()之后的加载时间：main方法执行之后到AppDelegate的didFinishLaunchingWithOptions方法执行结束前这段时间，主要是构建第一个界面，并完成渲染展示。   分析尽量别在+l">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-10-18T08:04:52.356Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Main函数之前的那些事儿02：App启动速度优化">
+<meta name="twitter:description" content="公式：App总启动时间 = main()函数之前的加载时间 + main()之后的加载时间  main()之前的加载时间：dylib链接动态库的时间+自身App可执行文件的加载时间 main()之后的加载时间：main方法执行之后到AppDelegate的didFinishLaunchingWithOptions方法执行结束前这段时间，主要是构建第一个界面，并完成渲染展示。   分析尽量别在+l">
+  
+    <link rel="alternative" href="/atom.xml" title="Rui&#39;s Blog" type="application/atom+xml">
+  
+  
+  <script src="/style.js"></script>
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/rui.JPG" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Rui</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">首页</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
+	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/galery">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">Articles</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">Tags</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">About Me</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="mail" target="_blank" href="#" title="mail">mail</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">Rui</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/rui.JPG" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Rui</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">首页</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/archives">归档</a></li>
+		        
+					<li><a href="/tags">标签</a></li>
+		        
+					<li><a href="/galery">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="#" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-iOS-03" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Main函数之前的那些事儿02：App启动速度优化
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+    <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
+          <span class="btn-bg"></span>
+          <span class="btn-text">文章导航</span>
+          </p>
+  <div id="toc-article" class="toc-article">
+      <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
+    <strong class="toc-title">文章目录</strong>
+           <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#分析"><span class="toc-number">1.</span> <span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#load优化思路"><span class="toc-number">1.1.</span> <span class="toc-text">+load优化思路</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#demo"><span class="toc-number">2.</span> <span class="toc-text">demo</span></a></li></ol>
+         </div>
+   <script type="text/javascript">
+  function showToc(){
+    var toc_article = document.getElementById("toc-article");
+    var show_toc_btn = document.getElementById("show-toc-btn");
+    toc_article.setAttribute("style","display:block");
+    show_toc_btn.setAttribute("style","display:none");
+    };
+  function showBtn(){
+    var toc_article = document.getElementById("toc-article");
+    var show_toc_btn = document.getElementById("show-toc-btn");
+    toc_article.setAttribute("style","display:none");
+    show_toc_btn.setAttribute("style","display:block");
+    };
+   </script>
+      
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p><strong>公式：App总启动时间 = main()函数之前的加载时间 + main()之后的加载时间</strong></p>
+<ul>
+<li>main()之前的加载时间：dylib链接动态库的时间+自身App可执行文件的加载时间</li>
+<li>main()之后的加载时间：main方法执行之后到AppDelegate的didFinishLaunchingWithOptions方法执行结束前这段时间，主要是构建第一个界面，并完成渲染展示。</li>
+</ul>
+</blockquote>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>尽量别在+load方法里搞事情，且对实现了+load()方法的类进行分析，尽量将load里的代码延后调用。</p>
+<h3 id="load优化思路"><a href="#load优化思路" class="headerlink" title="+load优化思路"></a><strong>+load优化思路</strong></h3><a id="more"></a>
+<ul>
+<li>在load方法中需要执行的代码通过block的方式添加进一个全局的数组中，然后在对应的时刻，执行该block。</li>
+<li>加载时机（分为3个时刻）<ol>
+<li>系统调用完所有class的load方法之后，且在main函数执行之前。（<strong>attribute</strong>((constructor))）</li>
+<li>程序didFinishLaunch。（UIApplicationDidBecomeActiveNotification通知）</li>
+<li>程序didFinishLaunch之后。（在2之后延迟5s）</li>
+</ol>
+</li>
+<li>结合GCD实现同步异步执行<br>有些代码需要在主线程同步执行，有的则可以异步去执行。（提供2种类型的接口）</li>
+<li>优先级问题<br>同步执行的过程中，有的class的load方法要在其他的class的load方法之前去执行，就需要一个优先级控制。（通过参数，数组排序实现）</li>
+</ul>
+<h2 id="demo"><a href="#demo" class="headerlink" title="demo"></a><strong>demo</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">//</span><br><span class="line">//  XRLoadManager.h</span><br><span class="line">//  xr_load</span><br><span class="line">//</span><br><span class="line">//  Created by ARui on 2017/4/19.</span><br><span class="line">//  Copyright © 2017年 XR. All rights reserved.</span><br><span class="line">//</span><br><span class="line"></span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">typedef NS_ENUM(NSUInteger, LoadAt) &#123;</span><br><span class="line">    /**</span><br><span class="line">     *  准备执行main函数，优先级最高</span><br><span class="line">     */</span><br><span class="line">    LoadAtPreMain = 0,</span><br><span class="line">    /**</span><br><span class="line">     *  应用进入活跃状态, 在PreMain之后</span><br><span class="line">     */</span><br><span class="line">    LoadAtAppLaunched,</span><br><span class="line">    /**</span><br><span class="line">     *  遥远的时间, 大致在 becomeActive 执行完后 5s</span><br><span class="line">     */</span><br><span class="line">    LoadAtIdleTime,</span><br><span class="line">    </span><br><span class="line">    /////</span><br><span class="line">    LoadAtN</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">@interface XRLoadManager : NSObject</span><br><span class="line"></span><br><span class="line">+ (void)load_async:(LoadAt)at block:(void(^)(void))block;</span><br><span class="line">+ (void)load_main:(LoadAt)at block:(void(^)(void))block;</span><br><span class="line">+ (void)load_main:(LoadAt)at sort:(NSInteger)sort block:(void(^)(void))block;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br></pre></td><td class="code"><pre><span class="line">//</span><br><span class="line">//  XRLoadManager.m</span><br><span class="line">//  xr_load</span><br><span class="line">//</span><br><span class="line">//  Created by ARui on 2017/4/19.</span><br><span class="line">//  Copyright © 2017年 XR. All rights reserved.</span><br><span class="line">//</span><br><span class="line"></span><br><span class="line">#import &quot;XRLoadManager.h&quot;</span><br><span class="line">#import &lt;UIKit/UIKit.h&gt;</span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface _XRLoadObject : NSObject</span><br><span class="line">@property (nonatomic, assign) LoadAt at;</span><br><span class="line">@property (nonatomic, assign) NSInteger sort;</span><br><span class="line">@property (nonatomic, assign) BOOL mainThread;</span><br><span class="line">@property (nonatomic, copy) void (^block) (void);</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation _XRLoadObject</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation XRLoadManager</span><br><span class="line">static NSMutableArray *loadables[LoadAtN];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">+ (void)load_init &#123;</span><br><span class="line">    static dispatch_once_t once;</span><br><span class="line">    dispatch_once(&amp;once, ^&#123;</span><br><span class="line">        for (int i = 0; i &lt; LoadAtN; i++) &#123;</span><br><span class="line">            loadables[i] = [NSMutableArray array];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAppLaunched:) name:UIApplicationDidBecomeActiveNotification object:nil];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (void)load_deInit &#123;</span><br><span class="line">    for (int i = 0; i &lt; LoadAtN; i++) &#123;</span><br><span class="line">        NSMutableArray *array = loadables[i];</span><br><span class="line">        [array removeAllObjects];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (void)handleAppLaunched:(NSNotification *)note &#123;</span><br><span class="line">    [[NSNotificationCenter defaultCenter] removeObserver:self];</span><br><span class="line">    </span><br><span class="line">    [self run_launched];</span><br><span class="line">    </span><br><span class="line">    // run idle</span><br><span class="line">    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_global_queue(0, 0), ^&#123;</span><br><span class="line">        [self run_idleTime];</span><br><span class="line">        [self load_deInit];</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (void)load_async:(LoadAt)at block:(void(^)(void))block &#123;</span><br><span class="line">    [self load_some:at sort:100 mainthread:NO block:block];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (void)load_main:(LoadAt)at block:(void(^)(void))block &#123;</span><br><span class="line">    [self load_some:at sort:100 mainthread:YES block:block];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (void)load_main:(LoadAt)at sort:(NSInteger)sort block:(void(^)(void))block &#123;</span><br><span class="line">    [self load_some:at sort:sort mainthread:YES block:block];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (void)load_some:(LoadAt)at sort:(NSInteger)sort mainthread:(BOOL)mainthread block:(void(^)(void))block &#123;</span><br><span class="line">    assert(block);</span><br><span class="line">    _XRLoadObject *obj = [[_XRLoadObject alloc] init];</span><br><span class="line">    obj.at = at;</span><br><span class="line">    obj.sort = sort;</span><br><span class="line">    obj.mainThread = mainthread;</span><br><span class="line">    obj.block = block;</span><br><span class="line">    [self load_init];</span><br><span class="line">    [loadables[at] addObject:obj];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (void)run_preMain &#123;</span><br><span class="line">    [self run_block_array:LoadAtPreMain];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (void)run_launched &#123;</span><br><span class="line">    [self run_block_array:LoadAtAppLaunched];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (void)run_idleTime &#123;</span><br><span class="line">    [self run_block_array:LoadAtIdleTime];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (void)run_block_array:(LoadAt)at &#123;</span><br><span class="line">    </span><br><span class="line">    void(^sortLoadBlock)(NSMutableArray *array) = ^(NSMutableArray *array) &#123;</span><br><span class="line">        [array sortUsingComparator:^NSComparisonResult(_XRLoadObject* _Nonnull obj1, _XRLoadObject* _Nonnull obj2) &#123;</span><br><span class="line">            if (!obj1.mainThread &amp;&amp; obj2.mainThread) &#123;</span><br><span class="line">                return NSOrderedDescending;</span><br><span class="line">            &#125;</span><br><span class="line">            if (obj1.mainThread &amp;&amp; !obj2.mainThread) &#123;</span><br><span class="line">                return NSOrderedAscending;</span><br><span class="line">            &#125;</span><br><span class="line">            if (obj1.sort &gt; obj2.sort) &#123;</span><br><span class="line">                return NSOrderedDescending;</span><br><span class="line">            &#125;</span><br><span class="line">            if (obj1.sort == obj2.sort) &#123;</span><br><span class="line">                return NSOrderedSame;</span><br><span class="line">            &#125;</span><br><span class="line">            return NSOrderedAscending;</span><br><span class="line">        &#125;];</span><br><span class="line">        for (_XRLoadObject *obj in array) &#123;</span><br><span class="line">            if (obj.mainThread) &#123;</span><br><span class="line">                if ([NSThread isMainThread]) &#123;</span><br><span class="line">                    obj.block();</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    dispatch_async(dispatch_get_main_queue(), obj.block);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                dispatch_async(dispatch_get_global_queue(0, 0), obj.block);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    if (at == LoadAtPreMain) &#123;</span><br><span class="line">        sortLoadBlock(loadables[LoadAtPreMain]);</span><br><span class="line">    &#125;else if (at == LoadAtAppLaunched) &#123;</span><br><span class="line">        sortLoadBlock(loadables[LoadAtAppLaunched]);</span><br><span class="line">    &#125;else if (at == LoadAtIdleTime) &#123;</span><br><span class="line">        sortLoadBlock(loadables[LoadAtIdleTime]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">__attribute__((constructor))</span><br><span class="line">static void initlize(void) &#123;</span><br><span class="line">    [XRLoadManager run_preMain];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/05/10/iOS-03/" class="archive-article-date">
+  	<time datetime="2016-05-10T05:36:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-05-10</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/运动/">运动</a><a class="article-category-link" href="/categories/运动/球类运动/">球类运动</a><a class="article-category-link" href="/categories/运动/球类运动/网球/">网球</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/09/11/rn-02/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          React Native 02：原生容器类封装
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 Rui
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/"
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/React-Native/" style="font-size: 20px;">React Native</a> <a href="/tags/VPS/" style="font-size: 10px;">VPS</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/教程/" style="font-size: 20px;">教程</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Litten，&lt;br&gt;毕业于华科，就职于鹅厂&lt;br&gt;&lt;br&gt;热爱大海与冷笑话，&lt;br/&gt;目前是一枚前端&lt;br/&gt;&lt;br/&gt;胆小认生，不易相处，&lt;br&gt;年轻无为，卖马为生。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>MacOS+GitLab+Jenkins构建iOS自动化打包平台教程 | Rui&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、Jenkins Jenkins是一个Java项目，依赖于Java环境。在命令行中输入java -version，如果安装过就会出现对应的Java版本。没有则进入JavaSDK官网下载安装。  1. 安装 Jenkins安装方式有好几种，建议使用homebrew方式来进行安装Jenkins。因为用dmg方式安装的Jenkins默认会生成一个Shared的jenkins用户，且安装路径为/User">
+<meta name="keywords" content="教程,Jenkins">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MacOS+GitLab+Jenkins构建iOS自动化打包平台教程">
+<meta property="og:url" content="//ruidada.info/2017/12/03/MacOS+GitLab+Jenkins构建iOS自动化打包平台教程/index.html">
+<meta property="og:site_name" content="Rui&#39;s Blog">
+<meta property="og:description" content="一、Jenkins Jenkins是一个Java项目，依赖于Java环境。在命令行中输入java -version，如果安装过就会出现对应的Java版本。没有则进入JavaSDK官网下载安装。  1. 安装 Jenkins安装方式有好几种，建议使用homebrew方式来进行安装Jenkins。因为用dmg方式安装的Jenkins默认会生成一个Shared的jenkins用户，且安装路径为/User">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-10-18T07:44:14.585Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MacOS+GitLab+Jenkins构建iOS自动化打包平台教程">
+<meta name="twitter:description" content="一、Jenkins Jenkins是一个Java项目，依赖于Java环境。在命令行中输入java -version，如果安装过就会出现对应的Java版本。没有则进入JavaSDK官网下载安装。  1. 安装 Jenkins安装方式有好几种，建议使用homebrew方式来进行安装Jenkins。因为用dmg方式安装的Jenkins默认会生成一个Shared的jenkins用户，且安装路径为/User">
+  
+    <link rel="alternative" href="/atom.xml" title="Rui&#39;s Blog" type="application/atom+xml">
+  
+  
+  <script src="/style.js"></script>
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/rui.JPG" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Rui</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">首页</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
+	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/galery">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">Articles</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">Tags</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">About Me</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="mail" target="_blank" href="#" title="mail">mail</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">Rui</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/rui.JPG" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Rui</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">首页</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/archives">归档</a></li>
+		        
+					<li><a href="/tags">标签</a></li>
+		        
+					<li><a href="/galery">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="#" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-MacOS+GitLab+Jenkins构建iOS自动化打包平台教程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MacOS+GitLab+Jenkins构建iOS自动化打包平台教程
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+    <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
+          <span class="btn-bg"></span>
+          <span class="btn-text">文章导航</span>
+          </p>
+  <div id="toc-article" class="toc-article">
+      <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
+    <strong class="toc-title">文章目录</strong>
+           <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、Jenkins"><span class="toc-number">1.</span> <span class="toc-text">一、Jenkins</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-安装"><span class="toc-number">1.1.</span> <span class="toc-text">1. 安装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-brew安装"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 brew安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-修改安装路径"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 修改安装路径</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-设置开机启动"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3 设置开机启动</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-初始化"><span class="toc-number">1.2.</span> <span class="toc-text">2.初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-Unlock-Jenkins"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 Unlock Jenkins</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-Customize-Jenkins"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 Customize Jenkins</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-环境配置"><span class="toc-number">1.3.</span> <span class="toc-text">3. 环境配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-插件下载"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 插件下载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-gitlab配置"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 gitlab配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-项目配置"><span class="toc-number">1.4.</span> <span class="toc-text">4. 项目配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、打包脚本"><span class="toc-number">2.</span> <span class="toc-text">二、打包脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-相关知识整理"><span class="toc-number">2.1.</span> <span class="toc-text">1. 相关知识整理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-PlistBuddy"><span class="toc-number">2.1.1.</span> <span class="toc-text">1.1 PlistBuddy</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-xcodebuild"><span class="toc-number">2.1.2.</span> <span class="toc-text">1.2 xcodebuild</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-OCLint"><span class="toc-number">2.1.3.</span> <span class="toc-text">1.3 OCLint</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-脚本文件结构"><span class="toc-number">2.2.</span> <span class="toc-text">2. 脚本文件结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-脚本描述"><span class="toc-number">2.3.</span> <span class="toc-text">3. 脚本描述</span></a></li></ol></li></ol>
+         </div>
+   <script type="text/javascript">
+  function showToc(){
+    var toc_article = document.getElementById("toc-article");
+    var show_toc_btn = document.getElementById("show-toc-btn");
+    toc_article.setAttribute("style","display:block");
+    show_toc_btn.setAttribute("style","display:none");
+    };
+  function showBtn(){
+    var toc_article = document.getElementById("toc-article");
+    var show_toc_btn = document.getElementById("show-toc-btn");
+    toc_article.setAttribute("style","display:none");
+    show_toc_btn.setAttribute("style","display:block");
+    };
+   </script>
+      
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、Jenkins"><a href="#一、Jenkins" class="headerlink" title="一、Jenkins"></a>一、Jenkins</h2><blockquote>
+<p>Jenkins是一个Java项目，依赖于Java环境。在命令行中输入java -version，如果安装过就会出现对应的Java版本。没有则进入<a href="https://link.jianshu.com/?t=http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="noopener">JavaSDK官网</a>下载安装。</p>
+</blockquote>
+<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><blockquote>
+<p>Jenkins安装方式有好几种，建议使用homebrew方式来进行安装Jenkins。因为用dmg方式安装的Jenkins默认会生成一个Shared的jenkins用户，且安装路径为/Users/xx/Shared。</p>
+</blockquote>
+<a id="more"></a>
+<h4 id="1-1-brew安装"><a href="#1-1-brew安装" class="headerlink" title="1.1 brew安装"></a>1.1 brew安装</h4><blockquote>
+<p>Homebrew是一款Mac OS平台下的软件包管理工具，如果没有安装过<a href="https://brew.sh/" target="_blank" rel="noopener">homebrew</a>，在命令行中输入如下命令安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+</blockquote>
+<ul>
+<li><p>安装jenkins</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install jenkins</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>卸载jenkins</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew uninstall jenkins</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="1-2-修改安装路径"><a href="#1-2-修改安装路径" class="headerlink" title="1.2 修改安装路径"></a>1.2 修改安装路径</h4><ul>
+<li><p>安装完成自后，在命令行中cd到/Library/LaunchDaemons文件夹中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /Library/LaunchDaemons</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果不存在org.jenkins-ci.plist文件，就手动创建一个</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo touch org.jenkins-ci.plist</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改plist内容，JENKINS_HOME的值修改为你想要放置的安装路径即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span><br><span class="line">&lt;plist version=&quot;1.0&quot;&gt;</span><br><span class="line">  &lt;dict&gt;</span><br><span class="line">    &lt;key&gt;StandardOutPath&lt;/key&gt;</span><br><span class="line">    &lt;string&gt;/var/log/jenkins/jenkins.log&lt;/string&gt;</span><br><span class="line">    &lt;key&gt;StandardErrorPath&lt;/key&gt;</span><br><span class="line">    &lt;string&gt;/var/log/jenkins/jenkins.log&lt;/string&gt;</span><br><span class="line">    &lt;key&gt;EnvironmentVariables&lt;/key&gt;</span><br><span class="line">    &lt;dict&gt;</span><br><span class="line">      &lt;key&gt;JENKINS_HOME&lt;/key&gt;</span><br><span class="line">      &lt;string&gt;/Users/ci/.jenkins&lt;/string&gt;</span><br><span class="line">    &lt;/dict&gt;</span><br><span class="line">    &lt;key&gt;GroupName&lt;/key&gt;</span><br><span class="line">    &lt;string&gt;daemon&lt;/string&gt;</span><br><span class="line">    &lt;key&gt;KeepAlive&lt;/key&gt;</span><br><span class="line">    &lt;true/&gt;</span><br><span class="line">    &lt;key&gt;Label&lt;/key&gt;</span><br><span class="line">    &lt;string&gt;org.jenkins-ci&lt;/string&gt;</span><br><span class="line">    &lt;key&gt;ProgramArguments&lt;/key&gt;</span><br><span class="line">    &lt;array&gt;</span><br><span class="line">      &lt;string&gt;/bin/bash&lt;/string&gt;</span><br><span class="line">      &lt;string&gt;/Library/Application Support/Jenkins/jenkins-runner.sh&lt;/string&gt;</span><br><span class="line">    &lt;/array&gt;</span><br><span class="line">    &lt;key&gt;RunAtLoad&lt;/key&gt;</span><br><span class="line">    &lt;true/&gt;</span><br><span class="line">    &lt;key&gt;UserName&lt;/key&gt;</span><br><span class="line">    &lt;string&gt;jenkins&lt;/string&gt;</span><br><span class="line">    &lt;key&gt;SessionCreate&lt;/key&gt;</span><br><span class="line">    &lt;true/&gt;</span><br><span class="line">  &lt;/dict&gt;</span><br><span class="line">&lt;/plist&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开启服务并设置为开机启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo launchctl load -w /Library/LaunchDaemons/org.jenkins-ci.plist</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="1-3-设置开机启动"><a href="#1-3-设置开机启动" class="headerlink" title="1.3 设置开机启动"></a>1.3 设置开机启动</h4><ul>
+<li><p>将/usr/local/opt/jenkins/homebrew.mxcl.jenkins.plist文件拷贝到~/Library/LaunchAgents目录下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -p /usr/local/opt/jenkins/homebrew.mxcl.jenkins.plist ~/Library/LaunchAgents</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置开机启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo launchctl load -w /Library/LaunchAgents/homebrew.mxcl.jenkins.plist</span><br><span class="line">PS:若出现&quot;/Library/LaunchAgents/homebrew.mxcl.jenkins.plist: Path had bad ownership/permissions&quot;提示，则执行：</span><br><span class="line">sudo chown root /Library/LaunchAgents/homebrew.mxcl.jenkins.plist</span><br><span class="line">之后再次执行上面命令即可</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>取消开机启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo launchctl unload -w /Library/LaunchAgents/homebrew.mxcl.jenkins.plist</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong><em>PS:Mac OS中，使用launchctl指令可以开启一些启动服务，其中/Library/LaunchAgents中存放的是一些用户登陆后启动的服务。而/Library/LaunchDaemons中存放的就是用户未登录前就可以启动的服务。常用的命令有：launchctl load、launchctl unload、launchctl remove 、launchctl list</em></strong></p>
+<h3 id="2-初始化"><a href="#2-初始化" class="headerlink" title="2.初始化"></a>2.初始化</h3><blockquote>
+<p>安装完成之后，重启电脑，Jenkins默认会开启一个端口号为8080的本地的web服务。</p>
+<p>在浏览器中输入localhost:8080访问Jenkins页面，进行初始化。</p>
+</blockquote>
+<h4 id="2-1-Unlock-Jenkins"><a href="#2-1-Unlock-Jenkins" class="headerlink" title="2.1 Unlock Jenkins"></a>2.1 Unlock Jenkins</h4><p>按照提示打开文件，获取密码，复制密码到输入框中，继续。</p>
+<h4 id="2-2-Customize-Jenkins"><a href="#2-2-Customize-Jenkins" class="headerlink" title="2.2 Customize Jenkins"></a>2.2 Customize Jenkins</h4><h3 id="3-环境配置"><a href="#3-环境配置" class="headerlink" title="3. 环境配置"></a>3. 环境配置</h3><h4 id="3-1-插件下载"><a href="#3-1-插件下载" class="headerlink" title="3.1 插件下载"></a>3.1 插件下载</h4><blockquote>
+<p>系统管理-管理插件-可选插件-过滤搜索-直接安装</p>
+<p>如果无法获取插件，可以在系统管理-管理插件-高级-升级站点，将默认的https网址修改为http的。</p>
+</blockquote>
+<p>必选插件：</p>
+<ul>
+<li>Git client plugin 、Git plugin、Git server Plugin</li>
+<li>GitHub API Plugin、GitHub Branch Source Plugin、GitHub Organization Folder Plugin、GitHub plugin</li>
+<li>GitLab Authentication plugin、Gitlab Hook Plugin、GitLab logo Plugin、GitLab Plugin</li>
+<li>Xcode integration</li>
+</ul>
+<h4 id="3-2-gitlab配置"><a href="#3-2-gitlab配置" class="headerlink" title="3.2 gitlab配置"></a>3.2 gitlab配置</h4><p>在Credentials中添加凭证。我选择的是SSH授权。Username是你的gitlab用户名。查看本机.ssh/is_rsa中保存的私钥，将你gitlab账号中上传的SSH Key对应的私钥复制粘贴到Private Key中即可。Passphrase填写你当时生成ssh key的时候的密码即可。</p>
+<h3 id="4-项目配置"><a href="#4-项目配置" class="headerlink" title="4. 项目配置"></a>4. 项目配置</h3><h2 id="二、打包脚本"><a href="#二、打包脚本" class="headerlink" title="二、打包脚本"></a>二、打包脚本</h2><h3 id="1-相关知识整理"><a href="#1-相关知识整理" class="headerlink" title="1. 相关知识整理"></a>1. 相关知识整理</h3><h4 id="1-1-PlistBuddy"><a href="#1-1-PlistBuddy" class="headerlink" title="1.1 PlistBuddy"></a>1.1 PlistBuddy</h4><blockquote>
+<p>plist文件是一种xml类型的在Mac OS以及iOS中最常见的一种文件格式，通过键值对的方式进行配置。PlistBuddy则是Mac自带的一个专门用来解析plist文件的工具。PlistBuddy支持的字段类型有：string、array、dict、bool、real、integer、date、data。具体使用可以在命令行中输入/usr/libexec/PlistBuddy –help来查看使用帮助</p>
+</blockquote>
+<p><strong>基本使用介绍：</strong></p>
+<ul>
+<li><p>添加</p>
+<ul>
+<li><p>添加普通字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/libexec/PlistBuddy -c &apos;Add :Version string 1.0&apos; test.plist</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+<li><p>添加数组字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 先添加key值</span><br><span class="line">/usr/libexec/PlistBuddy -c &apos;Add :Application array&apos; test.plist</span><br><span class="line"># 添加value值</span><br><span class="line">/usr/libexec/PlistBuddy -c &apos;Add :Application: string app1&apos; test.plist</span><br><span class="line">/usr/libexec/PlistBuddy -c &apos;Add :Application: string app2&apos; test.plist</span><br><span class="line">/usr/libexec/PlistBuddy -c &apos;Add :Application: string app3&apos; test.plist</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+<li><p>添加字典字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 先添加key值</span><br><span class="line">/usr/libexec/PlistBuddy -c &apos;Add :Person dict&apos; test.plist</span><br><span class="line"># 添加value值,</span><br><span class="line">/usr/libexec/PlistBuddy -c &apos;Add :Person:Name string zs&apos; test.plist</span><br><span class="line">/usr/libexec/PlistBuddy -c &apos;Add :Person:Age integer 3&apos; test.plist</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ul>
+</li>
+<li><p>删除</p>
+<ul>
+<li><p>删除普通字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/libexec/PlistBuddy -c &apos;Delete :Version&apos; test.plist</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+<li><p>删除字典字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/libexec/PlistBuddy -c &apos;Delete :Person:Age&apos; test.plist</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+<li><p>删除数组字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/libexec/PlistBuddy -c &apos;Delete :Application:2&apos; test.plist</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ul>
+</li>
+<li><p>修改</p>
+<ul>
+<li><p>修改数组字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/libexec/PlistBuddy -c &apos;Set :Application:1 &quot;APP2&quot;&apos; test.plist</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+<li><p>修改字典字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/libexec/PlistBuddy -c &apos;Set :Person:Name &quot;ls&quot;&apos; test.plist</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>查找</p>
+<ul>
+<li><p>查找打印字段对应的值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/libexec/PlistBuddy -c &apos;Print :Person&apos; test.plist</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查找数组中对应元素的值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/libexec/PlistBuddy -c &apos;Print :Application:2&apos; test.plist</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>​</p>
+</li>
+</ul>
+<h4 id="1-2-xcodebuild"><a href="#1-2-xcodebuild" class="headerlink" title="1.2 xcodebuild"></a>1.2 xcodebuild</h4><blockquote>
+</blockquote>
+<p><strong>xcodebuild工作细节：</strong></p>
+<ul>
+<li>Check dependencies（检查项目配置，如Code Sign） -&gt; Preprocessor -&gt; Compile -&gt; Link -&gt; Copy Resource、Compile Xib、CompileStoryboard、CompileAssetCatalog -&gt; Generate DSYM File -&gt; ProcessProductPackaging -&gt; Code Signing（需要访问钥匙串信息） -&gt; Validate -&gt; Result（.app和.dSYM）</li>
+<li>Code Signing（Code Signing Identity，Provisioning Profile）</li>
+</ul>
+<p><strong>常用命令:</strong></p>
+<ul>
+<li><p>clean</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">xcodebuild clean -workspace $&#123;Workspace_Name&#125; -scheme $&#123;Scheme_Name&#125;</span><br><span class="line">参数说明：</span><br><span class="line">* -workspace $&#123;Workspace_Name&#125; </span><br><span class="line">  指定工作空间文件XXX.xcworkspace</span><br><span class="line">* -scheme $&#123;Scheme_Name&#125; </span><br><span class="line">  指定构建工程名称</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>archive</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">xcodebuild archive</span><br><span class="line">-archivePath &quot;$&#123;Archive_Path&#125;&quot; </span><br><span class="line">-workspace $&#123;Workspace_Name&#125; </span><br><span class="line">-scheme $&#123;Scheme_Name&#125; </span><br><span class="line">-configuration $&#123;Build_Config&#125; </span><br><span class="line">CODE_SIGN_IDENTITY=&quot;$&#123;Cert_Identity&#125;&quot; </span><br><span class="line">DEVELOPMENT_TEAM=&quot;$&#123;Team_ID&#125;&quot;</span><br><span class="line">PROVISIONING_PROFILE_SPECIFIER=&quot;$&#123;Mobile_Provision_UUID&#125;&quot;  </span><br><span class="line">参数说明：</span><br><span class="line">*  -archivePath &quot;$&#123;Archive_Path&#125;&quot; </span><br><span class="line">  Archive后文件导出的路径</span><br><span class="line">* -workspace $&#123;Workspace_Name&#125; </span><br><span class="line">  工作空间文件名称（XXX.xcworkspace）</span><br><span class="line">* -scheme $&#123;Scheme_Name&#125; </span><br><span class="line">  项目名称</span><br><span class="line">* -configuration $&#123;Build_Config&#125; </span><br><span class="line">  构建配置（Debug/Release）</span><br><span class="line">* CODE_SIGN_IDENTITY=&quot;$&#123;Cert_Identity&#125;&quot; </span><br><span class="line">  打包证书名称</span><br><span class="line">* DEVELOPMENT_TEAM=&quot;$&#123;Team_ID&#125;&quot;</span><br><span class="line">  证书teamID</span><br><span class="line">* PROVISIONING_PROFILE_SPECIFIER=&quot;$&#123;Mobile_Provision_UUID&#125;&quot;  </span><br><span class="line">  描述文件的UUID</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>export</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">xcodebuild</span><br><span class="line">-exportArchive </span><br><span class="line">-archivePath &quot;$&#123;Archive_Path&#125;&quot; </span><br><span class="line">-exportPath $&#123;Ipa_Name&#125; </span><br><span class="line">-exportFormat ipa </span><br><span class="line">-exportWithOriginalSigningIdentity </span><br><span class="line">参数说明：</span><br><span class="line">* -exportArchive </span><br><span class="line">* -archivePath &quot;$&#123;Archive_Path&#125;&quot;</span><br><span class="line">* -exportPath $&#123;Ipa_Name&#125; </span><br><span class="line">* -exportFormat ipa </span><br><span class="line">* -exportWithOriginalSigningIdentity</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ul>
+<h4 id="1-3-OCLint"><a href="#1-3-OCLint" class="headerlink" title="1.3 OCLint"></a>1.3 OCLint</h4><blockquote>
+<p>OCLint是一个静态代码分析工具，在Jenkins打包脚本中引入 OCLint 的目的，一方面是为了CodeReview。另一方面在编译失败的情况下输出分析日志，方便我们定位问题。</p>
+<p>OCLint的工作流程：</p>
+<p>编译–&gt;xcodebuild(生成xcodebuild.log)–&gt;xcpretty(分析xcodebuild.log生成compile_commands.json文件)–&gt;oclint-json-compilation-database(获取编译信息)–&gt;oclint(输出分析报告)</p>
+</blockquote>
+<ul>
+<li><p>brew安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew tap oclint/formulae</span><br><span class="line">brew install oclint</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>相关命令介绍</p>
+<ul>
+<li>1.oclint：基础指令。通过这个指令可以指定加载验证规则、编译代码、分析代码和生成报告。</li>
+<li>2.oclint-json-compilation-database：高级指令。通过这个指令可以从 compile_commands.json 文件中读取配置信息并执行 oclint。</li>
+<li>3.oclint-xcodebuild：主要用于生成compile_commands.json文件，已经不进行维护了，用xcpretty替代来生成json文件。</li>
+</ul>
+</li>
+<li><p>使用</p>
+<ul>
+<li><p>输出编译报告</p>
+<p>xodebuild生成分析xcodebuild.log文件，xcpretty分析xcodebuild.log生成compile_commands.json文件。</p>
+<p>tee命令获取输出结果。xcpretty命令将编译结果输出为json-compilation-database类型的编译报告。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcodebuild archive -archivePath &quot;$&#123;Archive_Path&#125;&quot; -workspace $&#123;Workspace_Name&#125; -scheme $&#123;Scheme_Name&#125; -configuration $&#123;Build_Config&#125; CODE_SIGN_IDENTITY=&quot;$&#123;Cert_Identity&#125;&quot; DEVELOPMENT_TEAM=&quot;$&#123;Team_ID&#125;&quot; PROVISIONING_PROFILE_SPECIFIER=&quot;$&#123;Mobile_Provision_UUID&#125;&quot; | tee xcodebuild.log | xcpretty --report json-compilation-database</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>输出分析报告</p>
+<p>根据上一步xcpretty生成的json-compilation-database类型的编译报告，然后就需要使用oclint-json-compilation-database来解析。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">oclint-json-compilation-database -e Pods -v -- -report-type html -o &quot;$&#123;Report_HTML&#125;&quot; -max-priority-1=99999 -max-priority-2=99999 -max-priority-3=99999 1&gt;/dev/null 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-脚本文件结构"><a href="#2-脚本文件结构" class="headerlink" title="2. 脚本文件结构"></a>2. 脚本文件结构</h3><h3 id="3-脚本描述"><a href="#3-脚本描述" class="headerlink" title="3. 脚本描述"></a>3. 脚本描述</h3><ul>
+<li><p>main.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">main中主要做了以下几件事情：</span><br><span class="line">	1.配置路径信息(例如：脚本本地目录，默认配置目录，描述文件目录，keychain目录等等)</span><br><span class="line">	2.配置默认证书相关信息(例如：默认证书名称，teamID,描述文件，描述文件UUID)</span><br><span class="line">	3.Jenkins参数设置</span><br><span class="line">	4.执行mainUpgrade.sh获取Jenkins项目信息，更新脚本等</span><br><span class="line">	5.执行diag.sh输出诊断信息</span><br><span class="line">	6.执行mainRun.sh开始启动打包脚本</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>mainUpgrade.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mainUpgrade中主要用来获取Jenkins对应jobs的项目名称，版本号，git分支，连接等相关信息</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>diag.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">diag主要输出相关使用命令的诊断信息</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>mainRun.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mainRun中开始真正的打包脚本执行，依次执行了如下脚本</span><br><span class="line">1.comment.sh</span><br><span class="line">2.info.sh</span><br><span class="line">3.config.sh</span><br><span class="line">4.entitlements.sh</span><br><span class="line">5.pod.sh</span><br><span class="line">6.version.sh</span><br><span class="line">7.build.sh</span><br><span class="line">8.plist.sh</span><br><span class="line">9.html.sh</span><br><span class="line">10.smail.sh</span><br><span class="line">11.plistUpload.sh</span><br><span class="line">12.dSYMUpload</span><br><span class="line">13.appstore.sh</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>comment.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用来生成本次打包的备注文案</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>diskClean.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">清理磁盘文件，清理DeriverdData,iOS DeviceSupport相关文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>info.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">读取项目工程信息</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>infoGit.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">主要做了2件事情：</span><br><span class="line">1.读取项目git信息，包括项目名称，项目当前分支名称</span><br><span class="line">2.读取打包配置文件(一个plist类型的文件，里面配置了对应项目的打包证书enterprise，ad-hoc,appstore证书信息，添加邮件抄送，debug/release等等一些打包配置信息)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>infoProject.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用来获取项目工程中的信息，包括workspace路径，bundleIdentigier,infoPlist路径，build号，version号等等</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>infoPath.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用于配置和生成打包输出的相关文件路径，包括Archive文件路径，ipa文件路径，dSYM文件路径，Html文件路径，OCLint文件路径等等。</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>config.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">读取证书配置，配置证书相关信息。配置bugly信息。设置编译类型。设置输出包类型等等。</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>configCert.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">根据打包配置文件以及Jenkins配置信息，读取对应method(输出包类型)相对应的打包证书，描述文件，teamID，描述文件UUID等相关信息。</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>entitlements.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">读取相应的描述文件信息，利用plsitbuddy分别修改了.pbxproj以及.entitlements文件中的相关权限配置。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>pod.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod repo update 以及 pod update</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>version.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">更新版本号，读取本地的一个用于记录版本号的文件。更新方式有2种方式，一种为版本号自增，一种为使用自定义的版本号。设置完更新文件即可。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>build.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.修复keychain，导入 login.keychain</span><br><span class="line">2.archive 和 oclint</span><br><span class="line">3.</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>fixKeychain.sh</p>
+</li>
+<li><p>buildArchiveOrOCLint.sh</p>
+</li>
+<li><p>dSYM.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">将打包成功之后生成的.dSYM分别复制到项目路径以及dSYM导出路径下，并且将.dSYM文件压缩成zip包。</span><br><span class="line">ps：切记项目 buildSetting 搜索『dwraf』找到 『Debug Information Format』,应设置为『DWRAF with dSYM File』, 否则编译不会生成 dSYM 文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>reSign.sh</p>
+</li>
+</ul>
+</li>
+<li><p>plist.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">这个脚本是用来生成一个plist文件，用来提供给itms-services://协议使用的，其中itms-services://协议中最主要的也就是这个plist文件。在之后会生成一个html文件，会将这个itms-services://协议添加进&quot;下载&quot;标签的href中。这样在safari浏览器中打开这个网页，点击下载，就可以很方便的下载安装包。</span><br><span class="line"></span><br><span class="line">脚本参考代码如下：</span><br><span class="line">#!/bin/sh</span><br><span class="line"></span><br><span class="line">Install_Plist_Name=$&#123;Ipa_Name&#125;_install.plist</span><br><span class="line">Install_Plist_Path=&quot;$&#123;Install_Path&#125;/$&#123;Install_Plist_Name&#125;&quot;</span><br><span class="line">Install_Ipa_URL=&quot;$&#123;Download_Ipa_URL&#125;/$&#123;Ipa_Name&#125;.ipa&quot;</span><br><span class="line"></span><br><span class="line">cat &lt;&lt; EOF &gt; $Install_Plist_Path</span><br><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span><br><span class="line">&lt;plist version=&quot;1.0&quot;&gt;</span><br><span class="line">&lt;dict&gt;</span><br><span class="line">	&lt;key&gt;items&lt;/key&gt;</span><br><span class="line">	&lt;array&gt;</span><br><span class="line">    	&lt;dict&gt;</span><br><span class="line">        	&lt;key&gt;assets&lt;/key&gt;</span><br><span class="line">        	&lt;array&gt;</span><br><span class="line">	            &lt;dict&gt;</span><br><span class="line">	                &lt;key&gt;kind&lt;/key&gt;</span><br><span class="line">	                &lt;string&gt;software-package&lt;/string&gt;</span><br><span class="line">	                &lt;key&gt;url&lt;/key&gt;</span><br><span class="line">	               	&lt;string&gt;$Install_Ipa_URL&lt;/string&gt;</span><br><span class="line">	            &lt;/dict&gt;</span><br><span class="line">            &lt;/array&gt;</span><br><span class="line">            &lt;key&gt;metadata&lt;/key&gt;</span><br><span class="line">            &lt;dict&gt;</span><br><span class="line">                &lt;key&gt;bundle-identifier&lt;/key&gt;</span><br><span class="line">                &lt;string&gt;$Bundle_Identifier&lt;/string&gt;</span><br><span class="line">                &lt;key&gt;bundle-version&lt;/key&gt;</span><br><span class="line">               	&lt;string&gt;$New_BuildVersion&lt;/string&gt;</span><br><span class="line">                &lt;key&gt;kind&lt;/key&gt;</span><br><span class="line">               	&lt;string&gt;software&lt;/string&gt;</span><br><span class="line">                &lt;key&gt;title&lt;/key&gt;</span><br><span class="line">               	&lt;string&gt;$Bundle_App_Name&lt;/string&gt;</span><br><span class="line">            &lt;/dict&gt;</span><br><span class="line">        &lt;/dict&gt;</span><br><span class="line">	&lt;/array&gt;</span><br><span class="line">&lt;/dict&gt;</span><br><span class="line">&lt;/plist&gt;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>html.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">生成一个静态页面用于展示打包信息以及绑定生成好的itms-services://协议，然后使用一个写好的js二维码生成库，生成一个网页链接二维码。</span><br><span class="line">网页包含内容：</span><br><span class="line">1.项目名称</span><br><span class="line">2.证书名称</span><br><span class="line">3.版本号</span><br><span class="line">4.编译号</span><br><span class="line">5.备注信息</span><br><span class="line">6.二维码</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>smail.sh</p>
+<ul>
+<li><p>emails.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用来生成邮件信息</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>sendmail.py</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">发送邮件的脚本</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>plistUpload.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提交之前生成好的plist文件到一个https站点（iOS7之后不支持http）, 这里就使用了coding.net的仓库。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>dSYMUpload</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">因为自家接入的是bugly，每次app上线后，手动上传dSYM文件很麻烦。所以这里弄了个脚本，根据Jenkins配置信息是否是否上传bugly。将之前生成好的.dSYM.zip自动上传到bugly。</span><br><span class="line"></span><br><span class="line">上传参考代码：</span><br><span class="line">#!/bin/sh</span><br><span class="line"></span><br><span class="line">URLEncodeFunc() &#123;</span><br><span class="line">	local length=&quot;$&#123;#1&#125;&quot;</span><br><span class="line">	for (( i = 0; i &lt; length; i++ )); do</span><br><span class="line">		local c=&quot;$&#123;1:i:1&#125;&quot;</span><br><span class="line">		case $c in</span><br><span class="line">			[a-zA-Z0-9.~_-]) printf &quot;$c&quot; ;;</span><br><span class="line">			*) printf &quot;$c&quot; | xxd -p -c1 | while read x;do printf &quot;%%%s&quot; &quot;$x&quot;;done</span><br><span class="line">		esac</span><br><span class="line">	done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if [[ $Jenkins_dSYM_Upload = true ]]; then</span><br><span class="line">	echo &quot;\n上传 dSYM 到 Bugly...&quot;</span><br><span class="line"></span><br><span class="line">	# Bugly 的 TS 说他们要的是这样的版本号格式</span><br><span class="line">	Bugly_Version=&quot;$&#123;Bundle_Version&#125;($&#123;New_BuildVersion&#125;)&quot;</span><br><span class="line">	</span><br><span class="line">	# pid默认为2</span><br><span class="line">	dSYM_Pid=&quot;2&quot;</span><br><span class="line">	dSYM_AppID=$&#123;Bugly_AppId&#125;</span><br><span class="line">	dSYM_AppKey=$&#123;Bugly_AppKey&#125;</span><br><span class="line">	dSYM_BundleId=$&#123;Bundle_Identifier&#125;</span><br><span class="line">	dSYM_Version=`URLEncodeFunc $&#123;Bugly_Version&#125;`</span><br><span class="line">	dSYM_ZipFileName=`URLEncodeFunc $&#123;dSYM_Path&#125;`</span><br><span class="line"></span><br><span class="line">	java -jar $&#123;Bugly_JAR_Path&#125; -i $&#123;dSYM_Path&#125; -u -id $&#123;dSYM_AppID&#125; -key $&#123;dSYM_AppKey&#125; -package $&#123;dSYM_BundleId&#125; -version $&#123;dSYM_Version&#125; 1&gt;/dev/null</span><br><span class="line"></span><br><span class="line">else</span><br><span class="line">	echo &quot;\n不上传 dSYM 到 bugly\n&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">rm -rf $&#123;dSYM_Path&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>appstore.sh</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2017/12/03/MacOS+GitLab+Jenkins构建iOS自动化打包平台教程/" class="archive-article-date">
+  	<time datetime="2017-12-03T15:45:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2017-12-03</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jenkins/">Jenkins</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/教程/">教程</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/运动/">运动</a><a class="article-category-link" href="/categories/运动/球类运动/">球类运动</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2017/11/22/VPS_02_03/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">VPS搭建个人博客/相册教程03_zing-gallery个人相册配置</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 Rui
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/"
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/React-Native/" style="font-size: 20px;">React Native</a> <a href="/tags/VPS/" style="font-size: 10px;">VPS</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/教程/" style="font-size: 20px;">教程</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Litten，&lt;br&gt;毕业于华科，就职于鹅厂&lt;br&gt;&lt;br&gt;热爱大海与冷笑话，&lt;br/&gt;目前是一枚前端&lt;br/&gt;&lt;br/&gt;胆小认生，不易相处，&lt;br&gt;年轻无为，卖马为生。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>
