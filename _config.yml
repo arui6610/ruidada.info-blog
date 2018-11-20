@@ -3,11 +3,11 @@
 ## Source: https://github.com/hexojs/hexo/
 ################################################
 # 勿动
-# deploy:
-#       type: git
-#       message: update
-#       repo:
-#         s1: git@45.32.93.86:repo/blog.git,master
+deploy:
+      type: git
+      message: update
+      repo:
+        s1: git@45.32.93.86:repo/blog.git,master
 #######################################################################
 
 # 1、网站
