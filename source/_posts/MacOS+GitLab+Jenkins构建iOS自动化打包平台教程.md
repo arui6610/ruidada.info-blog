@@ -3,8 +3,8 @@ layout: post
 title: "MacOS+GitLab+Jenkins构建iOS自动化打包平台教程"
 date: 2017-12-03 23:45
 categories: 
-- 运动
-- [运动, 球类运动]
+- 教程
+- [教程, Jenkins]
 tags: 
 - 教程
 - Jenkins

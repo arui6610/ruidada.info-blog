@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Rui&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Rui&apos;s blog">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Rui&#39;s Blog">
+<meta property="og:url" content="//ruidada.info/page/2/index.html">
+<meta property="og:site_name" content="Rui&#39;s Blog">
+<meta property="og:description" content="Rui&apos;s blog">
+<meta property="og:locale" content="default">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rui&#39;s Blog">
+<meta name="twitter:description" content="Rui&apos;s blog">
+  
+    <link rel="alternative" href="/atom.xml" title="Rui&#39;s Blog" type="application/atom+xml">
+  
+  
+  <script src="/style.js"></script>
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/rui.JPG" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Rui</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">首页</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/tagcloud">标签</a></li>
+	        
+				<li><a href="/galery">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">About Me</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="mail" target="_blank" href="#" title="mail">mail</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">Rui</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/rui.JPG" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Rui</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">首页</a></li>
+		        
+					<li><a href="/archives">归档</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tagcloud">标签</a></li>
+		        
+					<li><a href="/galery">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="#" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        
+  
+    <article id="post-iOS-03" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/10/iOS-03/">Main函数之前的那些事儿02：App启动速度优化</a>
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p><strong>公式：App总启动时间 = main()函数之前的加载时间 + main()之后的加载时间</strong></p>
+<ul>
+<li>main()之前的加载时间：dylib链接动态库的时间+自身App可执行文件的加载时间</li>
+<li>main()之后的加载时间：main方法执行之后到AppDelegate的didFinishLaunchingWithOptions方法执行结束前这段时间，主要是构建第一个界面，并完成渲染展示。</li>
+</ul>
+</blockquote>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>尽量别在+load方法里搞事情，且对实现了+load()方法的类进行分析，尽量将load里的代码延后调用。</p>
+<h3 id="load优化思路"><a href="#load优化思路" class="headerlink" title="+load优化思路"></a><strong>+load优化思路</strong></h3>
+        <p class="article-more-link">
+          <a  href="/2016/05/10/iOS-03/#more">more >></a>
+        </p>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/05/10/iOS-03/" class="archive-article-date">
+  	<time datetime="2016-05-10T05:36:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-05-10</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/技术/">技术</a><a class="article-category-link" href="/categories/技术/iOS/">iOS</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-iOS-02" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/10/iOS-02/">Main函数之前的那些事儿01：dylb</a>
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>前言：<br>甩几个问题出来，答案从问题开始。<br>1.类的+load方法系统是怎么调用的？<br>2.一个类+load方法系统为什么只会调用一次？为什么不能在+load方法中调用super？<br>3.为什么fishhook库只能hook应用挂载的外部动态库里的函数？</p>
+<p>然后这些问题就引出了dylb这个鬼，然后就一脸懵逼了。iOS应用中可执行文件是什么？有那些是可执行文件？动态库是在程序启动后由dylb链接，那么静态库又是什么时候链接的？dylb是通过镜像的形式加载二进制文件的，镜像是什么鬼？运行时环境也是在mian之前初始化的，dylb和运行时环境有没有什么不可描述的关系？</p>
+</blockquote>
+<hr>
+<p><strong>编译-链接-运行</strong><br>源文件–&gt;编译–&gt;目标文件–&gt;（静态链接）链接静态库文件–&gt;生成可执行文件<br>app启动–&gt;加载可执行文件–&gt;（动态链接）链接动态库文件–&gt;初始化运行时环境–&gt;main()</p>
+        <p class="article-more-link">
+          <a  href="/2016/05/10/iOS-02/#more">more >></a>
+        </p>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/05/10/iOS-02/" class="archive-article-date">
+  	<time datetime="2016-05-10T00:10:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-05-10</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/技术/">技术</a><a class="article-category-link" href="/categories/技术/iOS/">iOS</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-ios-daily-01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/10/ios-daily-01/">日常开发01：一行代码搞定全屏滑动返回手势</a>
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>开发过程中我们经常会遇到这种需求，给某个页面添加全屏的滑动返回。当然iOS7之后，系统有提供一个边缘滑动返回的手势。很明显无法完成需求。产品要的是全屏。</p>
+<ul>
+<li><p>思路1：<br> 既然UINavigationController有提供interactivePopGestureRecognizer手势。 UIGestureRecognizer采用的是target-action。这样我们可以找到手势的target和action。然后新建一个自己的手势实例，替换为系统手势的action实现就是了。</p>
+        <p class="article-more-link">
+          <a  href="/2016/01/10/ios-daily-01/#more">more >></a>
+        </p>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/01/10/ios-daily-01/" class="archive-article-date">
+  	<time datetime="2016-01-10T05:36:30.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-01-10</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/日常/">日常</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/技术/">技术</a><a class="article-category-link" href="/categories/技术/iOS/">iOS</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-ios_stduy_note_02" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/11/ios_stduy_note_02/">学习笔记02：OC的消息机制</a>
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>举个栗子！！！<br>Person.h<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">@interface Person : NSObject</span><br><span class="line">- (void)eat;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure></p>
+<p>Person.m<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;Person.h&quot;</span><br><span class="line">@implementation Person</span><br><span class="line">- (void)eat &#123;</span><br><span class="line">    NSLog(@&quot;eat...&quot;);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure></p>
+        <p class="article-more-link">
+          <a  href="/2015/05/11/ios_stduy_note_02/#more">more >></a>
+        </p>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2015/05/11/ios_stduy_note_02/" class="archive-article-date">
+  	<time datetime="2015-05-11T06:36:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2015-05-11</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OC/">OC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/技术/">技术</a><a class="article-category-link" href="/categories/技术/OC/">OC</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-ios_stduy_note_01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/10/ios_stduy_note_01/">学习笔记01：OC的对象模型</a>
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>OC作为一门面向对象语言。不管是学习阶段还是工作阶段。每天都是在和各种各样的类以及对象打交道。</p>
+<p>什么是类？什么是对象？这是一个最初的问题。</p>
+</blockquote>
+<h2 id="1-什么是类？什么是对象？"><a href="#1-什么是类？什么是对象？" class="headerlink" title="1.什么是类？什么是对象？"></a>1.什么是类？什么是对象？</h2><p>对象是对客观事物的抽象，类是对对象的抽象，类是一种抽象的数据类。它们的关系是对象是类的实例，类是对象的模板。<br>哈。绕口令么。这个解释太官方。</p>
+<p>关于类。我自己理解为类就是你所能看到的一切事物的特征和行为的集合的一个抽象。而对象则是某一个类（抽象）的具体实现。<br>
+        <p class="article-more-link">
+          <a  href="/2015/05/10/ios_stduy_note_01/#more">more >></a>
+        </p>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2015/05/10/ios_stduy_note_01/" class="archive-article-date">
+  	<time datetime="2015-05-10T05:36:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2015-05-10</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OC/">OC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/技术/">技术</a><a class="article-category-link" href="/categories/技术/OC/">OC</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    </nav>
+  
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 Rui
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: true,
+		isPost: false,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/"
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Rui,&lt;br&gt;.....。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

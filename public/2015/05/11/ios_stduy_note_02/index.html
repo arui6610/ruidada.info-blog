@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>学习笔记02：OC的消息机制 | Rui&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="举个栗子！！！Person.h1234#import &amp;lt;Foundation/Foundation.h&amp;gt;@interface Person : NSObject- (void)eat;@end Person.m123456#import &amp;quot;Person.h&amp;quot;@implementation Person- (void)eat &amp;#123;    NSLog(@&amp;quo">
+<meta name="keywords" content="技术,OC,笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习笔记02：OC的消息机制">
+<meta property="og:url" content="//ruidada.info/2015/05/11/ios_stduy_note_02/index.html">
+<meta property="og:site_name" content="Rui&#39;s Blog">
+<meta property="og:description" content="举个栗子！！！Person.h1234#import &amp;lt;Foundation/Foundation.h&amp;gt;@interface Person : NSObject- (void)eat;@end Person.m123456#import &amp;quot;Person.h&amp;quot;@implementation Person- (void)eat &amp;#123;    NSLog(@&amp;quo">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-adec86257f242c49.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-1ada22c46563f0bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-0707de44c067caeb.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-11-20T14:23:45.713Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="学习笔记02：OC的消息机制">
+<meta name="twitter:description" content="举个栗子！！！Person.h1234#import &amp;lt;Foundation/Foundation.h&amp;gt;@interface Person : NSObject- (void)eat;@end Person.m123456#import &amp;quot;Person.h&amp;quot;@implementation Person- (void)eat &amp;#123;    NSLog(@&amp;quo">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1488967-adec86257f242c49.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternative" href="/atom.xml" title="Rui&#39;s Blog" type="application/atom+xml">
+  
+  
+  <script src="/style.js"></script>
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/rui.JPG" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Rui</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">首页</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/tagcloud">标签</a></li>
+	        
+				<li><a href="/galery">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">About Me</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="mail" target="_blank" href="#" title="mail">mail</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">Rui</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/rui.JPG" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Rui</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">首页</a></li>
+		        
+					<li><a href="/archives">归档</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tagcloud">标签</a></li>
+		        
+					<li><a href="/galery">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="#" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-ios_stduy_note_02" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      学习笔记02：OC的消息机制
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>举个栗子！！！<br>Person.h<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">@interface Person : NSObject</span><br><span class="line">- (void)eat;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure></p>
+<p>Person.m<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;Person.h&quot;</span><br><span class="line">@implementation Person</span><br><span class="line">- (void)eat &#123;</span><br><span class="line">    NSLog(@&quot;eat...&quot;);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>Main.m<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">#import &quot;Person.h&quot;</span><br><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        Person *p = [[Person alloc] init];</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="1-如何调用p对象的eat方法呢？除了-p-eat-这种方式，还有没有其他方式能够调用eat方法？如果我在-h文件中没有eat方法的声明，又如何调用？"><a href="#1-如何调用p对象的eat方法呢？除了-p-eat-这种方式，还有没有其他方式能够调用eat方法？如果我在-h文件中没有eat方法的声明，又如何调用？" class="headerlink" title="1.如何调用p对象的eat方法呢？除了[p eat]这种方式，还有没有其他方式能够调用eat方法？如果我在.h文件中没有eat方法的声明，又如何调用？"></a>1.如何调用p对象的eat方法呢？除了[p eat]这种方式，还有没有其他方式能够调用eat方法？如果我在.h文件中没有eat方法的声明，又如何调用？</h4><ul>
+<li><p>1&gt;直接调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[p eat];</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>2&gt;通过performSelector</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if ([p respondsToSelector:@selector(eat)]) &#123; // 判断方法是否存在，防止方法不存在导致闪退</span><br><span class="line">	[p performSelector:@selector(eat)];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>3&gt;利用NSInvovation</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 获取方法签名</span><br><span class="line">NSMethodSignature *sign = [[p class] instanceMethodSignatureForSelector:selector];</span><br><span class="line">// 创建invocation对象</span><br><span class="line">NSInvocation *eatIvo = [NSInvocation invocationWithMethodSignature:sign];</span><br><span class="line">eatIvo.target = p;</span><br><span class="line">eatIvo.selector = selector;</span><br><span class="line">[eatIvo invoke];</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>4&gt;运行时消息函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objc_msgSend(p,@selector(eat));</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>PS:</strong><br>在Xcode7中直接调用objc_msgSend函数会报错。主要是因为编译器会检查你objc_msgSend函数调用。解决办法有2种：</p>
+<ul>
+<li><p>1.强转  </p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Class class = [p class];</span><br><span class="line">((void * ()(void, SEL))(void*)objc_msgSend)(&amp;class, @selector(eat));</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>2.Build Settings-&gt;Enable Strict Checking of objec_msgSend Calls 设置为YES</p>
+</li>
+</ul>
+<p>方法调用的几种方式。那么一开始的那个疑问，如果-eat方法只有实现，在.h文件中而没有声明，这样外部也就无法调用到-eat方法了。当然还是可以利用上述2，3，4种方式来调用。又在想，如果做绝一点，连Person类都不让你知道呢？我又该怎么创建Person类的实例？怎么调用p对象的那个-eat方法呢？这时候就需要用到运行时。获取到类名还有类的所有方法名。利用反射将字符串转变为类，方法等等。同样可以利用2,3,4来调用方法。那是不是可以认为在OC中没有严格意义上的私有方法呢。</p>
+<h4 id="2-OC中的SEL是什么东西？方法和函数有什么关系？动态绑定是什么意思？为什么OC中的方法调用也叫发消息？那么消息是怎么传递的呢？消息转发又是什么鬼？还有消息机制的完整流程是几个意思？"><a href="#2-OC中的SEL是什么东西？方法和函数有什么关系？动态绑定是什么意思？为什么OC中的方法调用也叫发消息？那么消息是怎么传递的呢？消息转发又是什么鬼？还有消息机制的完整流程是几个意思？" class="headerlink" title="2.OC中的SEL是什么东西？方法和函数有什么关系？动态绑定是什么意思？为什么OC中的方法调用也叫发消息？那么消息是怎么传递的呢？消息转发又是什么鬼？还有消息机制的完整流程是几个意思？"></a>2.OC中的SEL是什么东西？方法和函数有什么关系？动态绑定是什么意思？为什么OC中的方法调用也叫发消息？那么消息是怎么传递的呢？消息转发又是什么鬼？还有消息机制的完整流程是几个意思？</h4><p>一大串的问题。对于消息这东西，思绪是乱的。静下心来一点点的梳理一遍，也是受益很多，对于OC也有了更深的理解。</p>
+<ul>
+<li><p>1.SEL是什么？SEL也叫方法选择器，它的定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">objc_selector</span> *<span class="title">SEL</span>;</span></span><br></pre></td></tr></table></figure>
+<p>其实就是一个特殊的结构体类型的指针，而该结构体就是对每个方法的方法名，参数序列等等一些信息的描述。</p>
+<p>关于SEL其实就是一个根据方法名哈希处理后的一个用来标识某个方法的一个唯一标识而已。一个SEL就代表着一个方法。通过这个SEL就能找到对应的方法实现。使用哈希处理后的方法名而不用方法名去做标识，这样提高了查找方法实现的效率。<br>ps：</p>
+<ul>
+<li>@selector()只是个编译器指令。在编译期会自动将这部分转换为对应的代码。</li>
+<li>在某一个类或该类的继承体系中，如果出现两个方法名相同的方法，即使参数不同。他们生成的SEL也是一样的。所以OC中某一个类或该类的继承体系中最好不要出现两个相同方法名的方法。</li>
+</ul>
+</li>
+<li><p>2.动态绑定<br>OC既然是动态语言，重要的一个体现就是动态绑定。OC是在运行时确定对象所属的真实类型。确定类型之后，才会将对应的属性和响应的消息绑定到该对象上。</p>
+</li>
+<li><p>3.方法<br>我们知道类的结构中有一个MethodLists表。里面存储的都是一个个方法。该结构体中主要就SEL（方法选择）和IMP（方法实现）。简单理解该结构体就相当于是在SEL和IMP之间做了一个映射。方便我们通过SEL找到对应的IMP。</p>
+<p>内存结构如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">objc_method</span> *<span class="title">Method</span>;</span></span><br><span class="line"> <span class="class"><span class="keyword">struct</span> <span class="title">objc_method</span> &#123;</span></span><br><span class="line">    SEL method_name                 OBJC2_UNAVAILABLE;  <span class="comment">// 方法名</span></span><br><span class="line">    <span class="keyword">char</span> *method_types                  OBJC2_UNAVAILABLE;</span><br><span class="line">    IMP method_imp                      OBJC2_UNAVAILABLE;  <span class="comment">// 方法实现</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>4.发消息<br>[p eat];通常我们说对象p调用了eat方法，也可以说向p对象发送了一条eat的消息。这两种说法。我觉得后面那种方式更加形象也更加准确。<br>那这句话的背后系统又干了些什么？是时候推开门进去看一看了。<br>在编译时期，编译器会将大部分的方法转换为函数，如objc_msgSend(),obj_msgSendSuper()等等。而在运行时期，消息才会被绑定到方法上。<br>例如：</p>
+<pre><code>[p eat];
+在编译时则会转换为：objc_msgSend(p,@selector(eat));这样的函数。
+</code></pre><p>objc_msgSend()是什么？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">objc_msgSend(receiver, selector, arg1, arg2, ...)</span><br><span class="line">receiver：消息接收者</span><br><span class="line">selector：方法选择器</span><br><span class="line">arg：其他参数</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>5.消息传递<br>画个图吧。画好了。</p>
+</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-adec86257f242c49.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="消息传递过程.png"></p>
+<p>因为OC的动态特性。所以它会运行时确定该对象或该类所属的真实类型，也就是根isa指针去找它的真实类型。确定类型后，首先它会去cache表里面根据SEL去找IMP(方法实现函数)。没有的话，她就会去MethodLists里面找。找到了就去执行对应的IMP，并且她会将这个方法扔到Cache里面。如果在MethodLists里面也没找着。她回去根据superclass区她的父类按照这个顺序去查找方法实现。直到根类为止。从这里也就能看出来OC的方法调用其实走的是一个缓存机制。提高了方法调用的效率。</p>
+<ul>
+<li><p>消息转发<br>刚才说到了消息传递。有个疑问。如果在在Person.m中干掉-eat方法实现呢？那么整套流程走了下来。都没有找到那个方法会出现什么情况？答案当然是unrecognized selector sent to instance 0x2b2b2b2b..类似的字样，并且闪退。<br>所以，系统在经过消息传递过程后，还没有找到这个方法，那么它又偷偷摸摸的干了些什么呢？给不给机会挽回一下呢？<br>点开NSObject类的头文件。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-1ada22c46563f0bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="NSObject.png"></p>
+</li>
+</ul>
+<p>发现了四个方法。这四个方法也就是用来实现消息转发的。也是用来给你没有实现那个方法的过错进行补救的。当然OC是人性化的。她一共给了你三次机会。消息转发的具体步骤如下：<br>1.方案一。如果是实例方法，会调用+ (BOOL)resolveInstanceMethod:(SEL)sel；方法。如果是类方法，则调用+ (BOOL)resolveClassMethod:(SEL)sel；<br>这两个方法的作用也就是让你在程序运行时动态的为一个selector提供实现。<br>栗如上面的那个疑问。我在Person.m中干掉了-eat的实现。则可以通过重载这个方法动态添加-eat的方法实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@implementation Person</span><br><span class="line">void eatIMP(id self ,SEL _cmd) &#123;</span><br><span class="line">    NSLog(@&quot;eat...&quot;);</span><br><span class="line">&#125;</span><br><span class="line">+ (BOOL)resolveInstanceMethod:(SEL)sel &#123;</span><br><span class="line">    if (sel == @selector(eat)) &#123;</span><br><span class="line">        class_addMethod([self class], sel, (IMP)eatIMP, &quot;v@:&quot;);</span><br><span class="line">        return YES;</span><br><span class="line">    &#125;</span><br><span class="line">    return [super resolveInstanceMethod:sel];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p> 这里用到了class_addMethod()函数；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types)</span><br><span class="line">cls：添加方法到指定的类。</span><br><span class="line">name：方法选择器</span><br><span class="line">imp：方法实现</span><br><span class="line">types：请参考Objective-C Runtime Programming Guide-类型编码</span><br></pre></td></tr></table></figure></p>
+<p>(<a href="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Introduction/Introduction.html" target="_blank" rel="noopener"> Objective-C Runtime Programming Guide-类型编码</a>)</p>
+<p>这种方式让我们有机会在运行时通过resolveInstanceMethod或resolveClassMethod中动态的将某个方法实现添加到类中。那问题就来了。就一个方法实现而已。还要弄这么多代码。有毛用啊？<br>这个动态方法解析主要是为了解决@dynamic属性而存在的。</p>
+<p>那么我又要举手了。@dynamic又是什么鬼？<br>@dynamic 其实就是要是关键字。是相对于 @synthesize 的，它们用样用于修饰 @property，用于生成对应的的 getter 和 setter 方法。但是 @ dynamic 表示这个成员变量的 getter 和 setter 方法并不是直接由编译器生成，而是手工生成或者运行时生成。</p>
+<p>2.方案二<br>如果方案一你自己没有处理的话。就会来到- (id)forwardingTargetForSelector:(SEL)selector；这个方法。这个方法主要是用来将这个消息发送给一个可以处理的对象的。栗如：我收到了一个bug，我处理不了，我基友说他可以。那我通过这个方法我就可以把这个bug转发给我基友了。<br>栗如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Person.h</span><br><span class="line"></span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">#import &quot;Dog.h&quot;</span><br><span class="line">@interface Person : NSObject</span><br><span class="line">@property (nonatomic, strong) Dog *dog;</span><br><span class="line">- (void)eat;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">Person.m</span><br><span class="line"></span><br><span class="line">#import &quot;Person.h&quot;</span><br><span class="line">@implementation Person</span><br><span class="line"></span><br><span class="line">- (void)eat &#123;</span><br><span class="line">    NSLog(@&quot;eat...&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (id)forwardingTargetForSelector:(SEL)aSelector &#123;</span><br><span class="line">    if (aSelector == @selector(bark)) &#123;</span><br><span class="line">        return self.dog;</span><br><span class="line">    &#125;</span><br><span class="line">    return [super forwardingTargetForSelector:aSelector];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Dog.h</span><br><span class="line"></span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">@interface Dog : NSObject</span><br><span class="line">- (void)bark;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Dog.m</span><br><span class="line"></span><br><span class="line">#import &quot;Dog.h&quot;</span><br><span class="line">@implementation Dog</span><br><span class="line">- (void)bark &#123;</span><br><span class="line">    NSLog(@&quot;wangwang...&quot;);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">main.m</span><br><span class="line"></span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">#import &quot;Person.h&quot;</span><br><span class="line"></span><br><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        Dog *dog = [[Dog alloc] init];</span><br><span class="line">        Person *oldWang = [[Person alloc] init];</span><br><span class="line">        oldWang.dog = dog;</span><br><span class="line">        </span><br><span class="line">        [oldWang performSelector:@selector(bark)];</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>人有一只狗。狗有一个叫的方法。在main.m中我分别创建了一个Dog实例，还有个Person实例。并且将dog赋值给了oldWang的dog属性是不是。<br>那么现在oldWang有了一条dog。[oldWang performSelector:@selector(bark)];我们让oldWang像狗狗一样的叫。很明显不可能的是吧。所以我们在Person中重载了forwardingTargetForSelector方法。在这里面将bark这条消息发送给了dog属性。</p>
+<p>PS:<br>这种方式看起来蛮有意思的。混搭有没有。人可以飞。猪可以上树。但是有一个很大的局限性。具体执行这些行为的都不是对象本身。而是该对象持有的其他对象或者其他对象。感觉有点狐假虎威。</p>
+<p>使用场景：这种方式只适用于我们只想将消息转发到另一个能处理该消息的对象上，而并不能处理消息的参数和返回值。</p>
+<p>方案三：<br>好吧。再假设你第一步和第二步都没有做处理。事不过三。那就给你最后一次机会。- (void)forwardInvocation:(NSInvocation *)anInvocation。</p>
+<p>这一次运行时系统会将消息打包成一个NSInvocation对象。启动完整的消息转发机制。</p>
+<p>那么forwardInvocation：干了些什么呢？</p>
+<ul>
+<li>1.定位可以响应封装在anInvocation中的消息的对象。这个对象不需要能处理所有未知消息。</li>
+<li>2.使用anInvocation作为参数，将消息发送到选中的对象。anInvocation将会保留调用结果，运行时系统会提取这一结果并将其发送到消息的原始发送者。</li>
+</ul>
+<p>还是用代码说话。瞎逼逼谁不会啊。<br>还是刚才的代码。只不过改了下Person的实现文件。oldWang有一个dog。让oldWang像狗一样的叫。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;Person.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation Person</span><br><span class="line"></span><br><span class="line">- (void)eat &#123;</span><br><span class="line">    NSLog(@&quot;eat...&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector &#123;</span><br><span class="line">    NSMethodSignature *sign = [super methodSignatureForSelector:aSelector];</span><br><span class="line">    if (!sign) &#123;</span><br><span class="line">        sign = [[self.dog class] instanceMethodSignatureForSelector:@selector(bark)];</span><br><span class="line">    &#125;</span><br><span class="line">    return sign;</span><br><span class="line">&#125;</span><br><span class="line">- (void)forwardInvocation:(NSInvocation *)anInvocation &#123;</span><br><span class="line">    if (anInvocation) &#123;</span><br><span class="line">        [anInvocation invokeWithTarget:self.dog];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>在这里，我们重载了methodSignatureForSelector方法，这里需要返回一个非nil的NSMethodSignature对象。然后在forwardInvocation里进行转发消息。所以你可以在methodSignatureForSelector方法里对所有未识别的消息进行签名。感觉就像是个加工厂。消息想要进入forwardInvocation转发前必须经过这里包装下。接下来运行时系统会将这里NSMethodSignature对象自动打包成一个个NSInvocation对象。进入forwardInvocation，将消息发送出去。</p>
+<p>其实这里，一开始我有过一个疑问，既然OC不支持多继承。那么通过消息转发这种形式，不是很像是多继承吗？后来发现，它和多继承最大区别是在于，多继承是在于集中。而这种方式却更像是在分散。将不同的功能分散到不同的对象身上。</p>
+<p>到了这里OC中的消息转发也差不多了。那么我又有疑问了。知道了这么多，有毛用？不知道我也能干活。<br>通过查阅资料，Demo。总结了消息转发的几个用途。</p>
+<ul>
+<li>创建一个对象负责把消息转发给一个由其它对象组成的响应链，代理对象会在这个有其它对象组成的集合里寻找能够处理该消息的对象； </li>
+<li>把一个对象包在一个logger对象里，用来拦截或者纪录一些有趣的消息调用；</li>
+<li>比如声明类的属性为dynamic，使用自定义的方法来截取和取代由系统自动生成的getter和setter方法。</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-0707de44c067caeb.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="异常.jpg"></p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2015/05/11/ios_stduy_note_02/" class="archive-article-date">
+  	<time datetime="2015-05-11T06:36:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2015-05-11</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OC/">OC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/技术/">技术</a><a class="article-category-link" href="/categories/技术/OC/">OC</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/01/10/ios-daily-01/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          日常开发01：一行代码搞定全屏滑动返回手势
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/05/10/ios_stduy_note_01/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">学习笔记01：OC的对象模型</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 Rui
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/"
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Rui,&lt;br&gt;.....。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

@@ -7,14 +7,14 @@
   <title>VPS搭建个人博客/相册教程03_zing-gallery个人相册配置 | Rui&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="zing-gallery是github上一个基于node.js开源的web相册，完美适配了移动设备。   1、clone zing-gallery到本地，修改远程仓库地址为自己的服务器上gallery仓库地址，push代码12345671. # git clone https://github.com/litten/zing-gallery.git2. # git remote rm origi">
-<meta name="keywords" content="教程,VPS">
+<meta name="keywords" content="教程,hexo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="VPS搭建个人博客&#x2F;相册教程03_zing-gallery个人相册配置">
 <meta property="og:url" content="//ruidada.info/2017/11/22/VPS_02_03/index.html">
 <meta property="og:site_name" content="Rui&#39;s Blog">
 <meta property="og:description" content="zing-gallery是github上一个基于node.js开源的web相册，完美适配了移动设备。   1、clone zing-gallery到本地，修改远程仓库地址为自己的服务器上gallery仓库地址，push代码12345671. # git clone https://github.com/litten/zing-gallery.git2. # git remote rm origi">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-10-18T07:10:32.868Z">
+<meta property="og:updated_time" content="2018-11-20T14:25:34.420Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="VPS搭建个人博客&#x2F;相册教程03_zing-gallery个人相册配置">
 <meta name="twitter:description" content="zing-gallery是github上一个基于node.js开源的web相册，完美适配了移动设备。   1、clone zing-gallery到本地，修改远程仓库地址为自己的服务器上gallery仓库地址，push代码12345671. # git clone https://github.com/litten/zing-gallery.git2. # git remote rm origi">
@@ -52,11 +52,11 @@
 			
 				<li><a href="/">首页</a></li>
 	        
-				<li><a href="/categories">分类</a></li>
-	        
 				<li><a href="/archives">归档</a></li>
 	        
-				<li><a href="/tags">标签</a></li>
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/tagcloud">标签</a></li>
 	        
 				<li><a href="/galery">相册</a></li>
 	        
@@ -66,17 +66,7 @@
 	        
     		
     			
-    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">Articles</a>
-    			
-    			
-            
-    			
-    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">Tags</a>
-    			
-    			
-            
-    			
-    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">About Me</a>
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">About Me</a>
     			
     			
             
@@ -116,11 +106,11 @@
 				
 					<li><a href="/">首页</a></li>
 		        
-					<li><a href="/categories">分类</a></li>
-		        
 					<li><a href="/archives">归档</a></li>
 		        
-					<li><a href="/tags">标签</a></li>
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tagcloud">标签</a></li>
 		        
 					<li><a href="/galery">相册</a></li>
 		        
@@ -156,30 +146,6 @@
     
     <!-- 目录内容 -->
 
-    <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
-          <span class="btn-bg"></span>
-          <span class="btn-text">文章导航</span>
-          </p>
-  <div id="toc-article" class="toc-article">
-      <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
-    <strong class="toc-title">文章目录</strong>
-           <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、clone-zing-gallery到本地，修改远程仓库地址为自己的服务器上gallery仓库地址，push代码"><span class="toc-number">1.</span> <span class="toc-text">1、clone zing-gallery到本地，修改远程仓库地址为自己的服务器上gallery仓库地址，push代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、在linux上安装npm依赖"><span class="toc-number">2.</span> <span class="toc-text">2、在linux上安装npm依赖</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-ssh登录到vps"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 ssh登录到vps</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-cd-到gellery远程代码仓库目录下"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 cd 到gellery远程代码仓库目录下</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-安装依赖"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 安装依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-开启node服务"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 开启node服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-常见错误"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 常见错误</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、修改nginx配置，设置反向代理"><span class="toc-number">3.</span> <span class="toc-text">3、修改nginx配置，设置反向代理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4、用supervisor开启管理相册进程"><span class="toc-number">4.</span> <span class="toc-text">4、用supervisor开启管理相册进程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-安装supervisor"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 安装supervisor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-supervisor相关命令介绍："><span class="toc-number">4.2.</span> <span class="toc-text">4.2 supervisor相关命令介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-配置"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-重启配置"><span class="toc-number">4.4.</span> <span class="toc-text">4.4 重启配置</span></a></li></ol></li></ol>
-         </div>
-   <script type="text/javascript">
-  function showToc(){
-    var toc_article = document.getElementById("toc-article");
-    var show_toc_btn = document.getElementById("show-toc-btn");
-    toc_article.setAttribute("style","display:block");
-    show_toc_btn.setAttribute("style","display:none");
-    };
-  function showBtn(){
-    var toc_article = document.getElementById("toc-article");
-    var show_toc_btn = document.getElementById("show-toc-btn");
-    toc_article.setAttribute("style","display:none");
-    show_toc_btn.setAttribute("style","display:block");
-    };
-   </script>
-      
 <!-- 目录内容结束 -->
     <div class="article-entry" itemprop="articleBody">
       
@@ -245,13 +211,13 @@
       
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/教程/">教程</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/教程/">教程</a></li></ul>
 	</div>
 
       
 	<div class="article-category tagcloud">
 	<i class="icon-price-tags"></i>
-	<a class="article-category-link" href="/categories/教程/">教程</a><a class="article-category-link" href="/categories/教程/VPS/">VPS</a>
+	<a class="article-category-link" href="/categories/教程/">教程</a><a class="article-category-link" href="/categories/教程/Hexo/">Hexo</a>
 	</div>
 
 
@@ -273,8 +239,8 @@
     </a>
   
   
-    <a href="/2016/09/18/rn-03/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">React Native 03：换肤支持</div>
+    <a href="/2017/11/20/VPS_02_02/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">VPS搭建个人博客/相册教程02_hexo静态博客配置</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -326,10 +292,6 @@
 <div class="tools-col">
   <ul class="btn-wrap">
     
-      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
-    
-    
-      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
     
     
     
@@ -338,16 +300,7 @@
   </ul>
   <div class="tools-wrap">
     
-    	<section class="tools-section tools-section-all chose">
-    	</section>
-    
 
-    
-    	<section class="tools-section tools-section-tag">
-    			<div class="widget tagcloud" id="js-tagcloud">
-    				<a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/React-Native/" style="font-size: 20px;">React Native</a> <a href="/tags/VPS/" style="font-size: 10px;">VPS</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/教程/" style="font-size: 20px;">教程</a>
-    			</div>
-    	</section>
     
 
     
@@ -355,7 +308,7 @@
     
     	<section class="tools-section tools-section-me">
   	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">Litten，&lt;br&gt;毕业于华科，就职于鹅厂&lt;br&gt;&lt;br&gt;热爱大海与冷笑话，&lt;br/&gt;目前是一枚前端&lt;br/&gt;&lt;br/&gt;胆小认生，不易相处，&lt;br&gt;年轻无为，卖马为生。</div>
+  	  		<div class="aboutme-wrap" id="js-aboutme">Rui,&lt;br&gt;.....。</div>
   	  	
     	</section>
     

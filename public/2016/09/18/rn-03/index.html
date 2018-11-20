@@ -7,14 +7,14 @@
   <title>React Native 03：换肤支持 | Rui&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="因为原生这边有个换肤功能，用户下载对应的皮肤包，用户切换皮肤之后，会触发一个全局的通知，需要支持换肤的UI视图对象会注册通知这个通知监听，然后重新渲染。某一天产品跑过来说，RN的页面也要支持换肤哦。呵呵。。。  思路1.先看看原生那边换肤是怎么玩的。 点开app下载一个皮肤包。会从服务器请求一个zip压缩包。  解压缩打开，一份色值表配置json文件，若干替换图片。看代码。大致实现是换肤库提供了">
-<meta name="keywords" content="React Native">
+<meta name="keywords" content="技术,React Native">
 <meta property="og:type" content="article">
 <meta property="og:title" content="React Native 03：换肤支持">
 <meta property="og:url" content="//ruidada.info/2016/09/18/rn-03/index.html">
 <meta property="og:site_name" content="Rui&#39;s Blog">
 <meta property="og:description" content="因为原生这边有个换肤功能，用户下载对应的皮肤包，用户切换皮肤之后，会触发一个全局的通知，需要支持换肤的UI视图对象会注册通知这个通知监听，然后重新渲染。某一天产品跑过来说，RN的页面也要支持换肤哦。呵呵。。。  思路1.先看看原生那边换肤是怎么玩的。 点开app下载一个皮肤包。会从服务器请求一个zip压缩包。  解压缩打开，一份色值表配置json文件，若干替换图片。看代码。大致实现是换肤库提供了">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-10-18T07:10:07.621Z">
+<meta property="og:updated_time" content="2018-11-20T14:24:02.537Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React Native 03：换肤支持">
 <meta name="twitter:description" content="因为原生这边有个换肤功能，用户下载对应的皮肤包，用户切换皮肤之后，会触发一个全局的通知，需要支持换肤的UI视图对象会注册通知这个通知监听，然后重新渲染。某一天产品跑过来说，RN的页面也要支持换肤哦。呵呵。。。  思路1.先看看原生那边换肤是怎么玩的。 点开app下载一个皮肤包。会从服务器请求一个zip压缩包。  解压缩打开，一份色值表配置json文件，若干替换图片。看代码。大致实现是换肤库提供了">
@@ -52,11 +52,11 @@
 			
 				<li><a href="/">首页</a></li>
 	        
-				<li><a href="/categories">分类</a></li>
-	        
 				<li><a href="/archives">归档</a></li>
 	        
-				<li><a href="/tags">标签</a></li>
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/tagcloud">标签</a></li>
 	        
 				<li><a href="/galery">相册</a></li>
 	        
@@ -66,17 +66,7 @@
 	        
     		
     			
-    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">Articles</a>
-    			
-    			
-            
-    			
-    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">Tags</a>
-    			
-    			
-            
-    			
-    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">About Me</a>
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">About Me</a>
     			
     			
             
@@ -116,11 +106,11 @@
 				
 					<li><a href="/">首页</a></li>
 		        
-					<li><a href="/categories">分类</a></li>
-		        
 					<li><a href="/archives">归档</a></li>
 		        
-					<li><a href="/tags">标签</a></li>
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tagcloud">标签</a></li>
 		        
 					<li><a href="/galery">相册</a></li>
 		        
@@ -156,30 +146,6 @@
     
     <!-- 目录内容 -->
 
-    <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
-          <span class="btn-bg"></span>
-          <span class="btn-text">文章导航</span>
-          </p>
-  <div id="toc-article" class="toc-article">
-      <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
-    <strong class="toc-title">文章目录</strong>
-           <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#思路"><span class="toc-number">1.</span> <span class="toc-text">思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-先看看原生那边换肤是怎么玩的。"><span class="toc-number">1.1.</span> <span class="toc-text">1.先看看原生那边换肤是怎么玩的。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-RN这边既然要支持换肤，不就是JS中设置图片，色值的地方改成通过桥接从原生那边获取对应的色值和图片吗？"><span class="toc-number">1.2.</span> <span class="toc-text">2.RN这边既然要支持换肤，不就是JS中设置图片，色值的地方改成通过桥接从原生那边获取对应的色值和图片吗？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-图片搞定了，还有色值呢？既然图片可以通过修改源码的形式搞定，那么色值能不能也通过修改源码的方式去搞？找到原生这边生成UIColor的方法？之前RN那部分不仅支持16进制的色值，而且还支持字符串类型的色值，例如设置’red’，RN最终会设置成真正的色值。RN是不是通过这个字符串key，去它自己的色值表去查找对应色值的呢？那么就要找到将‘red’解析成真正色值的方法。"><span class="toc-number">1.3.</span> <span class="toc-text">3.图片搞定了，还有色值呢？既然图片可以通过修改源码的形式搞定，那么色值能不能也通过修改源码的方式去搞？找到原生这边生成UIColor的方法？之前RN那部分不仅支持16进制的色值，而且还支持字符串类型的色值，例如设置’red’，RN最终会设置成真正的色值。RN是不是通过这个字符串key，去它自己的色值表去查找对应色值的呢？那么就要找到将‘red’解析成真正色值的方法。</span></a></li></ol></li></ol>
-         </div>
-   <script type="text/javascript">
-  function showToc(){
-    var toc_article = document.getElementById("toc-article");
-    var show_toc_btn = document.getElementById("show-toc-btn");
-    toc_article.setAttribute("style","display:block");
-    show_toc_btn.setAttribute("style","display:none");
-    };
-  function showBtn(){
-    var toc_article = document.getElementById("toc-article");
-    var show_toc_btn = document.getElementById("show-toc-btn");
-    toc_article.setAttribute("style","display:none");
-    show_toc_btn.setAttribute("style","display:block");
-    };
-   </script>
-      
 <!-- 目录内容结束 -->
     <div class="article-entry" itemprop="articleBody">
       
@@ -223,13 +189,13 @@
       
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React-Native/">React Native</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React-Native/">React Native</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li></ul>
 	</div>
 
       
 	<div class="article-category tagcloud">
 	<i class="icon-price-tags"></i>
-	<a class="article-category-link" href="/categories/iOS/">iOS</a>
+	<a class="article-category-link" href="/categories/技术/">技术</a><a class="article-category-link" href="/categories/技术/React-Native/">React Native</a>
 	</div>
 
 
@@ -241,11 +207,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2017/11/22/VPS_02_03/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/03/10/ios-daily-02/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          VPS搭建个人博客/相册教程03_zing-gallery个人相册配置
+          日常开发02：砸壳+Hook
         
       </div>
     </a>
@@ -304,10 +270,6 @@
 <div class="tools-col">
   <ul class="btn-wrap">
     
-      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
-    
-    
-      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
     
     
     
@@ -316,16 +278,7 @@
   </ul>
   <div class="tools-wrap">
     
-    	<section class="tools-section tools-section-all chose">
-    	</section>
-    
 
-    
-    	<section class="tools-section tools-section-tag">
-    			<div class="widget tagcloud" id="js-tagcloud">
-    				<a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/React-Native/" style="font-size: 20px;">React Native</a> <a href="/tags/VPS/" style="font-size: 10px;">VPS</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/教程/" style="font-size: 20px;">教程</a>
-    			</div>
-    	</section>
     
 
     
@@ -333,7 +286,7 @@
     
     	<section class="tools-section tools-section-me">
   	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">Litten，&lt;br&gt;毕业于华科，就职于鹅厂&lt;br&gt;&lt;br&gt;热爱大海与冷笑话，&lt;br/&gt;目前是一枚前端&lt;br/&gt;&lt;br/&gt;胆小认生，不易相处，&lt;br&gt;年轻无为，卖马为生。</div>
+  	  		<div class="aboutme-wrap" id="js-aboutme">Rui,&lt;br&gt;.....。</div>
   	  	
     	</section>
     

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>日常开发01：一行代码搞定全屏滑动返回手势 | Rui&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="开发过程中我们经常会遇到这种需求，给某个页面添加全屏的滑动返回。当然iOS7之后，系统有提供一个边缘滑动返回的手势。很明显无法完成需求。产品要的是全屏。  思路1： 既然UINavigationController有提供interactivePopGestureRecognizer手势。 UIGestureRecognizer采用的是target-action。这样我们可以找到手势的target和">
+<meta name="keywords" content="技术,iOS,日常">
+<meta property="og:type" content="article">
+<meta property="og:title" content="日常开发01：一行代码搞定全屏滑动返回手势">
+<meta property="og:url" content="//ruidada.info/2016/01/10/ios-daily-01/index.html">
+<meta property="og:site_name" content="Rui&#39;s Blog">
+<meta property="og:description" content="开发过程中我们经常会遇到这种需求，给某个页面添加全屏的滑动返回。当然iOS7之后，系统有提供一个边缘滑动返回的手势。很明显无法完成需求。产品要的是全屏。  思路1： 既然UINavigationController有提供interactivePopGestureRecognizer手势。 UIGestureRecognizer采用的是target-action。这样我们可以找到手势的target和">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-5c04f8190606dbed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-2a283ed9c0d7385b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-b451632afa82d5b1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-11-20T14:23:41.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="日常开发01：一行代码搞定全屏滑动返回手势">
+<meta name="twitter:description" content="开发过程中我们经常会遇到这种需求，给某个页面添加全屏的滑动返回。当然iOS7之后，系统有提供一个边缘滑动返回的手势。很明显无法完成需求。产品要的是全屏。  思路1： 既然UINavigationController有提供interactivePopGestureRecognizer手势。 UIGestureRecognizer采用的是target-action。这样我们可以找到手势的target和">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1488967-5c04f8190606dbed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternative" href="/atom.xml" title="Rui&#39;s Blog" type="application/atom+xml">
+  
+  
+  <script src="/style.js"></script>
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/rui.JPG" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Rui</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">首页</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/tagcloud">标签</a></li>
+	        
+				<li><a href="/galery">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">About Me</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="mail" target="_blank" href="#" title="mail">mail</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">Rui</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/rui.JPG" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Rui</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">首页</a></li>
+		        
+					<li><a href="/archives">归档</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tagcloud">标签</a></li>
+		        
+					<li><a href="/galery">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="#" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-ios-daily-01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      日常开发01：一行代码搞定全屏滑动返回手势
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>开发过程中我们经常会遇到这种需求，给某个页面添加全屏的滑动返回。当然iOS7之后，系统有提供一个边缘滑动返回的手势。很明显无法完成需求。产品要的是全屏。</p>
+<ul>
+<li><p>思路1：<br> 既然UINavigationController有提供interactivePopGestureRecognizer手势。 UIGestureRecognizer采用的是target-action。这样我们可以找到手势的target和action。然后新建一个自己的手势实例，替换为系统手势的action实现就是了。</p>
+ <a id="more"></a>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">       id target = self.interactivePopGestureRecognizer.delegate</span><br><span class="line"></span><br><span class="line">           UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:target action:@selector(handleNavigationTransition:)];</span><br><span class="line"></span><br><span class="line">        pan.delegate = self;</span><br><span class="line"></span><br><span class="line">           [self.view addGestureRecognizer:pan];</span><br><span class="line"></span><br><span class="line">           self.interactivePopGestureRecognizer.enabled = NO;</span><br></pre></td></tr></table></figure>
+<p> ​</p>
+</li>
+<li><p>思路2：<br>能不能不写那么多的代码？在研究interactivePopGestureRecognizer手势的过程中。通过运行时层层打印。</p>
+<ul>
+<li>_recognizer：<br><img src="http://upload-images.jianshu.io/upload_images/1488967-5c04f8190606dbed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></li>
+<li>_recognizer._settings：<br>  <img src="http://upload-images.jianshu.io/upload_images/1488967-2a283ed9c0d7385b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></li>
+<li>_recognizer._settings._edgeSettings：<br><img src="http://upload-images.jianshu.io/upload_images/1488967-b451632afa82d5b1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></li>
+</ul>
+</li>
+</ul>
+<p>猜测_edgeSettings属性就是我们要找的设置返回手势响应范围的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[self.interactivePopGestureRecognizer setValue:@([UIScreen mainScreen].bounds.size.width) forKeyPath:@&quot;_recognizer._settings._edgeSettings._edgeRegionSize&quot;];</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/01/10/ios-daily-01/" class="archive-article-date">
+  	<time datetime="2016-01-10T05:36:30.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-01-10</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/日常/">日常</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/技术/">技术</a><a class="article-category-link" href="/categories/技术/iOS/">iOS</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/05/10/iOS-02/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Main函数之前的那些事儿01：dylb
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/05/11/ios_stduy_note_02/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">学习笔记02：OC的消息机制</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 Rui
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/"
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Rui,&lt;br&gt;.....。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>React Native 01：学习笔记 | Rui&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="React Native是Facebook弄出来的一款用来开发真正原生、可渲染iOS和 Android移动应用的JavaScrit框架。它其实就是基于Javascript和React的基础上来开发原生应用。并且一份代码可以同时支持iOS和Android，也就是能够做到真正意义上的跨平台。React Native和React的区别在于，React是将浏览器作为渲染平台的，RN则是将移动设备作为渲染">
+<meta name="keywords" content="技术,笔记,React Native">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Native 01：学习笔记">
+<meta property="og:url" content="//ruidada.info/2016/07/20/rn-01/index.html">
+<meta property="og:site_name" content="Rui&#39;s Blog">
+<meta property="og:description" content="React Native是Facebook弄出来的一款用来开发真正原生、可渲染iOS和 Android移动应用的JavaScrit框架。它其实就是基于Javascript和React的基础上来开发原生应用。并且一份代码可以同时支持iOS和Android，也就是能够做到真正意义上的跨平台。React Native和React的区别在于，React是将浏览器作为渲染平台的，RN则是将移动设备作为渲染">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-e8ec6c5fd6def5a8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-8b818dc3449ff01f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-18c0bc4333325908.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-b02587533049e761.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-e3c12198a497792b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-223a080a685d2d61.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-18c3f054e9d00b01.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-3f75b2cf5ab0acff.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-8ac50bf3fd9d3170.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-3af14a733f92ff9d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-691333022d5e6a37.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-8205f2a9738e64a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-7cc66594fcce14d1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-ebb3cdf71c9ac2ba.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-4a1ccedc8b6ad87f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-dc36f197305d3aff.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-11-20T14:23:55.867Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React Native 01：学习笔记">
+<meta name="twitter:description" content="React Native是Facebook弄出来的一款用来开发真正原生、可渲染iOS和 Android移动应用的JavaScrit框架。它其实就是基于Javascript和React的基础上来开发原生应用。并且一份代码可以同时支持iOS和Android，也就是能够做到真正意义上的跨平台。React Native和React的区别在于，React是将浏览器作为渲染平台的，RN则是将移动设备作为渲染">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1488967-e8ec6c5fd6def5a8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternative" href="/atom.xml" title="Rui&#39;s Blog" type="application/atom+xml">
+  
+  
+  <script src="/style.js"></script>
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/rui.JPG" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Rui</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">首页</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/tagcloud">标签</a></li>
+	        
+				<li><a href="/galery">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">About Me</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="mail" target="_blank" href="#" title="mail">mail</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">Rui</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/rui.JPG" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Rui</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">首页</a></li>
+		        
+					<li><a href="/archives">归档</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tagcloud">标签</a></li>
+		        
+					<li><a href="/galery">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="#" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-rn-01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      React Native 01：学习笔记
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>React Native是Facebook弄出来的一款用来开发真正原生、可渲染iOS和 Android移动应用的JavaScrit框架。它其实就是基于Javascript和React的基础上来开发原生应用。并且一份代码可以同时支持iOS和Android，也就是能够做到真正意义上的跨平台。React Native和React的区别在于，React是将浏览器作为渲染平台的，RN则是将移动设备作为渲染平台。代码上的体现就是用web思想去写原生的代码。所以ReactNative具有Native的一个最大的优势，它可以做到热更新，也就是不需要发包就可以改点东西</p>
+</blockquote>
+<h2 id="IDE"><a href="#IDE" class="headerlink" title="IDE"></a>IDE</h2><p>Nuclide：Nuclide 是 Facebook 推出的一套基于 Atom 的开发工具集。提供自动完成和JavaScript类型检查，内建React开发支持，并支持 Facebook 最新的 React Native 库，支持 Facebook 的 Flow JavaScript 类型检查器。<br>PS:推荐使用Atom配合Nuclide来搞RN开发。反正是好用。<br><a id="more"></a></p>
+<h2 id="HelloWorld"><a href="#HelloWorld" class="headerlink" title="HelloWorld"></a>HelloWorld</h2><p><img src="http://upload-images.jianshu.io/upload_images/1488967-e8ec6c5fd6def5a8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="DraggedImage.png"></p>
+<ul>
+<li><p>####package.json</p>
+<p>这个文件主要是用来配置一些信息的，添加一些依赖库的。然后需要利用npm执行npm install命令来安装模块到node_modules目录。<br>PS:npm是一个Node的模块管理器。我们只需要一行命令就能将一些开源的模块给搞下来。感觉和cocoapods功能有点像。</p>
+</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-8b818dc3449ff01f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="DraggedImage-1.png"></p>
+<ul>
+<li><p>####iOS工程</p>
+<p>从index.ios.js文件中创建了一个名字叫AwesomeProject的view，并且添加到window的rootVC的view上。<br><img src="http://upload-images.jianshu.io/upload_images/1488967-18c0bc4333325908.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="DraggedImage-2.png"></p>
+</li>
+</ul>
+<ul>
+<li><p>####index.ios.js</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-b02587533049e761.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="DraggedImage-3.png"></p>
+</li>
+</ul>
+<h2 id="ES5-amp-ES6"><a href="#ES5-amp-ES6" class="headerlink" title="ES5&amp;ES6"></a>ES5&amp;ES6</h2><p>不管是ES5还是ES6都只是JS的一个规范，RN中并没有强制规定你要用哪个。但是RN官方还有很多大神们都建议我们直接入手ES6。但是问题就来了，你从开源网站上clone下来的代码就有的人用ES5,有的人用ES6了。所有知道这两个的区别是有必要的。不然你就会看到如下类似的红色页面：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-e3c12198a497792b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600" alt="5478D0A5F1183C3D2EDEB67CCCBB36DE.jpg.png"></p>
+<h3 id="类（Class-）"><a href="#类（Class-）" class="headerlink" title="类（Class ）"></a>类（Class ）</h3><p>JS中的Class具有很多面向对象语言的特性，虽然它也有属性，方法。还有继承等。但都只是假象。它并不是真正意义上的面向对象语言中的那种class。它其实通过构造函数的形式。将类的属性和方法都定义在构造函数的prototype对象上面。额。好吧。用的时候还是像面向对象的那种方式使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//1.定义class</span><br><span class="line">class Point &#123; </span><br><span class="line">  constructor(x, y) &#123;// 构造函数</span><br><span class="line">	 this.x = x;</span><br><span class="line">	 this.y = y;</span><br><span class="line">   &#125; </span><br><span class="line">  toString() &#123; </span><br><span class="line">	return &apos;(&apos; + this.x + &apos;, &apos; + this.y + &apos;)&apos;; </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 2.创建实例</span><br><span class="line">var a = new Point();</span><br><span class="line">a.toString();</span><br></pre></td></tr></table></figure>
+<p>上面定义了一个Point类，有2个属性（x和y），一个构造方法（constructor）还有一个方法（toString）。<br>一个class对应一个构造函数。当你使用new创建一个该类的实例的时候，它会调用该构造函数。同样一个class可以生成个多个的实例对象，但是所有的实例对象都共有这一个class原型。</p>
+<h3 id="继承（extends）"><a href="#继承（extends）" class="headerlink" title="继承（extends）"></a>继承（extends）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Point3D extends Point &#123; </span><br><span class="line">   constructor(x, y, z) &#123;    </span><br><span class="line"> 	 super(x,y);</span><br><span class="line"> 	 this.z = z;</span><br><span class="line">    &#125; </span><br><span class="line">   toString() &#123; </span><br><span class="line"> 	return &apos;(&apos; + this.x + &apos;, &apos; + this.y + &apos;,&apos; + this.z + &apos;)&apos;; </span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>上面Point3D类继承与Point，并且在构造函数里利用suepr（）方法调用了父类的构造函数。<br>JS中的继承，子类可以具有父类所有属性和方法。但是在子类的构造函数里，必须要调用super（）,这样才能在子类中使用this关键字。</p>
+<h3 id="回调函数和Promise"><a href="#回调函数和Promise" class="headerlink" title="回调函数和Promise"></a>回调函数和Promise</h3><p>在RN中经常要用到异步编程。所以就需要将执行的结果回调出去。一般采用2种方式。一种是回调函数，另一种是Promise。<br>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">1.回调函数</span><br><span class="line"> //定义</span><br><span class="line"> StorageUtil.load = function(key,successCallback,errorCallback)&#123;</span><br><span class="line"> 	storage.load(&#123;</span><br><span class="line"> 	  key: key,</span><br><span class="line"> 	&#125;).then(ret =&gt; &#123;</span><br><span class="line"> 	  successCallback(ret);</span><br><span class="line"> 	&#125;).catch(err =&gt; &#123;</span><br><span class="line"> 	  errorCallback(err);</span><br><span class="line"> 	&#125;)  </span><br><span class="line"> &#125;</span><br><span class="line"> //使用</span><br><span class="line"> 	StorageUtil.load(</span><br><span class="line"> 	  APPID_KEY,</span><br><span class="line"> 	  (data)=&gt; &#123;</span><br><span class="line"> 		console.log(&apos;data&apos;+data);</span><br><span class="line"> 	  &#125;,</span><br><span class="line"> 	  (err)=&gt; &#123;</span><br><span class="line"> 		console.log(&apos;err&apos;+err);</span><br><span class="line"> 	  &#125;</span><br><span class="line"> 	);</span><br><span class="line"> 2.Promise</span><br><span class="line"> //定义</span><br><span class="line"> StorageUtil.load2 = function(key)&#123;</span><br><span class="line">    return new Promise((resolve, reject) =&gt;&#123;</span><br><span class="line"> 	storage.load(&#123;</span><br><span class="line"> 	  key: key,</span><br><span class="line"> 	&#125;).then(ret =&gt; &#123;</span><br><span class="line"> 	  resolve(ret);</span><br><span class="line"> 	&#125;).catch(err =&gt; &#123;</span><br><span class="line"> 	  reject(err);</span><br><span class="line"> 	&#125;)  </span><br><span class="line">   &#125;);</span><br><span class="line"> &#125;</span><br><span class="line"> //使用</span><br><span class="line"> 	StorageUtil.load2(APPID_KEY).then((data)=&gt;&#123;</span><br><span class="line"> 		console.log(&apos;[load2]---&apos;+data);</span><br><span class="line"> 	&#125;)</span><br><span class="line"> 	.catch((error)=&gt;&#123;</span><br><span class="line"> 		console.log(&apos;err&apos;+err);</span><br><span class="line"> 	&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><ul>
+<li><p>ES5</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//1.导入</span><br><span class="line"> var React = require(&quot;react&quot;);</span><br><span class="line"> var &#123;</span><br><span class="line"> 	   Component, </span><br><span class="line"> 	   PropTypes</span><br><span class="line"> &#125; = React;</span><br><span class="line"> var ReactNative = require(&quot;react-native&quot;);</span><br><span class="line"> var &#123;</span><br><span class="line"> 	   Image,</span><br><span class="line"> 	   Text,</span><br><span class="line"> &#125; = ReactNative; </span><br><span class="line"> //2.导出</span><br><span class="line"> var MyComponent = React.createClass(&#123; </span><br><span class="line"> 	  ...</span><br><span class="line"> &#125;);</span><br><span class="line"> module.exports = MyComponent;</span><br><span class="line"> //3.引用</span><br><span class="line"> var MyComponent = require(&apos;./MyComponent&apos;);</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+<li><p>ES6</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">//1.导入</span><br><span class="line"> import React, &#123; </span><br><span class="line"> 	  Component, </span><br><span class="line"> 	  PropTypes,</span><br><span class="line"> &#125; from &apos;react&apos;;</span><br><span class="line"> import &#123; </span><br><span class="line">	  Image, </span><br><span class="line"> 	  Text,</span><br><span class="line"> &#125; from &apos;react-native&apos;</span><br><span class="line"> //2.导出</span><br><span class="line"> export default class MyComponent extends Component&#123; </span><br><span class="line"> 	  ...</span><br><span class="line"> &#125;</span><br><span class="line"> //3.引用</span><br><span class="line"> import MyComponent from &apos;./MyComponent&apos;;</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ul>
+<h3 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h3><ul>
+<li><p>ES5</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">//1.组件</span><br><span class="line"> var Photo = React.createClass(&#123; </span><br><span class="line"> 		render: function() &#123;</span><br><span class="line"> 			   return ( </span><br><span class="line"> 				  &lt;Image source=&#123;this.props.source&#125; /&gt; </span><br><span class="line"> 			  ); </span><br><span class="line"> 		&#125;,</span><br><span class="line"> &#125;);</span><br><span class="line"> //2.组件方法</span><br><span class="line"> test: function()&#123; </span><br><span class="line"> &#125;,</span><br><span class="line"> //3.Props</span><br><span class="line"> getDefaultProps: function() &#123; //默认属性</span><br><span class="line"> 	  return &#123; </span><br><span class="line"> 			imageId: 0, </span><br><span class="line"> 	  &#125;; </span><br><span class="line"> &#125;,</span><br><span class="line"> propTypes: &#123;  //属性类型</span><br><span class="line"> 	  imageId: React.PropTypes.number.isRequired, </span><br><span class="line"> &#125;,</span><br><span class="line"> //4.state</span><br><span class="line"> getInitialState: function() &#123; </span><br><span class="line"> 	  return &#123; </span><br><span class="line"> 		  iconName:&apos;&apos;, </span><br><span class="line"> 	  &#125;; </span><br><span class="line"> &#125;,</span><br><span class="line"> //5.bind()</span><br><span class="line"> 在ES5下，React.createClass会把所有的方法都bind一遍,</span><br><span class="line"> 例如：给按钮绑定点击方法的时候不需要bind(this)</span><br><span class="line">  render: function()&#123;</span><br><span class="line"> 		return (</span><br><span class="line"> 			&lt;TouchableHighlight onPress=&#123;this.onClick&#125;&gt;</span><br><span class="line"> 			&lt;/TouchableHighlight&gt;</span><br><span class="line"> 		)</span><br><span class="line"> 	&#125;,</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ul>
+<p>​</p>
+<ul>
+<li><p>ES6</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">//1.定义组件</span><br><span class="line"> class Photo extends React.Component &#123; </span><br><span class="line"> 	render() &#123; </span><br><span class="line"> 		return ( </span><br><span class="line"> 			&lt;Image source=&#123;this.props.source&#125; /&gt; </span><br><span class="line"> 		); </span><br><span class="line"> 	&#125;</span><br><span class="line"> &#125;</span><br><span class="line"> //2.组件方法</span><br><span class="line"> test()&#123; </span><br><span class="line"> &#125;,</span><br><span class="line"> //3.Props</span><br><span class="line"> static defaultProps = &#123; //默认属性</span><br><span class="line"> 	imageId: 0, </span><br><span class="line"> &#125;; </span><br><span class="line"> static propTypes = &#123; //属性类型</span><br><span class="line"> 	 imageId: React.PropTypes.number.isRequired,</span><br><span class="line"> &#125;; </span><br><span class="line"> //4.State</span><br><span class="line"> constructor(props)&#123;</span><br><span class="line"> 	  super(props); </span><br><span class="line"> 	  this.state = &#123; </span><br><span class="line"> 			  iconName: &apos;&apos;, </span><br><span class="line"> 	  &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"> //5.bind()</span><br><span class="line"> 在ES6下，你需要通过bind来绑定this引用，或者使用箭头函数（它会绑定当前scope的this引用）来调用</span><br><span class="line"> 例如：</span><br><span class="line"> render()&#123; </span><br><span class="line"> 	  return (</span><br><span class="line"> 			&lt;TouchableHighlight  onPress=&#123;this.onClick.bind(this)&#125; &gt;</span><br><span class="line"> 			&lt;/TouchableHighlight&gt; </span><br><span class="line"> 			&lt;TouchableHighlight  onPress=&#123;()=&gt;this.onClick()&#125;&gt;</span><br><span class="line"> 			&lt;/TouchableHighlight&gt; </span><br><span class="line"> 		) </span><br><span class="line"> &#125;,</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ul>
+<h2 id="React"><a href="#React" class="headerlink" title="React"></a>React</h2><p>###flex布局</p>
+<ul>
+<li><p>1.水平居中（alignItems:’center’）</p>
+</li>
+<li><p>2.垂直居中（justifyContent:’center’）</p>
+</li>
+<li><p>3.水平垂直居中（alignItems:’center’, justifyContent:’center’）</p>
+</li>
+<li><p>4.flexDirection(row, column)</p>
+<p>栗如：</p>
+<ul>
+<li><p>行（宽度比例1:2:1）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">render() &#123;</span><br><span class="line">   return (</span><br><span class="line">    &lt;View style = &#123;&#123;flex:1,flexDirection:&apos;row&apos;&#125;&#125;&gt;</span><br><span class="line">       &lt;View style = &#123;&#123;flex:1,backgroundColor:&apos;red&apos;&#125;&#125;&gt;</span><br><span class="line">       &lt;/View&gt;</span><br><span class="line">       &lt;View style = &#123;&#123;flex:2,backgroundColor:&apos;blue&apos;&#125;&#125;&gt;</span><br><span class="line">       &lt;/View&gt;</span><br><span class="line">       &lt;View style = &#123;&#123;flex:1,backgroundColor:&apos;yellow&apos;&#125;&#125;&gt;</span><br><span class="line">       &lt;/View&gt;</span><br><span class="line">     &lt;/View&gt;</span><br><span class="line">     );</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-223a080a685d2d61.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Simulator Screen Shot 2016年10月27日 上午11.42.51.png">    </p>
+</li>
+<li><p>列（高度比例：1:2:1）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">render() &#123;</span><br><span class="line">     return (</span><br><span class="line">       &lt;View style = &#123;&#123;flex:1,flexDirection:&apos;column&apos;&#125;&#125;&gt;</span><br><span class="line">         &lt;View style = &#123;&#123;flex:1,backgroundColor:&apos;red&apos;&#125;&#125;&gt;</span><br><span class="line">         &lt;/View&gt;</span><br><span class="line">         &lt;View style = &#123;&#123;flex:2,backgroundColor:&apos;blue&apos;&#125;&#125;&gt;</span><br><span class="line">         &lt;/View&gt;</span><br><span class="line">         &lt;View style = &#123;&#123;flex:1,backgroundColor:&apos;yellow&apos;&#125;&#125;&gt;</span><br><span class="line">         &lt;/View&gt;</span><br><span class="line">       &lt;/View&gt;</span><br><span class="line">       );</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-18c3f054e9d00b01.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Simulator Screen Shot 2016年10月27日 上午11.35.11.png"></p>
+<p><em><u>PS:利用这个就可以完成一些复杂的网格布局,例如多层嵌套的布局。</u>,</em></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-3f75b2cf5ab0acff.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1902568823-56fde33a311f0_articlex-1.png"></p>
+</li>
+</ul>
+</li>
+<li><p>5.图片（resizeMode）</p>
+<ul>
+<li><p>contain（模式容器完全容纳图片，图片宽高自适应)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;Text style=&#123;styles.welcome&#125;&gt; 100px height with resizeMode contain &lt;/Text&gt;</span><br><span class="line">&lt;View style=&#123;[&#123;flex: 1, backgroundColor: &apos;#fe0000&apos;&#125;]&#125;&gt;</span><br><span class="line">   &lt;Image style=&#123;&#123;flex: 1, height: 100, resizeMode: Image.resizeMode.contain&#125;&#125; source=&#123;&#123;uri: &apos;http://gtms03.alicdn.com/tps/i3/TB1Kcs5GXXXXXbMXVXXutsrNFXX-608-370.png&apos;&#125;&#125; /&gt;</span><br><span class="line">&lt;/View&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-8ac50bf3fd9d3170.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="DraggedImage-4.png"></p>
+</li>
+<li><p>cover(图片会被截取并铺满容器)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;Text style=&#123;styles.welcome&#125;&gt; 100px height with resizeMode cover &lt;/Text&gt;</span><br><span class="line">  &lt;View style=&#123;[&#123;flex: 1, backgroundColor: &apos;#fe0000&apos;&#125;]&#125;&gt;</span><br><span class="line">      &lt;Image style=&#123;&#123;flex: 1, height: 100, resizeMode: Image.resizeMode.cover&#125;&#125; source=&#123;&#123;uri: &apos;http://gtms03.alicdn.com/tps/i3/TB1Kcs5GXXXXXbMXVXXutsrNFXX-608-370.png&apos;&#125;&#125; /&gt;</span><br><span class="line">  &lt;/View&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-3af14a733f92ff9d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="DraggedImage-5-1.png"></p>
+</li>
+<li><p>stretch(图片拉伸适应模式容器)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;Text style=&#123;styles.welcome&#125;&gt; 100px height with resizeMode stretch &lt;/Text&gt;</span><br><span class="line">   &lt;View style=&#123;[&#123;flex: 1, backgroundColor: &apos;#fe0000&apos;&#125;]&#125;&gt;</span><br><span class="line">       &lt;Image style=&#123;&#123;flex: 1, height: 100, resizeMode: Image.resizeMode.stretch&#125;&#125; source=&#123;&#123;uri: &apos;http://gtms03.alicdn.com/tps/i3/TB1Kcs5GXXXXXbMXVXXutsrNFXX-608-370.png&apos;&#125;&#125; /&gt;</span><br><span class="line">   &lt;/View&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-691333022d5e6a37.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="DraggedImage-6.png"></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>###生命周期</p>
+<p>关于RN中组件的生命周期很类似于iOS中VC中的View的生命周期。一开始在调试的时候会发现组件的render方法调用的非常频繁。所以知道组件的生命周期是很有必要。这样我们可以在适当的方法里面完成相应的事情，比如在componentDidMount添加通知，componentWillUnmount中移除通知等等。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-8205f2a9738e64a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="DraggedImage-7.png"></p>
+<ul>
+<li><strong>getDefaultProps</strong>：组件实例创建前调用，多个实例间共享引用。注意：如果父组件传递过来的Props和你在该函数中定义的Props的key一样，将会被覆盖。</li>
+<li><strong>getInitalState</strong>:组件示例创建的时候调用的第一个函数。主要用于初始化state。注意：为了在使用中不出现空值，建议初始化state的时候尽可能给每一个可能用到的值都赋一个初始值。</li>
+<li><strong>componentWillMount</strong>：在render前，getInitalState之后调用。仅调用一次，可以用于改变state操作。</li>
+<li><strong>render</strong>：组件渲染函数，会返回一个Virtual DOM，只允许返回一个最外层容器组件。render函数尽量保持纯净，只渲染组件，不修改状态，不执行副操作（比如计时器）。</li>
+<li><strong>componentDidMount</strong>:在render渲染之后，React会根据Virtual DOM来生成真实DOM，生成完毕后会调用该函数。在浏览器端（React），我们可以通过this.getDOMNode()来拿到相应的DOM节点。然而我们在RN中并用不到，在RN中主要在该函数中执行网络请求，定时器开启等相关操作</li>
+<li><strong>componentWillReceiveProps(nextProps)</strong>:props改变（父容器来更改或是redux），将会调用该函数。新的props将会作为参数传递进来，老的props可以根据this.props来获取。我们可以在该函数中对state作一些处理。注意：在该函数中更新state不会引起二次渲染。</li>
+<li><strong>boolean shouldComponentUpdate(object nextProps, object nextState)</strong>：该函数传递过来两个参数，新的state和新的props。state和props的改变都会调到该函数。该函数主要对传递过来的nextProps和nextState作判断。如果返回true则重新渲染，如果返回false则不重新渲染。在某些特定条件下，我们可以根据传递过来的props和state来选择更新或者不更新，从而提高效率。</li>
+<li><strong>componentWillUpdate(object nextProps, object nextState)</strong>：与componentWillMount方法类似，组件上会接收到新的props或者state渲染之前，调用该方法。但是不可以在该方法中更新state和props。</li>
+<li><strong>componentDidUpdate(object prevProps,object prevState)</strong>:和初始化时期的componentDidMount类似，在render之后，真实DOM生成之后调用该函数。传递过来的是当前的props和state。在该函数中同样可以使用this.getDOMNode()来拿到相应的DOM节点。如果你需要在运行中执行某些副操作，请在该函数中完成。</li>
+<li><strong>componentWillUnmount</strong>：组件DOM中移除的时候调用。在这里进行一些相关的销毁操作，比如定时器，监听等等。</li>
+</ul>
+<h2 id="React-Native"><a href="#React-Native" class="headerlink" title="React Native"></a>React Native</h2><p>###存储<br>RN官方有封装一个AsyncStorage组件，采用key-value的形式用来处理一些数据存储操作。<br>PS：更推荐使用react-native-storage这个开源组件，它是对AsyncStorage的一层封装，并且他每个方法都是会返回一个Promise对象。使用起来更加方便。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line">import React, &#123; Component &#125; from &apos;react&apos;;</span><br><span class="line"> import &#123;</span><br><span class="line">   AsyncStorage,</span><br><span class="line"> &#125; from &apos;react-native&apos;;</span><br><span class="line"> import Storage from &apos;react-native-storage&apos;; </span><br><span class="line"> global.USER = &#123; </span><br><span class="line">   admin_id: &apos;&apos;,</span><br><span class="line">   user_name: &apos;&apos;,</span><br><span class="line">   admin_name: &apos;&apos;,</span><br><span class="line">   expiry: 0,</span><br><span class="line">   auth_token: &apos;&apos; </span><br><span class="line"> &#125;;</span><br><span class="line"> global.APPID = 0;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> global.USER_KEY = &apos;USERKEY&apos;;</span><br><span class="line"> global.APPID_KEY = &apos;APPIDKEY&apos;;</span><br><span class="line"> global.SHOW_ERROR = &apos;0&apos;; //0表示显示全部，1显示异常</span><br><span class="line"> </span><br><span class="line"> var StorageUtil = &#123;&#125;;</span><br><span class="line"> </span><br><span class="line"> var storage = new Storage(&#123;</span><br><span class="line">   // 最大容量，默认值1000条数据循环存储</span><br><span class="line">   size: 1000,</span><br><span class="line"> </span><br><span class="line">   // 存储引擎：对于RN使用AsyncStorage，对于web使用window.localStorage</span><br><span class="line">  // 如果不指定则数据只会保存在内存中，重启后即丢失</span><br><span class="line">   storageBackend: AsyncStorage,</span><br><span class="line"> </span><br><span class="line">   // 数据过期时间，默认一整天（1000 * 3600 * 24 毫秒），设为null则永不过期</span><br><span class="line">   defaultExpires: null,</span><br><span class="line"> </span><br><span class="line">   // 读写时在内存中缓存数据。默认启用。</span><br><span class="line">   enableCache: true,</span><br><span class="line"> </span><br><span class="line">  // 如果storage中没有相应数据，或数据已过期，</span><br><span class="line">   // 则会调用相应的sync同步方法，无缝返回最新数据。</span><br><span class="line">   sync: &#123;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;);</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> StorageUtil.init = function(callback)&#123;</span><br><span class="line">     storage.getBatchData([</span><br><span class="line">         &#123; key: USER_KEY &#125;,</span><br><span class="line">         &#123; key: APPID_KEY &#125;</span><br><span class="line">     ]).then(results =&gt; &#123;</span><br><span class="line">      console.log(&apos;[results]--&apos;+ results);</span><br><span class="line">      USER = results[0];</span><br><span class="line">       APPID = results[1];</span><br><span class="line">      console.log(&apos;[init:USER]--&apos;+ USER);</span><br><span class="line">      console.log(&apos;[init:APPID]--&apos;+ APPID);</span><br><span class="line">      callback(true);</span><br><span class="line">    &#125;).catch(err =&gt; &#123;</span><br><span class="line">      console.log(err);</span><br><span class="line">      callback(false);</span><br><span class="line">    &#125;);  </span><br><span class="line"> &#125;,</span><br><span class="line">StorageUtil.save = function(key,data)&#123;</span><br><span class="line">  // 使用key来保存数据。这些数据一般是全局独有的，常常需要调用的。</span><br><span class="line">  // 除非你手动移除，这些数据会被永久保存，而且默认不会过期。</span><br><span class="line">  storage.save(&#123;</span><br><span class="line">    key: key,  //注意:请不要在key中使用_下划线符号!</span><br><span class="line">    rawData: data,</span><br><span class="line">     // 如果不指定过期时间，则会使用defaultExpires参数</span><br><span class="line">     // 如果设为null，则永不过期</span><br><span class="line">     // expires: 1000 * 36000</span><br><span class="line"></span><br><span class="line">   &#125;);</span><br><span class="line">   if (key == USER_KEY) &#123;</span><br><span class="line">     USER = data;</span><br><span class="line">   &#125;else if (key == APPID_KEY) &#123;</span><br><span class="line">     APPID = data;</span><br><span class="line">   &#125;</span><br><span class="line">   console.log(&apos;[SAVE:USER]--&apos;+ USER.user_name);</span><br><span class="line">   console.log(&apos;[SAVE:APPID]--&apos;+ APPID);</span><br><span class="line"> &#125;,</span><br><span class="line"> StorageUtil.load = function(key,successCallback,errorCallback)&#123;</span><br><span class="line">   // 读取</span><br><span class="line">   storage.load(&#123;</span><br><span class="line">     key: key,</span><br><span class="line">   &#125;).then(ret =&gt; &#123;</span><br><span class="line">     successCallback(ret);</span><br><span class="line">     //如果找到数据，则在then方法中返回</span><br><span class="line">   &#125;).catch(err =&gt; &#123;</span><br><span class="line">     //如果没有找到数据且没有同步方法，</span><br><span class="line">    //或者有其他异常，则在catch中返回</span><br><span class="line">     errorCallback(err);</span><br><span class="line">   &#125;)  </span><br><span class="line"> &#125;,</span><br><span class="line"> </span><br><span class="line"> module.exports = StorageUtil;</span><br></pre></td></tr></table></figure></p>
+<p>###网络<br>RN的网络组件封装的非常好用。直接上代码吧。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">getMoviesFromApiAsync() &#123;</span><br><span class="line">    return fetch(&apos;http://facebook.github.io/react-native/movies.json&apos;)</span><br><span class="line">      .then((response) =&gt; response.json())</span><br><span class="line">      .then((responseJson) =&gt; &#123;</span><br><span class="line">        return responseJson.movies;</span><br><span class="line">      &#125;)</span><br><span class="line">      .catch((error) =&gt; &#123;</span><br><span class="line">        console.error(error);</span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>###桥接<br>例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">OC代码</span><br><span class="line">RCT_EXPORT_METHOD(getVersion:(RCTResponseSenderBlock)callback)</span><br><span class="line">&#123;</span><br><span class="line">  NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@&quot;CFBundleShortVersionString&quot;];</span><br><span class="line">  callback(@[version]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">JS代码</span><br><span class="line">ASHUtilManager.getVersion((version)=&gt; &#123;</span><br><span class="line">			this.setState(&#123;</span><br><span class="line">      			versionText : &apos;V&apos; + version,</span><br><span class="line">      		&#125;);</span><br><span class="line">		&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong><em>PS：在RCT_EXPORT_METHOD宏括起来的方法都是异步执行的，如果方法里涉及到UI的操作，需要放到主线程里执行。RN中的桥接方式比JSBridge好用多了。</em></strong></p>
+<hr>
+<p>##ReactNative疑问整理：</p>
+<ul>
+<li>1.RN中没有VC的概念。它把view的生命周期事件封装在了view里面，而不是像iOS中用VC去管理view的生命周期。suoyi RN中的转场都只是view层的切换。</li>
+<li>2.this.setState()不生效。<br><img src="http://upload-images.jianshu.io/upload_images/1488967-7cc66594fcce14d1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=".png"><br>react中的setState 是异步执行的，修改状态后并没有马上生效， setState 函数接受两个参数，一个是一个对象，就是设置的状态，还有一个是一个回调函数，就是设置状态成功之后执行的。所以正确做法。<br><img src="http://upload-images.jianshu.io/upload_images/1488967-ebb3cdf71c9ac2ba.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="屏幕快照 2016-11-08 下午5.23.52.png"></li>
+</ul>
+<ul>
+<li>3.RN中ImageView加载网络图片，只做了内存缓存，而没有做磁盘缓存。<br><img src="http://upload-images.jianshu.io/upload_images/1488967-4a1ccedc8b6ad87f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="读取缓存 .png"><br><img src="http://upload-images.jianshu.io/upload_images/1488967-dc36f197305d3aff.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="添加缓存.png"><br>上面代码中_decodedImageCache对象的类型是NSCache。可以看出RN并没有做磁盘缓存。</li>
+<li>4.RN的网络请求没有被NSURLProtocol拦截。<br>在想怎么给RN中的图片做磁盘缓存的时候，调试的过程中发现RN中通过fetch发起的所有请求都没有被注册的NSURLProtocol拦截，那么问题就来了。没有被拦截，难道是RN的网络用了更底层的东西？</li>
+<li><p>5.关于动态下发代码，有两种做法。</p>
+<ul>
+<li>在程序一启动的时候，判断是否需要更新，然后去下载所有代码打包后zip包。之后需要显示RN的view的时候就可以去加载对应的view就可以了。</li>
+<li>一个页面对应一个url，通过这个url去请求单独页面的RN代码。这样可以做到每次进入的时候都会加载最新的页面。也就是像浏览器那样重新打开，重新去请求页面。</li>
+</ul>
+<p>但是最后还是选择了第一种方式，同时保留了第二种。在封装的vc上，提供自动刷新的属性。也支持每次进入页面都自动更新代码。</p>
+</li>
+</ul>
+<p>附录：<br>学习资料<br>[<a href="http://reactnative.cn/]" target="_blank" rel="noopener">http://reactnative.cn/]</a><br>[<a href="https://github.com/reactnativecn/react-native-guide]" target="_blank" rel="noopener">https://github.com/reactnativecn/react-native-guide]</a><br>[<a href="http://www.jianshu.com/p/7c43af022758]" target="_blank" rel="noopener">http://www.jianshu.com/p/7c43af022758]</a></p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/07/20/rn-01/" class="archive-article-date">
+  	<time datetime="2016-07-20T03:44:50.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-07-20</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React-Native/">React Native</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/技术/">技术</a><a class="article-category-link" href="/categories/技术/React-Native/">React Native</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/09/11/rn-02/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          React Native 02：原生容器类封装
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/05/10/iOS-03/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Main函数之前的那些事儿02：App启动速度优化</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 Rui
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/"
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Rui,&lt;br&gt;.....。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

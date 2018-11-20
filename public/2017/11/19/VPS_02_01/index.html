@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>VPS搭建个人博客/相册教程01_服务器环境配置 | Rui&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="环境： vps环境：CentOS 6.9 本机环境：macOS10.12   1. SSH登录VPS2. 搭建LNMP环境2.1 cd到root用户目录下1cd /root # 安装包下载目录">
+<meta name="keywords" content="教程,hexo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VPS搭建个人博客&#x2F;相册教程01_服务器环境配置">
+<meta property="og:url" content="//ruidada.info/2017/11/19/VPS_02_01/index.html">
+<meta property="og:site_name" content="Rui&#39;s Blog">
+<meta property="og:description" content="环境： vps环境：CentOS 6.9 本机环境：macOS10.12   1. SSH登录VPS2. 搭建LNMP环境2.1 cd到root用户目录下1cd /root # 安装包下载目录">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://ozpzewso9.bkt.clouddn.com/Snip20171215_33.png">
+<meta property="og:image" content="http://ozpzewso9.bkt.clouddn.com/Snip20171218_1.png">
+<meta property="og:image" content="http://ozpzewso9.bkt.clouddn.com/Snip20171215_34.png">
+<meta property="og:image" content="http://ozpzewso9.bkt.clouddn.com/Snip20171215_36.png">
+<meta property="og:image" content="http://ozpzewso9.bkt.clouddn.com/Snip20171218_48.png">
+<meta property="og:updated_time" content="2018-11-20T14:25:37.315Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="VPS搭建个人博客&#x2F;相册教程01_服务器环境配置">
+<meta name="twitter:description" content="环境： vps环境：CentOS 6.9 本机环境：macOS10.12   1. SSH登录VPS2. 搭建LNMP环境2.1 cd到root用户目录下1cd /root # 安装包下载目录">
+<meta name="twitter:image" content="http://ozpzewso9.bkt.clouddn.com/Snip20171215_33.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Rui&#39;s Blog" type="application/atom+xml">
+  
+  
+  <script src="/style.js"></script>
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/rui.JPG" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Rui</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">首页</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/tagcloud">标签</a></li>
+	        
+				<li><a href="/galery">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">About Me</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="mail" target="_blank" href="#" title="mail">mail</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">Rui</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/rui.JPG" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Rui</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">首页</a></li>
+		        
+					<li><a href="/archives">归档</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tagcloud">标签</a></li>
+		        
+					<li><a href="/galery">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="#" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="[layout]-VPS_02_01" class="article article-type-[layout]" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      VPS搭建个人博客/相册教程01_服务器环境配置
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>环境：</p>
+<p>vps环境：CentOS 6.9</p>
+<p>本机环境：macOS10.12</p>
+</blockquote>
+<hr>
+<h2 id="1-SSH登录VPS"><a href="#1-SSH登录VPS" class="headerlink" title="1. SSH登录VPS"></a>1. SSH登录VPS</h2><h2 id="2-搭建LNMP环境"><a href="#2-搭建LNMP环境" class="headerlink" title="2. 搭建LNMP环境"></a>2. 搭建LNMP环境</h2><h3 id="2-1-cd到root用户目录下"><a href="#2-1-cd到root用户目录下" class="headerlink" title="2.1 cd到root用户目录下"></a>2.1 cd到root用户目录下</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /root # 安装包下载目录</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="2-2-下载lnmp一键安装包"><a href="#2-2-下载lnmp一键安装包" class="headerlink" title="2.2 下载lnmp一键安装包"></a>2.2 下载lnmp一键安装包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -c http://soft.vpser.net/lnmp/lnmp1.4.tar.gz # 版本随意</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-解压缩到-usr-local目录下"><a href="#2-3-解压缩到-usr-local目录下" class="headerlink" title="2.3 解压缩到/usr/local目录下"></a>2.3 解压缩到/usr/local目录下</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxf lnmp1.4.tar.gz -C /usr/local # 安装目录要放在/usr路径下</span><br></pre></td></tr></table></figure>
+<h3 id="2-4-安装"><a href="#2-4-安装" class="headerlink" title="2.4 安装"></a>2.4 安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/lnmp1.4 &amp;&amp; ./install.sh</span><br></pre></td></tr></table></figure>
+<p>然后会出现一些安装提示选项，一路回车键就好。然后就开始安装各种软件，来杯82年的java，稍等片刻，安装完成。</p>
+<p><img src="http://ozpzewso9.bkt.clouddn.com/Snip20171215_33.png" alt=""></p>
+<p>出现如上提示表示安装完成。输入<strong>lnmp help</strong>命令查看更多使用帮助。</p>
+<p><img src="http://ozpzewso9.bkt.clouddn.com/Snip20171218_1.png" alt="Snip20171218_1.png"></p>
+<p>在浏览器中输入<strong>vps</strong>的<strong>ip</strong>地址，将会看到如下提示页面。至此，<strong>lnmp</strong>环境已经安装完成。</p>
+<p><img src="http://ozpzewso9.bkt.clouddn.com/Snip20171215_34.png" alt=""></p>
+<h2 id="3-安装Node环境"><a href="#3-安装Node环境" class="headerlink" title="3. 安装Node环境"></a>3. <strong>安装Node环境</strong></h2><blockquote>
+<p>个人相册使用的是zing-gallery的开源项目。因为需要在服务端开启一个node服务，所以这里需要配置好node环境。</p>
+</blockquote>
+<h3 id="3-1-cd到root用户目录下"><a href="#3-1-cd到root用户目录下" class="headerlink" title="3.1 cd到root用户目录下"></a>3.1 cd到root用户目录下</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /root</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-下载node安装包"><a href="#3-2-下载node安装包" class="headerlink" title="3.2 下载node安装包"></a>3.2 下载<strong>node</strong>安装包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://nodejs.org/dist/v6.4.0/node-v6.4.0-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
+<h3 id="3-3-解压缩到-usr-local目录下"><a href="#3-3-解压缩到-usr-local目录下" class="headerlink" title="3.3 解压缩到/usr/local目录下"></a>3.3 解压缩到/usr/local目录下</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf node-v6.4.0-linux-x86.tar.gz -C /usr/local</span><br></pre></td></tr></table></figure>
+<h3 id="3-4-添加环境变量"><a href="#3-4-添加环境变量" class="headerlink" title="3.4 添加环境变量"></a>3.4 添加环境变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br><span class="line"></span><br><span class="line">在最底下添加以下代码</span><br><span class="line">export NODE_HOME=/usr/local/node-v6.4.0-linux-x64</span><br><span class="line">export PATH=$PATH:$NODE_HOME/bin</span><br><span class="line">export NODE_PATH=$NODE_HOME/lib/node_modules</span><br></pre></td></tr></table></figure>
+<h3 id="3-5-source-etc-profile"><a href="#3-5-source-etc-profile" class="headerlink" title="3.5 source /etc/profile"></a>3.5 source /etc/profile</h3><h3 id="3-6-node-v"><a href="#3-6-node-v" class="headerlink" title="3.6 node -v"></a>3.6 node -v</h3><h3 id="3-7-npm-v"><a href="#3-7-npm-v" class="headerlink" title="3.7 npm -v"></a>3.7 npm -v</h3><p><img src="http://ozpzewso9.bkt.clouddn.com/Snip20171215_36.png" alt=""></p>
+<p><strong>PS:</strong></p>
+<p>如果需要升级<strong>node</strong>，可以使用<strong>node</strong>升级神器<strong>-n</strong>。</p>
+<p>1.全局安装n</p>
+<p>​    npm install -g n</p>
+<p>2.查看版本</p>
+<p>​    n -V</p>
+<p>3.卸载当前的node</p>
+<p>4.使用n安装node</p>
+<p>​    n stable（稳定的正式版本）</p>
+<p>​    n latest（官方最新的发布版本）</p>
+<p>​    n lts（最新的LTS正式版本）</p>
+<p>​    n 9.2.0 （安装指定版本）</p>
+<p>具体使用<strong>n help</strong>查看帮助</p>
+<h2 id="4-配置Git仓库"><a href="#4-配置Git仓库" class="headerlink" title="4. 配置Git仓库"></a>4. <strong>配置Git仓库</strong></h2><blockquote>
+<p>静态博客和个人相册的代码，你可以选择托管到github或者coding.net上。然后使用webhooks，在你每次本地push之后，触发post-receive脚本，然后在个人vps上，拉取远程仓库的代码。</p>
+<p>因为是自己的vps，想怎么搞就怎么搞，所以在vps上搭建好git环境，我就直接将博客和相册代码托管到vps上了，没有使用github和coding.net。</p>
+</blockquote>
+<h3 id="4-1-安装git"><a href="#4-1-安装git" class="headerlink" title="4.1 安装git"></a>4.1 安装git</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git --version</span><br></pre></td></tr></table></figure>
+<p>如果安装过git，会提示git版本号。<br>如果没有安装过，使用下面的命令安装git，安装完查看git版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y git</span><br></pre></td></tr></table></figure>
+<h3 id="4-2-用户配置"><a href="#4-2-用户配置" class="headerlink" title="4.2 用户配置"></a>4.2 用户配置</h3><ul>
+<li><p>1.新建一个git用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adduser git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>2.修改密码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd git # 输入密码，确认密码即可</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>3.配置git用户</p>
+<ul>
+<li><p>3.1切换到git用户目录下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">su git </span><br><span class="line">cd ~</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>3.2添加ssh公钥</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/.ssh</span><br><span class="line">vi ~/.ssh/authorized_keys # 在电脑的命令行中执行 cat ~/.ssh/id_rsa.pub | pbcopy # 将公钥复制粘贴到authorized_keys，然后保存退出</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>3.3添加文件及目录权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod 700 ~/.ssh</span><br><span class="line">chmod 600 ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>3.4设置git用户ssh免密码登录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">su root # 切换到root用户</span><br><span class="line">chmod 740 /etc/sudoers # 修改权限</span><br><span class="line">vi /etc/sudoers</span><br><span class="line"></span><br><span class="line">找到以下内容</span><br><span class="line">## Allow root to run any commands anywhere</span><br><span class="line">root    ALL=(ALL)     ALL</span><br><span class="line">在下面加上一行,保存退出</span><br><span class="line">git ALL=(ALL) ALL </span><br><span class="line"></span><br><span class="line">chmod 400 /etc/sudoers # 恢复为原来的权限</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>exit退出，使用<strong>git</strong>用户用<strong>ssh</strong>登录</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>ps：</strong></p>
+<p>如果你刚输完密码，然后再若干秒之后忘了密码。比如我，这时你就可以用到以下命令。</p>
+<p>userdel -r git</p>
+<p>如果出现userdel: user git is currently used by process 10958</p>
+<p>ps -u git | awk ‘{print $1}’ | grep -vi pid | xargs kill -9</p>
+<p>kill用户相关进程，之后再次执行删除用户命令</p>
+<h3 id="4-3-hexo博客及gallery相册git远程仓库配置"><a href="#4-3-hexo博客及gallery相册git远程仓库配置" class="headerlink" title="4.3 hexo博客及gallery相册git远程仓库配置"></a>4.3 <strong>hexo</strong>博客及<strong>gallery</strong>相册<strong>git远程仓库</strong>配置</h3><ul>
+<li><p>1.git用户下，进入到git用户主目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>2.新建一个文件夹,用于存放hexo博客以及gallery相册的git仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir repo</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>3.配置hexo博客的git仓库</p>
+<ul>
+<li><p>3.1 新建一个文件夹用于存放hexo博客的git仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /home/git/repo &amp;&amp; mkdir blog.git &amp;&amp; cd blog.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>3.2 初始化一个空仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init --bare</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>3.3 配置githooks，新建一个脚本文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd hooks &amp;&amp; vi post-receive</span><br><span class="line"></span><br><span class="line">复制以下代码粘贴保存退出</span><br><span class="line">#!/bin/bash</span><br><span class="line">GIT_REPO=/home/git/repo/blog.git #git仓库目录</span><br><span class="line">TMP_GIT_CLONE=/tmp/hexo</span><br><span class="line">PUBLIC_WWW=/home/wwwroot/blog #代码存放目录</span><br><span class="line">rm -rf $&#123;TMP_GIT_CLONE&#125;</span><br><span class="line">git clone $GIT_REPO $TMP_GIT_CLONE</span><br><span class="line">rm -rf $&#123;PUBLIC_WWW&#125;/*</span><br><span class="line">cp -rf $&#123;TMP_GIT_CLONE&#125;/* $&#123;PUBLIC_WWW&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>3.4 修改权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x post-receive</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>3.5 修改所有者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown git:git -R /home/wwwgit/blogs</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ul>
+</li>
+<li><p>4.配置gallery相册的git仓库</p>
+<ul>
+<li><p>4.1 新建一个文件夹用于存放gallery相册的git仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /home/git/repo &amp;&amp;mkdir gallery.git &amp;&amp; cd gallery.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>4.2 初始化一个空仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init --bare</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>4.3 老规矩，同上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd hooks &amp;&amp; vi post-receive</span><br><span class="line"></span><br><span class="line">老规矩，复制以下代码粘贴保存退出</span><br><span class="line">git --work-tree=/home/wwwroot/gallery--git-dir=/home/git/repo/gallery.git checkout -f</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>4.4 修改权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x post-receive</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>4.5 修改所有者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown git:git -R /home/wwwgit/gallery</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p>至此，在vps服务器上面已经配置好了hexo博客以及gallery相册的git托管仓库了，仓库地址放在/home/git/repo目录下，代码放在/home/wwwroot目录下。</p>
+<h2 id="5-Nginx配置"><a href="#5-Nginx配置" class="headerlink" title="5. Nginx配置"></a>5. Nginx配置</h2><h3 id="5-1-查看nginx默认配置文件"><a href="#5-1-查看nginx默认配置文件" class="headerlink" title="5.1 查看nginx默认配置文件"></a>5.1 查看nginx默认配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">vi /usr/local/nginx/conf/nginx.conf</span><br><span class="line"></span><br><span class="line">找到以下代码：</span><br><span class="line">server</span><br><span class="line">    &#123;</span><br><span class="line">        listen 80 default_server;</span><br><span class="line">        #listen [::]:80 default_server ipv6only=on;</span><br><span class="line">        server_name _;</span><br><span class="line">        index index.html index.htm index.php;</span><br><span class="line">        root  /home/wwwroot/default;</span><br><span class="line">		...</span><br><span class="line">    &#125;</span><br><span class="line">include vhost/*.conf;</span><br></pre></td></tr></table></figure>
+<p>看到nginx默认配置，虚拟主机配置，监听80端口，索引文件名称为index.html index.htm index.php，索引文件根路径为/home/wwwroot/default。</p>
+<p>在浏览器中输入ip地址可以看到打开的是<strong>LNMP一键安装包安装成功</strong>提示网页。</p>
+<p>接下来cd到/home/wwwroot/default目录下，可以看到该目录下已经存在如下这些文件，也就是你在浏览器中通过ip地址打开的LNMP一键安装包安装成功提示网页的内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@vultr default]# cd /home/wwwroot/default</span><br><span class="line">[root@vultr default]# ls -l</span><br><span class="line">total 84</span><br><span class="line">-rw-r--r--  1 root root  2781 Dec 15 21:00 index.html</span><br><span class="line">-rw-r--r--  1 root root  5683 Dec 15 21:00 lnmp.gif</span><br><span class="line">-rw-r--r--  1 root root 20256 Dec 15 21:00 ocp.php</span><br><span class="line">-rw-r--r--  1 root root    20 Dec 15 21:00 phpinfo.php</span><br><span class="line">drwxr-xr-x 14 www  www   4096 Dec 15 21:00 phpmyadmin</span><br><span class="line">-rw-r--r--  1 root root 42609 Dec 15 21:00 p.php</span><br><span class="line">[root@vultr default]#</span><br></pre></td></tr></table></figure>
+<p>所以我们直接将root 目录改为hexo博客的文件目录即可，但是一般不建议直接在默认的配置文件里修改，在配置文件中底部会发现<strong>include vhost/*.conf;</strong>这句，意思也就是说会去包含当前文件夹vhost文件夹下所有配置文件。所以我们就可以在vhost文件夹下新建一个虚拟主机的方式来配置hexo博客。</p>
+<h3 id="5-2-新建一个虚拟主机"><a href="#5-2-新建一个虚拟主机" class="headerlink" title="5.2 新建一个虚拟主机"></a>5.2 新建一个虚拟主机</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lnmp vhost add</span><br></pre></td></tr></table></figure>
+<p>填上你的域名，设置root为你的hexo博客文件路径即可。</p>
+<p><img src="http://ozpzewso9.bkt.clouddn.com/Snip20171218_48.png" alt=""></p>
+<p>配置成功。</p>
+<h3 id="5-3-重启nginx服务"><a href="#5-3-重启nginx服务" class="headerlink" title="5.3 重启nginx服务"></a>5.3 重启nginx服务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+<p>至此，nginx配置成功。</p>
+<hr>
+<p>此时，在浏览器中输入域名访问网页，dns解析到绑定的ip也就是你的vps分配给你ip地址，读取该配置文件中root目录下的文件资源也就是你的hexo博客目录的资源文件，加载博客页面。发现打开的是个403页面（当然了，因为/home/wwwroot/hexo目录下并没有任何文件。）。</p>
+<p>接下来就是要将本地hexo博客使用git从本地上传到服务器上就可以了。</p>
+<p>至此，服务端的配置已经基本完成。</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2017/11/19/VPS_02_01/" class="archive-article-date">
+  	<time datetime="2017-11-19T06:15:23.000Z" itemprop="datePublished"><i class="icon-clock"></i>2017-11-19</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/教程/">教程</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/教程/">教程</a><a class="article-category-link" href="/categories/教程/Hexo/">Hexo</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2017/11/20/VPS_02_02/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          VPS搭建个人博客/相册教程02_hexo静态博客配置
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/05/VPS_01_01/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">VPS科学上网教程:SS搭建+bbr加速</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 Rui
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/"
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Rui,&lt;br&gt;.....。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

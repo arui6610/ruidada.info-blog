@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Main函数之前的那些事儿01：dylb | Rui&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言：甩几个问题出来，答案从问题开始。1.类的+load方法系统是怎么调用的？2.一个类+load方法系统为什么只会调用一次？为什么不能在+load方法中调用super？3.为什么fishhook库只能hook应用挂载的外部动态库里的函数？ 然后这些问题就引出了dylb这个鬼，然后就一脸懵逼了。iOS应用中可执行文件是什么？有那些是可执行文件？动态库是在程序启动后由dylb链接，那么静态库又是什">
+<meta name="keywords" content="技术,iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Main函数之前的那些事儿01：dylb">
+<meta property="og:url" content="//ruidada.info/2016/05/10/iOS-02/index.html">
+<meta property="og:site_name" content="Rui&#39;s Blog">
+<meta property="og:description" content="前言：甩几个问题出来，答案从问题开始。1.类的+load方法系统是怎么调用的？2.一个类+load方法系统为什么只会调用一次？为什么不能在+load方法中调用super？3.为什么fishhook库只能hook应用挂载的外部动态库里的函数？ 然后这些问题就引出了dylb这个鬼，然后就一脸懵逼了。iOS应用中可执行文件是什么？有那些是可执行文件？动态库是在程序启动后由dylb链接，那么静态库又是什">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-838b458845226301.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-1447ca6d90136428.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-459b57d7460696ef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/680">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-add412737218082e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-ba7a0f193fdb7a99.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-64d6772684462a77.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-11-20T14:23:35.902Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Main函数之前的那些事儿01：dylb">
+<meta name="twitter:description" content="前言：甩几个问题出来，答案从问题开始。1.类的+load方法系统是怎么调用的？2.一个类+load方法系统为什么只会调用一次？为什么不能在+load方法中调用super？3.为什么fishhook库只能hook应用挂载的外部动态库里的函数？ 然后这些问题就引出了dylb这个鬼，然后就一脸懵逼了。iOS应用中可执行文件是什么？有那些是可执行文件？动态库是在程序启动后由dylb链接，那么静态库又是什">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1488967-838b458845226301.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternative" href="/atom.xml" title="Rui&#39;s Blog" type="application/atom+xml">
+  
+  
+  <script src="/style.js"></script>
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/rui.JPG" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Rui</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">首页</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/tagcloud">标签</a></li>
+	        
+				<li><a href="/galery">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">About Me</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="mail" target="_blank" href="#" title="mail">mail</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">Rui</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/rui.JPG" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Rui</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">首页</a></li>
+		        
+					<li><a href="/archives">归档</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tagcloud">标签</a></li>
+		        
+					<li><a href="/galery">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="#" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-iOS-02" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Main函数之前的那些事儿01：dylb
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>前言：<br>甩几个问题出来，答案从问题开始。<br>1.类的+load方法系统是怎么调用的？<br>2.一个类+load方法系统为什么只会调用一次？为什么不能在+load方法中调用super？<br>3.为什么fishhook库只能hook应用挂载的外部动态库里的函数？</p>
+<p>然后这些问题就引出了dylb这个鬼，然后就一脸懵逼了。iOS应用中可执行文件是什么？有那些是可执行文件？动态库是在程序启动后由dylb链接，那么静态库又是什么时候链接的？dylb是通过镜像的形式加载二进制文件的，镜像是什么鬼？运行时环境也是在mian之前初始化的，dylb和运行时环境有没有什么不可描述的关系？</p>
+</blockquote>
+<hr>
+<p><strong>编译-链接-运行</strong><br>源文件–&gt;编译–&gt;目标文件–&gt;（静态链接）链接静态库文件–&gt;生成可执行文件<br>app启动–&gt;加载可执行文件–&gt;（动态链接）链接动态库文件–&gt;初始化运行时环境–&gt;main()</p>
+<a id="more"></a>
+<p><strong>Helloworld</strong><br><img src="http://upload-images.jianshu.io/upload_images/1488967-838b458845226301.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Snip20170505_2.png"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-1447ca6d90136428.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Snip20170505_4.png"></p>
+<p>1.分别创建了Foo.h,Foo.m,helloworld.m三个文件<br>2.编译Foo.m和helloworld.m文件，生成Foo.o和helloworld.o两个目标文件<br>3.链接Foundation库，如果不指定默认生成a.out的可执行文件<br>4.执行可执行文件</p>
+<p><strong>Mach-O文件类型</strong></p>
+<ul>
+<li>1.可执行文件（mh_execute）(.app)<br>简单理解为:静态库中所有的.o文件+app编译产生的所有.o文件的集合</li>
+<li>2.动态库（mh_dylib）（.dylib）</li>
+<li>3.包（mh_bundle）(.bundle)<br> 简单理解，就是资源文件包 </li>
+<li>4.静态库（staticlib）(.a/.framework)<br>.a:一堆.o文件的集合<br> .framework：一堆.o文件的集合+资源文件+头文件</li>
+<li>5.可重定位的对象文件（mh_object）(.o)<br>编译后，每一个.m/.c/.mm等文件都会生成为一种.o格式的目标文件。</li>
+</ul>
+<p><strong>Mach-O文件结构</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-459b57d7460696ef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/680" alt="Mach-O文件结构.png"></p>
+<ul>
+<li>1.标题:指定文件的目标体系结构，如PPC，PPC64，IA-32或x86-64。</li>
+<li>2.加载命令：在虚拟内存中指定文件的逻辑结构和文件的布局。</li>
+<li>3.原始段数据：包含在加载命令中定义的段的原始数据。</li>
+</ul>
+<p><strong>静态库（.a /.framework）</strong><br>链接时期由静态链接器将静态库中的.o文件完整复制到可执行文件中。</p>
+<p><strong><em>PS:CocoaPods 使用编译静态库 .a 方法将代码集成到项目中。在 Pods 项目中的每个 target 都对应这一个 Pod 的静态库。不过在编译过程中并不会真的产出 .a 文件。如果需要 .a 文件的话，可以参考这里，或者使用CocoasPods-Packager这个插件。（所以每次pod install后，特么编译项目都贼慢，为毛，因为编译器需要编译项目本身代码+各自pod库中的代码，最后将pod库中的代码生成.a文件。然后再编译就会快很多啊，因为编译时期就没有编译pod库了，而是直接连接一个个pod的.a库）</em></strong></p>
+<p><strong>动态库(.dylib/.framework)</strong><br>由dylb动态加载进内存。且多个app共享一份动态库，动态库基本上都是由系统提供。<br>动态库的优点是，不需要拷贝到目标程序中，不会影响目标程序的体积，而且同一份库可以被多个程序使用（因为这个原因，动态库也被称作共享库）。同时，编译时才载入的特性，也可以让我们随时对库进行替换，而不需要重新编译代码。动态库带来的问题主要是，动态载入会带来一部分性能损失，使用动态库也会使得程序依赖于外部环境。如果环境缺少动态库或者库的版本不正确，就会导致程序无法运行。</p>
+<p><strong><em>PS:iOS 平台不支持使用动态库，开发者可以使用的 Framework 只有苹果自家的 UIKit.Framework，Foundation.Framework 等。这种限制可能是出于安全的考虑。因为 iOS 应用都是运行在沙盒当中，不同的程序之间不能共享代码，动态下载代码又是被苹果明令禁止的。</em></strong></p>
+<p><strong>静态链接(static linking)</strong><br>静态连接器就是将项目自身编译好的.o文件集合和一些静态库的.o文件集合进行整合，然后提取出每个.o文件中的用到的一些外部符号引用，并且对这些符号进行重定位，最终生成一个完整的可执行文件。</p>
+<p><strong><em>PS:生成并非是真正的可执行文件，因为此时并不包含一些动态库中的代码，保存的只是一些对外部库中的符号引用。</em></strong></p>
+<p><strong>动态连接(dylb)</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-add412737218082e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="forumImage20161207173929050.png"></p>
+<p>内核初始化环境之后，初始化的dylb环境，由dylb加载一些系统库以及动态库到内存中之后，然后初始化运行时环境，接下来由运行时环境接管，通过运行时环境调用所有class的+load方法。_dylb_start之前的部分属于xnu内核的东西，看不太懂。</p>
+<ul>
+<li><p>动态链接库加载流程</p>
+<ul>
+<li>load dylibs image 读取库镜像文件<ul>
+<li>1.分析所依赖的动态库</li>
+<li>2.找到动态库的mach-o文件</li>
+<li>3.打开文件</li>
+<li>4.验证文件</li>
+<li>5.在系统核心注册文件签名</li>
+<li>6.对动态库的每一个segment调用mmap()</li>
+</ul>
+</li>
+<li>Rebase image</li>
+<li>Bind image</li>
+<li><p>Objc setup</p>
+<ul>
+<li>1.注册Objc类 (class registration)</li>
+<li>2.把category的定义插入方法列表 (category registration)</li>
+<li>3.保证每一个selector唯一 (selctor uniquing）</li>
+</ul>
+</li>
+<li><p>initializers</p>
+<ul>
+<li>1.Objc的+load()函数</li>
+<li>2.C++的构造函数属性函数 形如<strong>attribute</strong>((constructor)) void DoSomeInitializationWork()</li>
+<li>3.非基本类型的C++静态全局变量的创建(通常是类或结构体)(non-trivial initializer) 比如一个全局静态结构体的构建，如果在构造函数中有繁重的工作，那么会拖慢启动速度</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>在load dylibs image中可以看到dylb去读取镜像文件，加载进内存，并且对Mach-O文件进行解析。而镜像也就是指Mach-O文件。且不同类型的Mach-O文件由不同的ImageLoader子类实例进行加载。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-ba7a0f193fdb7a99.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="forumImage20161207151029417.png"></p>
+<p>Rebase image和Bind image是对镜像文件进行一些优化计算之类的操作。</p>
+<ul>
+<li>运行时处理+load加载</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-64d6772684462a77.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="forumImage20161207173728453.png"></p>
+<p> 运行时初始化的时候，会向dylb注册镜像加载的回调。也就是每当有dylb有新的镜像加载进内场的时候，新的镜像都会被map到runtime中，并且由runtime处理+load的加载。</p>
+<p>利用<a href="https://github.com/RetVal" target="_blank" rel="noopener">https://github.com/RetVal</a> 封装好的 debug 版最新源码可以进行断点调试，就可以看到系统在调用Test类的+load()方法之前的调用栈。打印如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">  frame #0: 0x0000000100000f37 debug-objc`+[Test load](self=Test, _cmd=&quot;load&quot;) + 23 at Test.m:13</span><br><span class="line">  frame #1: 0x00000001000b84e6 libobjc.A.dylib`call_class_loads() + 198 at objc-loadmethod.mm:209</span><br><span class="line">  frame #2: 0x00000001000a2a4d libobjc.A.dylib`::call_load_methods() + 77 at objc-loadmethod.mm:361</span><br><span class="line">  frame #3: 0x00000001000a28ba libobjc.A.dylib`::load_images(path=&quot;/Users/xurui/Library/Developer/Xcode/DerivedData/objc-eaekfqpmgbdaycbpoisopskbjiqq/Build/Products/Debug/debug-objc&quot;, mh=0x0000000100000000) + 106 at objc-runtime-new.mm:2051</span><br><span class="line">* frame #4: 0x0000000100007072 dyld`dyld::notifySingle(dyld_image_states, ImageLoader const*, ImageLoader::InitializerTimingList*) + 439</span><br><span class="line">  frame #5: 0x00000001000161dc dyld`ImageLoader::recursiveInitialization(ImageLoader::LinkContext const&amp;, unsigned int, char const*, ImageLoader::InitializerTimingList&amp;, ImageLoader::UninitedUpwards&amp;) + 320</span><br><span class="line">  frame #6: 0x0000000100015268 dyld`ImageLoader::processInitializers(ImageLoader::LinkContext const&amp;, unsigned int, ImageLoader::InitializerTimingList&amp;, ImageLoader::UninitedUpwards&amp;) + 138</span><br><span class="line">  frame #7: 0x00000001000152fd dyld`ImageLoader::runInitializers(ImageLoader::LinkContext const&amp;, ImageLoader::InitializerTimingList&amp;) + 75</span><br><span class="line">  frame #8: 0x000000010000747a dyld`dyld::initializeMainExecutable() + 195</span><br><span class="line">  frame #9: 0x000000010000b7e0 dyld`dyld::_main(macho_header const*, unsigned long, int, char const**, char const**, char const**, unsigned long*) + 3928</span><br><span class="line">  frame #10: 0x0000000100006249 dyld`dyldbootstrap::start(macho_header const*, int, char const**, long, macho_header const*, unsigned long*) + 470</span><br><span class="line">  frame #11: 0x0000000100006036 dyld`_dyld_start + 54</span><br></pre></td></tr></table></figure></p>
+<p>4-11步骤主要执行的是_dyld_start的一些初始化操作。<br>主要看0-3步骤。</p>
+<ul>
+<li><p>load_images<br>源码解读：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">void load_images(const char *path __unused, const struct mach_header *mh)</span><br><span class="line">&#123;</span><br><span class="line">    // 没有查询到传入 Class 中的 load 方法，视为锁定状态</span><br><span class="line">    // 则无需给其加载权限，直接返回</span><br><span class="line">    if (!hasLoadMethods((const headerType *)mh)) return;</span><br><span class="line">    // 定义可递归锁对象</span><br><span class="line">    // 由于 load_images 方法由 dyld 进行回调，所以数据需上锁才能保证线程安全</span><br><span class="line">    // 为了防止多次加锁造成的死锁情况，使用可递归锁解决</span><br><span class="line">    recursive_mutex_locker_t lock(loadMethodLock);</span><br><span class="line"></span><br><span class="line">    // 收集所有的 +load 方法</span><br><span class="line">    &#123;</span><br><span class="line">        // 对 Darwin 提供的线程写锁的封装类</span><br><span class="line">        rwlock_writer_t lock2(runtimeLock);</span><br><span class="line">        // 提前准备好满足 +load 方法调用条件的 Class</span><br><span class="line">        prepare_load_methods((const headerType *)mh);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 调用 +load 方法 (without runtimeLock - re-entrant)</span><br><span class="line">    call_load_methods();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>prepare_load_methods<br>源码解读：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">void prepare_load_methods(const headerType *mhdr)</span><br><span class="line">&#123;</span><br><span class="line">    size_t count, i;</span><br><span class="line"></span><br><span class="line">    runtimeLock.assertWriting();</span><br><span class="line">    // 收集 Class 中的 +load 方法</span><br><span class="line">    // 获取所有的类的列表</span><br><span class="line">    classref_t *classlist = </span><br><span class="line">        _getObjc2NonlazyClassList(mhdr, &amp;count);</span><br><span class="line">    for (i = 0; i &lt; count; i++) &#123;</span><br><span class="line">        // 通过 remapClass 获取类指针</span><br><span class="line">        // schedul_class_load 递归到父类逐层载入</span><br><span class="line">        schedule_class_load(remapClass(classlist[i]));</span><br><span class="line">    &#125;</span><br><span class="line">    // 收集 Category 中的 +load 方法</span><br><span class="line">    category_t **categorylist = _getObjc2NonlazyCategoryList(mhdr, &amp;count);</span><br><span class="line">    for (i = 0; i &lt; count; i++) &#123;</span><br><span class="line">        category_t *cat = categorylist[i];</span><br><span class="line">        // 通过 remapClass 获取 Category 对象存有的 Class 对象</span><br><span class="line">        Class cls = remapClass(cat-&gt;cls);</span><br><span class="line">        if (!cls) continue;</span><br><span class="line">        // 对类进行第一次初始化，主要用来分配可读写数据空间并返回真正的类结构</span><br><span class="line">        realizeClass(cls);</span><br><span class="line">        assert(cls-&gt;ISA()-&gt;isRealized());</span><br><span class="line">        // 将需要执行 load 的 Category 添加到一个全局列表中</span><br><span class="line">        add_category_to_loadable_list(cat);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>call_load_methods()<br>源码解读：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">void call_load_methods(void)</span><br><span class="line">&#123;</span><br><span class="line">    // 是否已经录入</span><br><span class="line">    static bool loading = NO;</span><br><span class="line">    // 是否有关联的 Category</span><br><span class="line">    bool more_categories;</span><br><span class="line"></span><br><span class="line">    loadMethodLock.assertLocked();</span><br><span class="line"></span><br><span class="line">    // 由于 loading 是全局静态布尔量，如果已经录入方法则直接退出</span><br><span class="line">    if (loading) return;</span><br><span class="line">    loading = YES;</span><br><span class="line">    // 声明一个 autoreleasePool 对象</span><br><span class="line">    // 使用 push 操作其目的是为了创建一个新的 autoreleasePool 对象</span><br><span class="line">    void *pool = objc_autoreleasePoolPush();</span><br><span class="line"></span><br><span class="line">    do &#123;</span><br><span class="line">        // 重复调用 load 方法，直到没有</span><br><span class="line">        while (loadable_classes_used &gt; 0) &#123;</span><br><span class="line">            call_class_loads();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 调用 Category 中的 load 方法</span><br><span class="line">        more_categories = call_category_loads();</span><br><span class="line"></span><br><span class="line">        // 继续调用，直到所有 Class 全部完成</span><br><span class="line">    &#125; while (loadable_classes_used &gt; 0  ||  more_categories);</span><br><span class="line">    // 将创建的 autoreleasePool 对象释放</span><br><span class="line">    objc_autoreleasePoolPop(pool);</span><br><span class="line">    // 更改全局标记，表示已经录入</span><br><span class="line">    loading = NO;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>call_class_loads()<br>源码解读：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">static void call_class_loads(void)</span><br><span class="line">&#123;</span><br><span class="line">    // 声明下标偏移</span><br><span class="line">    int i;</span><br><span class="line">    </span><br><span class="line">    // 分离加载的 Class 列表</span><br><span class="line">    struct loadable_class *classes = loadable_classes;</span><br><span class="line">    // 调用标记</span><br><span class="line">    int used = loadable_classes_used;</span><br><span class="line">    loadable_classes = nil;</span><br><span class="line">    loadable_classes_allocated = 0;</span><br><span class="line">    loadable_classes_used = 0;</span><br><span class="line">    </span><br><span class="line">    // 调用列表中的 Class 类的 load 方法</span><br><span class="line">    for (i = 0; i &lt; used; i++) &#123;</span><br><span class="line">        // 获取 Class 指针</span><br><span class="line">        Class cls = classes[i].cls;</span><br><span class="line">        // 获取方法对象</span><br><span class="line">        load_method_t load_method = (load_method_t)classes[i].method;</span><br><span class="line">        if (!cls) continue; </span><br><span class="line"></span><br><span class="line">        if (PrintLoading) &#123;</span><br><span class="line">            _objc_inform(&quot;LOAD: +[%s load]\n&quot;, cls-&gt;nameForLogging());</span><br><span class="line">        &#125;</span><br><span class="line">        // 方法调用</span><br><span class="line">        (*load_method)(cls, SEL_load);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 释放 Class 列表</span><br><span class="line">    if (classes) free(classes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>+load方法的调用过程，在runtime接收到有dylb有新的镜像加载的回调之后，通过laodImage()将所有的class加载进内存中，并且按照继承结构，递归获取所有class的+load方法，将该class的+load方法添加进一个全局的loadable_classes的结构体中存放，将该class的分类中的+load方法添加一个全局的loadable_categories的结构体中存放。最后通过call_load_methods()函数查找class在内存中对应的结构体中的+load方法，依次执行+load方法的过程。</p>
+<p>参考<br><a href="https://www.mikeash.com/pyblog/friday-qa-2012-11-09-dyld-dynamic-linking-on-os-x.html" target="_blank" rel="noopener">https://www.mikeash.com/pyblog/friday-qa-2012-11-09-dyld-dynamic-linking-on-os-x.html</a><br><a href="http://blog.sunnyxx.com/2014/08/30/objc-pre-main/" target="_blank" rel="noopener">http://blog.sunnyxx.com/2014/08/30/objc-pre-main/</a><br><a href="https://techblog.toutiao.com/2017/01/17/iosspeed/" target="_blank" rel="noopener">https://techblog.toutiao.com/2017/01/17/iosspeed/</a></p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/05/10/iOS-02/" class="archive-article-date">
+  	<time datetime="2016-05-10T00:10:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-05-10</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/技术/">技术</a><a class="article-category-link" href="/categories/技术/iOS/">iOS</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/05/10/iOS-03/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Main函数之前的那些事儿02：App启动速度优化
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/01/10/ios-daily-01/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">日常开发01：一行代码搞定全屏滑动返回手势</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 Rui
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/"
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Rui,&lt;br&gt;.....。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

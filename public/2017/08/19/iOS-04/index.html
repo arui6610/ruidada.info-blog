@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>AtomSDK分享（安全模式及crash保护） | Rui&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言：APP的Crash率一直是评估app稳定性的一个重要指标，也是程序员的噩梦。每次提测之前跑完用例，都是信誓旦旦的”放心，代码不可能存在bug。”。在iOS还存在热补丁的时候，大部分iOS程序狗都有过半夜写着JSPatch代码的体验，那个时候确实可以做到不存在bug。然而热补丁被苹果大大封杀了，我们就开始焦虑了。KPI怎么搞？问题来了，如果App出现不可挽救的闪退怎么办？比如启动就崩溃，随">
+<meta name="keywords" content="技术,iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AtomSDK分享（安全模式及crash保护）">
+<meta property="og:url" content="//ruidada.info/2017/08/19/iOS-04/index.html">
+<meta property="og:site_name" content="Rui&#39;s Blog">
+<meta property="og:description" content="前言：APP的Crash率一直是评估app稳定性的一个重要指标，也是程序员的噩梦。每次提测之前跑完用例，都是信誓旦旦的”放心，代码不可能存在bug。”。在iOS还存在热补丁的时候，大部分iOS程序狗都有过半夜写着JSPatch代码的体验，那个时候确实可以做到不存在bug。然而热补丁被苹果大大封杀了，我们就开始焦虑了。KPI怎么搞？问题来了，如果App出现不可挽救的闪退怎么办？比如启动就崩溃，随">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-4b6a2f23f722bb43.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/450">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-3afff57c83997764.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-2bf0a205872b5708.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-4bdef0bcb66acd4a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-02cbd5ccfff260c8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-19552be78073a7dd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/900">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-c0794df51a9ec109.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-b68da4e515176f62.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-65735d525724bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-72f9a4e0eb982742.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-f460ae871ef8b723.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1488967-4d3a9e5d5c875e27.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800/h/800">
+<meta property="og:updated_time" content="2018-11-20T14:23:40.057Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AtomSDK分享（安全模式及crash保护）">
+<meta name="twitter:description" content="前言：APP的Crash率一直是评估app稳定性的一个重要指标，也是程序员的噩梦。每次提测之前跑完用例，都是信誓旦旦的”放心，代码不可能存在bug。”。在iOS还存在热补丁的时候，大部分iOS程序狗都有过半夜写着JSPatch代码的体验，那个时候确实可以做到不存在bug。然而热补丁被苹果大大封杀了，我们就开始焦虑了。KPI怎么搞？问题来了，如果App出现不可挽救的闪退怎么办？比如启动就崩溃，随">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1488967-4b6a2f23f722bb43.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/450">
+  
+    <link rel="alternative" href="/atom.xml" title="Rui&#39;s Blog" type="application/atom+xml">
+  
+  
+  <script src="/style.js"></script>
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/rui.JPG" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Rui</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">首页</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/tagcloud">标签</a></li>
+	        
+				<li><a href="/galery">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">About Me</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="mail" target="_blank" href="#" title="mail">mail</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">Rui</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/rui.JPG" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Rui</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这个世界最可怕的事，是比你聪明的人，还比你更努力！</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">首页</a></li>
+		        
+					<li><a href="/archives">归档</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tagcloud">标签</a></li>
+		        
+					<li><a href="/galery">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="#" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-iOS-04" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      AtomSDK分享（安全模式及crash保护）
+    </h1>
+  
+
+      </header>
+    
+    <!-- 目录内容 -->
+
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://upload-images.jianshu.io/upload_images/1488967-4b6a2f23f722bb43.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/450" alt="Atom.jpg"></p>
+<blockquote>
+<p>前言：<br>APP的Crash率一直是评估app稳定性的一个重要指标，也是程序员的噩梦。每次提测之前跑完用例，都是信誓旦旦的”放心，代码不可能存在bug。”。在iOS还存在热补丁的时候，大部分iOS程序狗都有过半夜写着JSPatch代码的体验，那个时候确实可以做到不存在bug。然而热补丁被苹果大大封杀了，我们就开始焦虑了。KPI怎么搞？问题来了，如果App出现不可挽救的闪退怎么办？比如启动就崩溃，随便点点就闪退。怎么办？怎么办？怎么办？</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="开发目的"><a href="#开发目的" class="headerlink" title="开发目的"></a>开发目的</h2><p>主要的动机有2点。</p>
+<p>一是为了防止app在启动时期crash的情况发生，因为这种crash一旦产生必然会使得app陷入无法启动的绝境。</p>
+<p>另一个是为了降低运行时期app的crash率，主要是利用oc的动态特性，通过切面编程，使得业务层在无感知的情况下，app能够在运行时期自动捕获异常，修复异常，从而避免crash的出现。</p>
+<h2 id="功能简介"><a href="#功能简介" class="headerlink" title="功能简介"></a>功能简介</h2><blockquote>
+<p>功能主要分为两个模块</p>
+</blockquote>
+<h3 id="安全模式"><a href="#安全模式" class="headerlink" title="安全模式"></a>安全模式</h3><p>冷启动时期内程序能够检测连续闪退，在出现连续闪退时，能够进行自我修复，一共分为三级保护，触发一级保护时会删除沙盒中的一些网络数据的缓存。二级保护则会删除沙盒中的rn包以及一些资源文件。三级保护会去清空沙盒，从而使得app进入一种初始化状态。</p>
+<h3 id="进程守护"><a href="#进程守护" class="headerlink" title="进程守护"></a>进程守护</h3><ul>
+<li>1.unrecognized selector crash</li>
+<li>2.KVO crash</li>
+<li>3.NSNotification crash</li>
+<li>4.NSTimer crash</li>
+<li>5.Container crash（常见集合类crash等）</li>
+<li>6.NSNull crash </li>
+<li>7.Bad Access crash （野指针）</li>
+<li>8.UI not on Main Thread Crash (非主线程刷UI）</li>
+</ul>
+<h3 id="日志上报"><a href="#日志上报" class="headerlink" title="日志上报"></a>日志上报</h3><h2 id="技术实现"><a href="#技术实现" class="headerlink" title="技术实现"></a>技术实现</h2><h3 id="安全模式-1"><a href="#安全模式-1" class="headerlink" title="安全模式"></a>安全模式</h3><p>app在启动时期会执行一系列的初始化操作，例如：</p>
+<ul>
+<li>协议注册<ul>
+<li>配置接口</li>
+<li>RN加载</li>
+<li>相关配置信息读取，环境变量配置</li>
+<li>本地数据缓存读取</li>
+<li>……</li>
+</ul>
+</li>
+</ul>
+<p>实现逻辑：<br><img src="http://upload-images.jianshu.io/upload_images/1488967-3afff57c83997764.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="安全模式.png"></p>
+<p>1、开始检测<br>一般来说，应用启动一般是在appDelegate里的didFinishLaunchingWithOptions方法回调里搞事情。<br>可是发现自家的写代码喜欢在+load方法里搞。且+load方法的执行是在main函数之前，那么问题就来了， 无法保证+load方法里产生的一些异常也能够被检测到。为了避免这种情况，需要把安全检测的逻辑放在+load方法里，且被系统调度的优先级比较高。好在，+load方法是有过处理，大致实现思路是在系统调用到+load方法的时候，使用block来封装load方法里的逻辑，添加进一个全局的数组中，优先级设置是通过对全局数组排序事项的，最后在相应的时刻从该数组中取出block并执行。调用时机分别为以下三个：</p>
+<ul>
+<li>mian函数执行之前</li>
+<li>didFinishLaunch</li>
+<li>didFinishLaunch之后</li>
+</ul>
+<p>例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+(void)load &#123;</span><br><span class="line">    imy_load_main(IMYLoadAtPreMain, 0, ^&#123;</span><br><span class="line">        [IMYBootingProtectionManager shareBootingProtectionManager];</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>2、异常捕获<br>异常捕获，坑点太多，iOS系统允许我们去捕获mach级别和应用级别的异常。应用层的异常需要我们自己去注册一个异常捕获函数，但是一些三方sdk经常会注册该函数（例如友盟，bugly等），就会存在问题。前面注册的会被后面注册覆盖。你需要去写一些兼容代码。且自家的应用接入友盟，bugly这种三方统计的sdk。<br>通过hook NSSetUncaughtExceptionHandler这个函数（ <a href="http://www.cocoachina.com/ios/20150701/12301.html" target="_blank" rel="noopener">传送门</a>），清晰看到了app分别注册了三个handler，自己注册的，友盟注册的和bugly注册的。发生异常的时候，最终都被bugly的给拦截了。而进入到自己注册的异常处理函数。<br>Q:友盟是怎么统计到的？<br>A:这就很尴尬了。发现当bugly检测到异常，它会把该异常同时上报给友盟。<br>所以为了取巧，监控异常这部分通过初始化，由外部传入异常回调的函数从而达到监控异常的目的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">imy_load_main(IMYLoadAtPreMain, 0, ^&#123;</span><br><span class="line">      // 注册安全模式</span><br><span class="line">      [[IMY_AtomSDK shareInstance] regiterCrashProtectService];</span><br><span class="line">      // 异常捕获回调   </span><br><span class="line">      [[IMYAppReport shareInstance] addCrashReportLog:^NSString *_Nonnull(NSException *_Nonnull exception) &#123;</span><br><span class="line">          [[IMY_AtomSDK shareInstance] regiterSafeModeService];</span><br><span class="line">          return nil;</span><br><span class="line">      &#125;];</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>3、如何安全检测？<br>既然保证了app在启动之前都会进入安全模式。进入该模式的时候，首先会维护一个闪退计数器，并且开启一个定时任务，若在该时间段了，app没有检测到任何异常发生，则会将该计数器清0。若检测到了闪退，则将该计数器+1。逻辑见上图。</p>
+<p>4、如何修复程序？<br>进入安全模式，获取闪退计数，在这里分别设置了三级保护措施，当闪退技术&gt;=2的时候，则会进入三级修复，会删除沙盒里的接口数据缓存文件。当闪退技术&gt;=3的时候，会删除接口数据缓存，同时也会删除JSpatch和RN的包。当闪退技术&gt;=5的时候，则会清空整个沙盒。修复完成之后，则会将闪退计数置为0。而应用则会恢复到初始状态。逻辑见上图。</p>
+<h3 id="进程守护-1"><a href="#进程守护-1" class="headerlink" title="进程守护"></a>进程守护</h3><h4 id="1、UI-Protect"><a href="#1、UI-Protect" class="headerlink" title="1、UI_Protect"></a>1、UI_Protect</h4><p>闪退场景：<br>iOS 上不建议在非主线程进行UI操作，在非主线程进行UI操作有很大几率会导致程序崩溃，或者出现预期之外的效果。</p>
+<p>实现思路：<br>通过Hook UIView类和CALayer类的一些方法来避免在非主线程执行UI操作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">UIView</span><br><span class="line">1.setNeedsLayout</span><br><span class="line">2.setNeedsDisplay</span><br><span class="line">3.setNeedsUpdateConstraints</span><br><span class="line">4.setNeedsDisplayInRect:</span><br><span class="line"></span><br><span class="line">CALayer</span><br><span class="line">1.setNeedsLayout</span><br><span class="line">2.setNeedsDisplay</span><br><span class="line">3.setNeedsDisplayInRect:</span><br></pre></td></tr></table></figure></p>
+<p>核心代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">判断是否在主线程，不在则转移到主线程执行</span><br><span class="line"> if (strcmp(dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL), dispatch_queue_get_label(dispatch_get_main_queue())) == 0) &#123;</span><br><span class="line">                                            // 调用原来的方法</span><br><span class="line">                                        &#125; else &#123;</span><br><span class="line">                                            dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">                                                 // 调用原来的方法</span><br><span class="line">                                            &#125;);</span><br><span class="line">                                        &#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="2、NSTimer-Protect"><a href="#2、NSTimer-Protect" class="headerlink" title="2、NSTimer_Protect"></a>2、NSTimer_Protect</h4><p>闪退场景：<br>NSTimer这个鬼使用的时候，需要非常小心，最常见的两个坑。<br>1.NSTimer会对target对象进行强引用，容易出现reatain circle。导致target无法释放，从而产生内存泄露。<br>2.在使用scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:做一个重复的定时任务的时候， repeats参数设置为YES，在你不需要的时候，要你手动调用invalidate来销毁定时器。因为定时器会被放进Runloop中，如果target对象释放了之后，Runloop触发了定时器的定时任务，会因为找不到target对象而引起crash。</p>
+<p>实现思路：<br><img src="http://upload-images.jianshu.io/upload_images/1488967-2bf0a205872b5708.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Snip20170918_29.png"></p>
+<p>主要解决两个问题：<br>1.NSTimer对Target的强引用<br><img src="http://upload-images.jianshu.io/upload_images/1488967-4bdef0bcb66acd4a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Snip20170918_33.png"></p>
+<p>2.自动invalidate的NSTimer</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-02cbd5ccfff260c8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Snip20170918_34.png"></p>
+<p>核心代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">1.hook</span><br><span class="line"> static dispatch_once_t onceToken;</span><br><span class="line">    dispatch_once(&amp;onceToken, ^&#123;</span><br><span class="line">        RSSwizzleClassMethod([NSTimer class], @selector(scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:), RSSWReturnType(NSTimer *), RSSWArguments(NSTimeInterval ti, id aTarget, SEL aSelector, id userInfo, BOOL yesOrNo), RSSWReplacement(&#123;</span><br><span class="line">                                 if (!_NSTimerCrashProtectEnable) &#123;</span><br><span class="line">                                     return RSSWCallOriginal(ti, aTarget, aSelector, userInfo, yesOrNo);</span><br><span class="line">                                 &#125;</span><br><span class="line">                                 NSTimer *timer = nil;</span><br><span class="line">                                 if (yesOrNo) &#123;</span><br><span class="line">                                     @autoreleasepool &#123;</span><br><span class="line">                                         IMY_TimerStubProxy *proxy = [[IMY_TimerStubProxy alloc] init];</span><br><span class="line">                                         proxy.target = aTarget;</span><br><span class="line">                                         proxy.aSelector = aSelector;</span><br><span class="line">                                         timer.timerProxy = proxy;</span><br><span class="line">                                         timer = RSSWCallOriginal(ti, proxy, @selector(fireProxyTimer:), userInfo, yesOrNo);</span><br><span class="line">                                         proxy.sourceTimer = timer;</span><br><span class="line">                                     &#125;</span><br><span class="line">                                     return timer;</span><br><span class="line">                                 &#125; else &#123;</span><br><span class="line">                                     return RSSWCallOriginal(ti, aTarget, aSelector, userInfo, yesOrNo);</span><br><span class="line">                                 &#125;</span><br><span class="line">                                 return nil;</span><br><span class="line">                             &#125;));</span><br><span class="line">        _NSTimerCrashProtectEnable = YES;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">2. fireProxyTimer：</span><br><span class="line">- (void)fireProxyTimer:(id)userinfo</span><br><span class="line">&#123;</span><br><span class="line">    id strongTarget = self.target;</span><br><span class="line">    if (strongTarget &amp;&amp; ([strongTarget respondsToSelector:self.aSelector])) &#123;</span><br><span class="line">#pragma clang diagnostic push</span><br><span class="line">#pragma clang diagnostic ignored &quot;-Warc-performSelector-leaks&quot;</span><br><span class="line">        [strongTarget performSelector:self.aSelector</span><br><span class="line">                           withObject:userinfo];</span><br><span class="line">#pragma clang diagnostic pop</span><br><span class="line"></span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        if (self.sourceTimer) &#123;</span><br><span class="line">            [self.sourceTimer invalidate];</span><br><span class="line">        &#125;</span><br><span class="line">        NSString *reason = [NSString stringWithFormat:@&quot;[AtomSDK]: Target is &lt;%@&gt; Method is &lt;%@&gt;, reason : an object dealloc not invalidate Timer.&quot;,</span><br><span class="line">                                                      [self class], NSStringFromSelector(self.aSelector)];</span><br><span class="line">        NSLog(@&quot;%@&quot;, reason);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="3、NSNull-Protect"><a href="#3、NSNull-Protect" class="headerlink" title="3、NSNull_Protect"></a>3、NSNull_Protect</h4><p>闪退场景：<br>iOS中数组，字典等一些集合类，元素只能为OC对象，所以只能用NSNull来填空。在做数据解析的时候，经常遇到服务端返回的数据中带有null这种鬼，会被解析成NSNull这种对象。稍微不注意类型保护就会发生闪退。</p>
+<p>实现思路：<br>hook NSNull类的forwardingTargetForSelector:，将一些无法识别的消息发送给一些可以识别的集合类。</p>
+<p>核心代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">RSSwizzleInstanceMethod([NSNull class], @selector(forwardingTargetForSelector:), RSSWReturnType(id), RSSWArguments(SEL aSelector), RSSWReplacement(&#123;</span><br><span class="line"></span><br><span class="line">                                   if (!_NSNullCrashProtectEnable) &#123;</span><br><span class="line">                                       return RSSWCallOriginal(aSelector);</span><br><span class="line">                                   &#125;</span><br><span class="line">                                   static NSArray *sTmpOutput = nil;</span><br><span class="line">                                   if (sTmpOutput == nil) &#123;</span><br><span class="line">                                       sTmpOutput = @[@&quot;&quot;, @0, @[], @&#123;&#125;];</span><br><span class="line">                                   &#125;</span><br><span class="line"></span><br><span class="line">                                   for (id tmpObj in sTmpOutput) &#123;</span><br><span class="line">                                       if ([tmpObj respondsToSelector:aSelector]) &#123;</span><br><span class="line">                                           return tmpObj;</span><br><span class="line">                                       &#125;</span><br><span class="line">                                   &#125;</span><br><span class="line">                                   return RSSWCallOriginal(aSelector);</span><br><span class="line">                               &#125;),</span><br><span class="line">                               RSSwizzleModeAlways, nil);</span><br></pre></td></tr></table></figure></p>
+<h4 id="4、NSNotification-Protect"><a href="#4、NSNotification-Protect" class="headerlink" title="4、NSNotification_Protect"></a>4、NSNotification_Protect</h4><p>闪退场景：<br>在iOS9之前，通过addObserver:selector:name:object:监听通知。NSNotificatinonCenter会对观察者进行强引用，所以需要手动的在观察者对象挂了的时候移除通知监听。如果未移除监听，在观察者被释放的之后仍然会接收到通知那么就会发生闪退。</p>
+<p>实现思路：<br>主要是hook NSNotificationCenter的addObserver:selector:name:object:，凡是有添加过通知监听的对象，都会给该对象设置一个标识。在dealloc的hook中，判断需要释放的对象，是否有注册过通知监听，是则去移除通知。</p>
+<h4 id="5、UnrecognizedSelector-Protect"><a href="#5、UnrecognizedSelector-Protect" class="headerlink" title="5、UnrecognizedSelector_Protect"></a>5、UnrecognizedSelector_Protect</h4><p>闪退场景：<br>天天见。<br><img src="http://upload-images.jianshu.io/upload_images/1488967-19552be78073a7dd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/900" alt="Snip20170925_22.png"></p>
+<p>实现思路：<br>由于OC是一门动态类型的语言，它的方法调用其实是一种动态绑定的机制，也就是说方法调用是直到运行期才去确定的。<br>方法在调用时，系统会查看这个对象能否接收这个消息（查看这个类有没有这个方法，或者有没有实现这个方法。），牛逼的是，如果不能并且只在不能的情况下，就会调用下面这几个方法，给你“补救”的机会，你可以理解为几套防止程序crash的备选方案，苹果就是利用这几个方案进行消息转发，前一套方案实现后一套方法就不会执行。如果这几套方案你都没有做处理，那么程序就会报错crash。<br>完整的消息转发的流程如下：<br><img src="http://upload-images.jianshu.io/upload_images/1488967-c0794df51a9ec109.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Snip20170925_23.png"></p>
+<p>主要是通过hook NSObject类的forwardingTargetForSelector：实例方法以及类方法。在该方法中将一些无法识别的方法，发送给一个stubProxy对象，且在运行时动态的给改stubProxy对象添加改SEL对应的方法实现(IMP)。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-b68da4e515176f62.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Snip20170920_5.png"></p>
+<p>核心代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">RSSwizzleInstanceMethod([NSObject class], @selector(forwardingTargetForSelector:), RSSWReturnType(id), RSSWArguments(SEL aSelector), RSSWReplacement(&#123;</span><br><span class="line">                                if (!_UnrecognizedSelectorCrashProtectEnable) &#123;</span><br><span class="line">                                    return RSSWCallOriginal(aSelector);</span><br><span class="line">                                &#125;</span><br><span class="line"></span><br><span class="line">                                BOOL aBool = [self respondsToSelector:aSelector];</span><br><span class="line">                                // 获取消息签名</span><br><span class="line">                                NSMethodSignature *signatrue = [self methodSignatureForSelector:aSelector];</span><br><span class="line"></span><br><span class="line">                                if (aBool || signatrue) &#123;</span><br><span class="line">                                    return RSSWCallOriginal(aSelector);</span><br><span class="line">                                &#125; else &#123;</span><br><span class="line">                                    IMY_UnrecognizedSelector_StubProxy *stub = [[IMY_UnrecognizedSelector_StubProxy alloc] init];</span><br><span class="line">                                    [stub addFunc:aSelector];</span><br><span class="line">                                    NSString *reason = [NSString stringWithFormat:@&quot;[AtomSDK]: unrecognizedSelector &lt;%@&gt; to instance &lt;%@&gt;&quot;,</span><br><span class="line">                                                                                  NSStringFromSelector(aSelector), [self class]];</span><br><span class="line">                                    NSLog(@&quot;%@&quot;, reason);</span><br><span class="line">                                    return stub;</span><br><span class="line">                                &#125;</span><br><span class="line"></span><br><span class="line">                            &#125;),</span><br><span class="line">                            RSSwizzleModeAlways, nil);</span><br></pre></td></tr></table></figure></p>
+<h4 id="6、KVO-Protect"><a href="#6、KVO-Protect" class="headerlink" title="6、KVO_Protect"></a>6、KVO_Protect</h4><p>KVO 是 Objective-C 对观察者设计模式的一种实现。观察对象(例如A类)，当对象某个属性(例如A中的字符串name)发生更改时，监听对象会获得通知，并作出相应处理。且不需要给被观察的对象添加任何额外代码，就能使用的一种观察者模式。</p>
+<p>闪退场景：</p>
+<ul>
+<li><p>1.被观察者提前释放</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">*** Terminating app due to uncaught exception &apos;NSInternalInconsistencyException&apos;, reason: &apos;An instance 0x600000018180 of class Student was deallocated while key value observers were still registered with it. Current observation info: &lt;NSKeyValueObservationInfo 0x600000032340&gt; (</span><br><span class="line">&lt;NSKeyValueObservance 0x600000054d60: Observer: 0x7fe684608b40, Key path: name, Options: &lt;New: YES, Old: YES, Prior: NO&gt; Context: 0x0, Property: 0x60000005cb00&gt;</span><br><span class="line">)&apos;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>2.被观察者是局部变量</p>
+</li>
+<li><p>3.重复移除观察者 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*** Terminating app due to uncaught exception &apos;NSRangeException&apos;, reason: &apos;Cannot remove an observer &lt;TestViewController 0x7fdb13e0cf40&gt; for the key path &quot;view&quot; from &lt; TestViewController 0x7fdb13e0cf40&gt; because it is not registered as an observer.&apos;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>4.观察者对象未实现observeValueForKeyPath:ofObject: change: context:方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">*** Terminating app due to uncaught exception &apos;NSInternalInconsistencyException&apos;, reason: &apos;&lt; TestViewController: 0x7fc628f049e0&gt;: An -observeValueForKeyPath:ofObject:change:context: message was received but not handled.</span><br><span class="line">Key path: view</span><br><span class="line">Observed object: &lt; TestViewController: 0x7fc628f049e0&gt;</span><br><span class="line">Change: &#123;</span><br><span class="line">    kind = 1;</span><br><span class="line">    new = &quot;&lt;UIView: 0x7fc628d18810; frame = (0 0; 414 736); layer = &lt;CALayer: 0x60800002be00&gt;&gt;&quot;;</span><br><span class="line">&#125;</span><br><span class="line">Context: 0x0&apos;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>ps:重复添加观察者并不会引起crash，但是会多次触发相应事件。</p>
+<p>实现思路：<br>主要通过NSObject的分类，利用运行时给NSObject实例添加一个关联对象kvoProxy，该对象是用于管理当前对象的kvo关系(也就是观察者和被观察者的关系)，分别hook addObserver:forKeyPath:options:context:和removeObserver:forKeyPath:以及dealloc方法，在dealloc中移除真正的观察者对象。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-65735d525724bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="addObserver:forKeyPath:options:context:"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1488967-72f9a4e0eb982742.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="removeObserver:forKeyPath"></p>
+<p>核心代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">RSSwizzleInstanceMethod([NSObject class], @selector(addObserver:forKeyPath:options:context:), RSSWReturnType(void), RSSWArguments(NSObject * observer, NSString * keyPath, NSKeyValueObservingOptions options, void *context), RSSWReplacement(&#123;</span><br><span class="line">                            // 忽略RAC</span><br><span class="line">                            if (object_getClass(observer) == objc_getClass(&quot;RACKVOProxy&quot;)) &#123;</span><br><span class="line">                                RSSWCallOriginal(observer, keyPath, options, context);</span><br><span class="line">                                return;</span><br><span class="line">                            &#125;</span><br><span class="line">                            NSHashTable&lt;NSObject *&gt; *os = [self kvoProxy].kvoInfoMap[keyPath];</span><br><span class="line">                            // 第一次的时候将KVOProxy添加为真正的观察者</span><br><span class="line">                            if (os.count == 0) &#123; // (包括了 observers == nil 和 count == 0)</span><br><span class="line">                                os = [[NSHashTable alloc] initWithOptions:(NSPointerFunctionsWeakMemory)capacity:0];</span><br><span class="line">                                [os addObject:observer];</span><br><span class="line">                                RSSWCallOriginal([self kvoProxy], keyPath, options, context);</span><br><span class="line">                                [self kvoProxy].kvoInfoMap[keyPath] = os;</span><br><span class="line">                                return;</span><br><span class="line">                            &#125;</span><br><span class="line"></span><br><span class="line">                            if ([os containsObject:observer]) &#123;</span><br><span class="line">                                // 找到同样的观察者 不重复添加</span><br><span class="line">                                NSString *reason = [NSString stringWithFormat:@&quot;[AtomSDK]:KVO add Observer to many timers.Target is %@ method is %@ &quot;,</span><br><span class="line">                                                                              [self class], NSStringFromSelector(@selector(addObserver:forKeyPath:options:context:))];</span><br><span class="line">                                NSLog(@&quot;%@&quot;, reason);</span><br><span class="line"></span><br><span class="line">                            &#125; else &#123;</span><br><span class="line">                                // 以后添加观察者直接往容器里面更新元素就行了</span><br><span class="line">                                [os addObject:observer];</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;),</span><br><span class="line">                        RSSwizzleModeAlways, nil);</span><br><span class="line"></span><br><span class="line">[RSSwizzle swizzleInstanceMethod:@selector(removeObserver:forKeyPath:)</span><br><span class="line">                         inClass:[NSObject class]</span><br><span class="line">                   newImpFactory:^id(RSSwizzleInfo *swizzleInfo) &#123;</span><br><span class="line">                       return ^void(__unsafe_unretained id self, NSObject *observer, NSString *keyPath) &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                           int (*originalIMP)(__unsafe_unretained id, SEL, NSObject *, NSString *);</span><br><span class="line">                           originalIMP = (__typeof(originalIMP))[swizzleInfo getOriginalImplementation];</span><br><span class="line">                           __imy_hook_orgin_function_removeObserver = originalIMP;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                           if (object_getClass(observer) == objc_getClass(&quot;RACKVOProxy&quot;)) &#123;</span><br><span class="line">                               originalIMP(self, @selector(removeObserver:forKeyPath:), observer, keyPath);</span><br><span class="line">                               return;</span><br><span class="line">                           &#125;</span><br><span class="line"></span><br><span class="line">                           NSHashTable&lt;NSObject *&gt; *os = [self kvoProxy].kvoInfoMap[keyPath];</span><br><span class="line">                           if (os.count == 0) &#123;</span><br><span class="line">                               // 未找到观察者</span><br><span class="line">                               NSString *reason = [NSString stringWithFormat:@&quot;[AtomSDK]: KVO remove Observer to many times.target is %@ method is %@,&quot;,</span><br><span class="line">                                                                             [self class], NSStringFromSelector(@selector(removeObserver:forKeyPath:))];</span><br><span class="line">                               NSLog(@&quot;[KVO]:%@&quot;, reason);</span><br><span class="line"></span><br><span class="line">                               return;</span><br><span class="line">                           &#125;</span><br><span class="line">                           // 找到了观察者 移除</span><br><span class="line">                           [os removeObject:observer];</span><br><span class="line">                           // 为空时移除真正的观察者</span><br><span class="line">                           if (os.count == 0) &#123;</span><br><span class="line">                               //                                   NSLog(@&quot;[KVO]:REMOVE【%@】-【%@】-【%@】&quot;,self,observer,keyPath);</span><br><span class="line">                               originalIMP(self, @selector(removeObserver:forKeyPath:), [self kvoProxy], keyPath);</span><br><span class="line">                               [[self kvoProxy].kvoInfoMap removeObjectForKey:keyPath];</span><br><span class="line">                           &#125;</span><br><span class="line">                       &#125;;</span><br><span class="line">                   &#125;</span><br><span class="line">                            mode:RSSwizzleModeAlways</span><br><span class="line">                             key:NULL];</span><br></pre></td></tr></table></figure></p>
+<h4 id="7、BadAccess-Protect"><a href="#7、BadAccess-Protect" class="headerlink" title="7、BadAccess_Protect"></a>7、BadAccess_Protect</h4><p>iOS中有空指针和野指针两种概念。空指针是没有存储任何内存地址的指针。如Student <em>s1 = NULL;和Student </em>s2 = nil;而野指针是指指向一个已删除的对象（”垃圾”内存既不可用内存）或未申请访问受限内存区域的指针。野指针是比较危险的。因为野指针指向的对象已经被释放了。通过野指针访问已经释放的对象crash其实不是必现的，因为dealloc执行后只是告诉系统，这片内存我不用了，而系统并没有就让这片内存不能访问。<br>BTW野指针的崩溃是比较随机的，你在测试的时候可能没发生crash，但是用户在使用的时候就可能发生crash了。</p>
+<p>闪退场景：<br>野指针闪退常见有以下几种情况：<br>1.对象释放后内存没被改动过，原来的内存保存完好，可能不Crash或者出现逻辑错误（随机Crash）。<br>2.对象释放后内存没被改动过，但是它自己析构的时候已经删掉某些必要的东西，可能不Crash、Crash在访问依赖的对象比如类成员上、出现逻辑错误（随机Crash）。<br>3.对象释放后内存被改动过，写上了不可访问的数据，直接就出错了很可能Crash在objc_msgSend上面（必现Crash，常见）。<br>4.对象释放后内存被改动过，写上了可以访问的数据，可能不Crash、出现逻辑错误、间接访问到不可访问的数据（随机Crash）。<br>5.对象释放后内存被改动过，写上了可以访问的数据，但是再次访问的时候执行的代码把别的数据写坏了，遇到这种Crash只能哭了（随机Crash，难度大，概率低）！！<br>6.对象释放后再次release（几乎是必现Crash，但也有例外，很常见）。<br><img src="http://upload-images.jianshu.io/upload_images/1488967-f460ae871ef8b723.gif?imageMogr2/auto-orient/strip" alt="1467690258548317-1.gif"></p>
+<p>实现思路：</p>
+<p>在app的当前进程中，如果我们额外向系统申请一块内存，用于存储那些已经被释放的对象。所以当一个对象被释放了时候，系统就会自动调用该对象的dealloc方法，在这个方法里面系统会释放该对象自身的一些属性，关联对象等等一些资源。然后，我们利用isa指针混淆技术，将该对象的类动态修改为一个僵尸类，且该僵尸对象可以处理任何方法。那么如果你向一个已经被释放的对象发送消息的时候，因为它存在于缓存池当中，那么也就不会产生野指针了。</p>
+<p>首先我们需要知道dealloc的方法里面系统干了些什么事儿。<br>因为OC中内存管理采用的是引用计数器的方式，即每个对象的散列表中都会存在一个int类型的变量表示该对象的被引用的次数，当该对象的引用计数为0的时候，由系统自动调用该对象的dealloc方法释放该对象的内存。并且父类的dealloc的方法将在子类dealloc方法返回后自动调用。（PS:你在跟我讲故事么。）</p>
+<p>通过查看Apple的runtime源码，可以看出ARC下的dealloc的实现原理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">- (void)dealloc &#123;</span><br><span class="line">    _objc_rootDealloc(self);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void _objc_rootDealloc(id obj)</span><br><span class="line">&#123;</span><br><span class="line">    assert(obj);</span><br><span class="line"></span><br><span class="line">    obj-&gt;rootDealloc();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">inline void objc_object::rootDealloc()</span><br><span class="line">&#123;</span><br><span class="line">    if (isTaggedPointer()) return;</span><br><span class="line">    object_dispose((id)this);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">id object_dispose(id obj) </span><br><span class="line">&#123;</span><br><span class="line">    if (UseGC) return _object_dispose(obj);</span><br><span class="line">    else return (*_dealloc)(obj); </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static id _object_dispose(id anObject) </span><br><span class="line">&#123;</span><br><span class="line">    if (anObject==nil) return nil;</span><br><span class="line"></span><br><span class="line">    objc_destructInstance(anObject);</span><br><span class="line">    </span><br><span class="line">#if SUPPORT_GC</span><br><span class="line">    if (UseGC) &#123;</span><br><span class="line">        auto_zone_retain(gc_zone, anObject); // gc free expects rc==1</span><br><span class="line">    &#125; else </span><br><span class="line">#endif</span><br><span class="line">    &#123;</span><br><span class="line">        // only clobber isa for non-gc</span><br><span class="line">        anObject-&gt;initIsa(_objc_getFreedObjectClass ()); </span><br><span class="line">    &#125;</span><br><span class="line">    free(anObject);</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里能够清晰地看到在执行dealloc的时候，会先执行_objc_rootDealloc()函数。然后执行_object_dispose()，且在这个函数里干了三件事情：</p>
+<ul>
+<li><p>1.调用objc_destructInstance()释放对象的所有实例变量和关联对象(该方法并未回收对象本身内存).</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">void *objc_destructInstance(id obj) </span><br><span class="line">&#123;</span><br><span class="line">    if (obj) &#123;</span><br><span class="line">        // Read all of the flags at once for performance.</span><br><span class="line">        bool cxx = obj-&gt;hasCxxDtor();</span><br><span class="line">        bool assoc = !UseGC &amp;&amp; obj-&gt;hasAssociatedObjects();</span><br><span class="line">        bool dealloc = !UseGC;</span><br><span class="line"></span><br><span class="line">        // This order is important.</span><br><span class="line">        if (cxx) object_cxxDestruct(obj);</span><br><span class="line">        if (assoc) _object_remove_assocations(obj);</span><br><span class="line">        if (dealloc) obj-&gt;clearDeallocating();</span><br><span class="line">    &#125;</span><br><span class="line">    return obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>2.isa-swizzling将该对象的类置为一个空的类对象.</p>
+</li>
+<li>3.调用free()回收该对象的内存.</li>
+</ul>
+<p>所以我们需要在对象真正被释放的时机搞事情，有三个选择：</p>
+<ul>
+<li>1.运行时hook NSObject的dealloc方法。</li>
+<li>2.runtime object_dispose 。</li>
+<li>3.利用fishhook c的free()。<br>这三个调用栈顺序依次dealloc-&gt;object_dispose-&gt;free。所以还是选择hook最上层dealloc方法。主要针对OC对象的野指针。<br>流程图如下：<br><img src="http://upload-images.jianshu.io/upload_images/1488967-4d3a9e5d5c875e27.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800/h/800" alt="Snip20170929_35.png"></li>
+</ul>
+<p>核心代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (void)IMY_BadAccess_dealloc &#123;</span><br><span class="line">    NSObject *obj = (NSObject *)self;</span><br><span class="line">    objc_destructInstance(self);</span><br><span class="line">    object_setClass(self, [_IMYZombieObj class]);</span><br><span class="line">    obj.oriClass = NSStringFromClass([self class]);</span><br><span class="line">    dispatch_async(zombieOperationQueue, ^&#123;</span><br><span class="line">        if (global_unfree_list-&gt;unfree_count &gt; MAX_UNFREE_POINTER * 0.9 || global_unfree_list-&gt;unfree_size &gt; MAX_UNFREE_MEM) &#123;</span><br><span class="line">            freeMemInListSync(global_unfree_list, FREE_POINTER_NUM);</span><br><span class="line">        &#125;</span><br><span class="line">        addUnFreeMemToListSync(global_unfree_list, (__bridge void *)(self));</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2017/08/19/iOS-04/" class="archive-article-date">
+  	<time datetime="2017-08-19T12:44:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2017-08-19</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/技术/">技术</a><a class="article-category-link" href="/categories/技术/iOS/">iOS</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2017/11/05/VPS_01_01/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          VPS科学上网教程:SS搭建+bbr加速
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/10/ios-daily-02/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">日常开发02：砸壳+Hook</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 Rui
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/"
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Rui,&lt;br&gt;.....。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>
