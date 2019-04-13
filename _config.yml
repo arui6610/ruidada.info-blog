@@ -7,7 +7,7 @@ deploy:
       type: git
       message: update
       repo:
-        s1: git@45.32.93.86:repo/blog.git,master
+        s1: git@139.180.141.73:repo/blog.git,master
 #######################################################################
 
 # 1、网站
